@@ -34,16 +34,17 @@ static SaverLabPreferences *_sharedInstance = nil;
   [[NSUserDefaults standardUserDefaults] setInteger:(int)value.height forKey:@"defaultWindowHeight"];
 }
 
-// defaults to true, so stored as a string with null being true
+// defaults to false
 -(BOOL)showModuleListOnStartup {
   NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"showListOnStartup"];
-  return (!value || [value intValue]!=0);
+  return ([value intValue]!=0);
 }
 -(void)setShowModuleListOnStartup:(BOOL)value {
   NSString *string = (value) ? @"1" : @"0";
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"showListOnStartup"];
 }
 
+// defaults to true
 -(BOOL)showModuleListWhenNoOpenWindows {
   NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"showListWhenNoOpenWindows"];
   return (!value || [value intValue]!=0);
@@ -53,6 +54,7 @@ static SaverLabPreferences *_sharedInstance = nil;
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"showListWhenNoOpenWindows"];
 }
 
+// defaults to true
 -(BOOL)restoreModuleWindowsOnStartup {
   NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"restoreWindowsOnStartup"];
   return (!value || [value intValue]!=0);
@@ -61,5 +63,24 @@ static SaverLabPreferences *_sharedInstance = nil;
   NSString *string = (value) ? @"1" : @"0";
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"restoreWindowsOnStartup"];
 }
+
+// defaults to true
+-(BOOL)autoUpdateModuleList {
+  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"autoUpdateModuleList"];
+  return (!value || [value intValue]!=0);
+}
+-(void)setAutoUpdateModuleList:(BOOL)value {
+  NSString *string = (value) ? @"1" : @"0";
+  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"autoUpdateModuleList"];
+}
+
+// defaults to false
+-(BOOL)isPreviewVisible {
+  return [[NSUserDefaults standardUserDefaults] boolForKey:@"isPreviewVisible"];
+}
+-(void)setIsPreviewVisible:(BOOL)value {
+  [[NSUserDefaults standardUserDefaults] setBool:value forKey:@"isPreviewVisible"];
+}
+
 
 @end

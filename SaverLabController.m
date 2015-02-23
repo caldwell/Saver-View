@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // for isProcessRunningWithName
 #include <sys/sysctl.h>
 
-static int MODULE_MENU_PERMANENT_ITEMS = 2;
+static int MODULE_MENU_PERMANENT_ITEMS = 3;
 
 // apparently the BSD calls to get process names only allow 16 characters, so
 // "ScreenSaverEngine" becomes "ScreenSaverEngin"
@@ -89,13 +89,13 @@ static BOOL appHasVisibleWindows() {
   }
 }
 
-/** Reload the modules list whenever the app becomes active. This causes a slight
-delay which is hopefully not significant unless you have a ton of modules.
+/** Called when the application becomes active. Updates the available modules if
+the relevant preference is set, broadcasts that the real screen saver is not running,
+and possibly shows the browser window if no other windows are open.
 */
 -(void)applicationDidBecomeActive:(NSNotification *)note {
-  if ([[SaverLabModuleList sharedInstance] updateList]) {
-    [self rebuildModulesMenu];
-    [listWindowController refresh];
+  if ([[SaverLabPreferences sharedInstance] autoUpdateModuleList]) {
+    [self updateModuleList:nil];
   }
   // restart modules if they were stopped by the real screen saver
   if (wasScreenSaverRunning) {
@@ -105,6 +105,15 @@ delay which is hopefully not significant unless you have a ton of modules.
   // maybe show module list if there are no windows open
   if ([[SaverLabPreferences sharedInstance] showModuleListWhenNoOpenWindows] && !appHasVisibleWindows()) {
     [listWindowController showWindow:self];
+  }
+}
+
+/** Rescans for available modules and updates the menu and browser window if the list has changed.
+*/
+-(void)updateModuleList:(id)sender {
+  if ([[SaverLabModuleList sharedInstance] updateList]) {
+    [self rebuildModulesMenu];
+    [listWindowController refresh];
   }
 }
 
@@ -244,6 +253,9 @@ delay which is hopefully not significant unless you have a ton of modules.
     if ([moduleController isFullScreen]) {
       [dict setObject:@"YES" forKey:@"fullscreen"];
     }
+    if ([moduleController isInPreviewMode]) {
+      [dict setObject:@"YES" forKey:@"preview"];
+    }
     [dict setObject:NSStringFromRect([[moduleController moduleWindow] frame]) forKey:@"rect"];
     [dict setObject:[moduleController windowLayerString] forKey:@"layer"];
     // save position, paused state, etc.
@@ -269,6 +281,9 @@ delay which is hopefully not significant unless you have a ton of modules.
       controller = [self openModuleWithName:name rect:rect];
     }
     if (controller) {
+      if ([dict objectForKey:@"preview"]) {
+        [controller setIsInPreviewMode:YES];
+      }
       [controller showModuleWindow];
       [controller setWindowLayerFromString:[dict objectForKey:@"layer"]];
       [controller start];

@@ -120,27 +120,6 @@
 //082
 //083
 //084
-		080E96DDFE201D6D7F000001 = {
-			children = (
-				F5E5BB2D00DC774D01A80002,
-				F5E5BB2E00DC774D01A80002,
-				F53F695B00E5854F01A80002,
-				F53F695C00E5854F01A80002,
-				017AF4DB006ED87EC0A80002,
-				017AF4DC006ED87EC0A80002,
-				017AF4DF006EF750C0A80002,
-				017AF4E0006EF750C0A80002,
-				0214AE0E007AEDA27F000001,
-				0214AE0F007AEDA27F000001,
-				F5E5BB3800DD5E5201A80002,
-				F5E5BB3900DD5E5201A80002,
-				F5E5BB3C00E061C101A80002,
-				F5E5BB3D00E061C101A80002,
-			);
-			isa = PBXGroup;
-			name = Classes;
-			refType = 4;
-		};
 		089C165CFE840E0CC02AAC07 = {
 			children = (
 				089C165DFE840E0CC02AAC07,
@@ -299,7 +278,8 @@
 		};
 		29B97314FDCFA39411CA2CEA = {
 			children = (
-				080E96DDFE201D6D7F000001,
+				F524BA0E00EEDFD301A80002,
+				F524BA0F00EEDFD301A80002,
 				F5E5BB3700DD408801A80002,
 				29B97315FDCFA39411CA2CEA,
 				29B97317FDCFA39411CA2CEA,
@@ -327,7 +307,7 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
-				F50766E700E6B78501A80002,
+				F524BA0A00E9A4AB01A80002,
 				701D263B0076C93C7F000001,
 				089C165CFE840E0CC02AAC07,
 				459FBB2B0075ACF27F000001,
@@ -394,11 +374,22 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDocumentTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>saver</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Screen Saver</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.3, © 2001 Brian Nenninger</string>
+	<string>1.4, © 2001 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -410,11 +401,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -439,6 +430,7 @@
 				F5E5BB3E00E061C101A80002,
 				F53F695900E5795401A80002,
 				F53F695D00E5854F01A80002,
+				F524BA1200EEE59D01A80002,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -450,7 +442,7 @@
 				459FBB2F0075ACF27F000001,
 				701D263C0076C93C7F000001,
 				F55D506500CF36EB01A80002,
-				F50766E800E6B78501A80002,
+				F524BA0B00E9A4AB01A80002,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -469,6 +461,7 @@
 				F5E5BB3F00E061C101A80002,
 				F53F695A00E5795401A80002,
 				F53F695E00E5854F01A80002,
+				F524BA1300EEE59D01A80002,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -581,13 +574,61 @@
 //F52
 //F53
 //F54
-		F50766E700E6B78501A80002 = {
+		F524BA0A00E9A4AB01A80002 = {
 			isa = PBXFileReference;
 			path = SaverLab.icns;
 			refType = 4;
 		};
-		F50766E800E6B78501A80002 = {
-			fileRef = F50766E700E6B78501A80002;
+		F524BA0B00E9A4AB01A80002 = {
+			fileRef = F524BA0A00E9A4AB01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F524BA0E00EEDFD301A80002 = {
+			children = (
+				F5E5BB2D00DC774D01A80002,
+				F5E5BB2E00DC774D01A80002,
+				F53F695B00E5854F01A80002,
+				F53F695C00E5854F01A80002,
+			);
+			isa = PBXGroup;
+			name = Model;
+			refType = 4;
+		};
+		F524BA0F00EEDFD301A80002 = {
+			children = (
+				017AF4DB006ED87EC0A80002,
+				017AF4DC006ED87EC0A80002,
+				017AF4DF006EF750C0A80002,
+				017AF4E0006EF750C0A80002,
+				F5E5BB3800DD5E5201A80002,
+				F5E5BB3900DD5E5201A80002,
+				F5E5BB3C00E061C101A80002,
+				F5E5BB3D00E061C101A80002,
+			);
+			isa = PBXGroup;
+			name = Controllers;
+			refType = 4;
+		};
+		F524BA1000EEE59D01A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabNSButtonAdditions.h;
+			refType = 4;
+		};
+		F524BA1100EEE59D01A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabNSButtonAdditions.m;
+			refType = 4;
+		};
+		F524BA1200EEE59D01A80002 = {
+			fileRef = F524BA1000EEE59D01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F524BA1300EEE59D01A80002 = {
+			fileRef = F524BA1100EEE59D01A80002;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -725,12 +766,16 @@
 		};
 		F5E5BB3700DD408801A80002 = {
 			children = (
+				0214AE0E007AEDA27F000001,
+				0214AE0F007AEDA27F000001,
 				F55D505700CB21AD01A80002,
 				F55D505800CB21AD01A80002,
 				F55D506600D2F35B01A80002,
 				F55D506700D2F35B01A80002,
 				F53F695700E5795401A80002,
 				F53F695800E5795401A80002,
+				F524BA1000EEE59D01A80002,
+				F524BA1100EEE59D01A80002,
 			);
 			isa = PBXGroup;
 			name = "Cocoa Additions";
@@ -738,12 +783,12 @@
 		};
 		F5E5BB3800DD5E5201A80002 = {
 			isa = PBXFileReference;
-			path = SaverLabListWindowController.h;
+			path = SaverLabBrowserWindowController.h;
 			refType = 4;
 		};
 		F5E5BB3900DD5E5201A80002 = {
 			isa = PBXFileReference;
-			path = SaverLabListWindowController.m;
+			path = SaverLabBrowserWindowController.m;
 			refType = 4;
 		};
 		F5E5BB3A00DD5E5201A80002 = {

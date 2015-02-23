@@ -8,27 +8,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import <Cocoa/Cocoa.h>
-#import "SaverLabModuleController.h"
-#import "SaverLabBrowserWindowController.h"
-#import "SaverLabPrefsWindowController.h"
+#import <ScreenSaver/ScreenSaver.h>
 
-@interface SaverLabController : NSObject
+@interface SaverLabBrowserWindowController : NSObject
 {
-    NSMenuItem *modulesMenu;
-    BOOL wasScreenSaverRunning;
+    IBOutlet id modulesBrowser;
+    IBOutlet id window;
+    IBOutlet id previewCheckbox;
+    IBOutlet id openInPreviewModeCheckbox;
+    IBOutlet id previewView;
+    IBOutlet id configureButton;
     
-    SaverLabBrowserWindowController *listWindowController;
-    SaverLabPrefsWindowController *prefsWindowController;
+    NSString *lastSelectedModule;
+    Class previewSaverClass;
+    ScreenSaverView *previewSaverView;
 }
+-(IBAction)browserModuleSelected:(id)sender;
+-(IBAction)showWindow:(id)sender;
+-(NSRect)frameRectWithPreviewVisible:(BOOL)visible;
+-(int)windowWidthWithPreviewVisible:(BOOL)visible;
 
--(void)rebuildModulesMenu;
--(void)updateModuleList:(id)sender;
--(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
+-(BOOL)isPreviewCheckboxChecked;
+-(BOOL)isPreviewVisible;
+-(NSRect)previewFrameRect;
 
--(SaverLabModuleController *)openModuleWithName:(NSString *)name;
--(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)rect;
--(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect;
+-(void)removePreviewSaver;
+-(void)refresh;
 
--(void)saveWindowPositions;
--(void)restoreWindowPositions;
 @end

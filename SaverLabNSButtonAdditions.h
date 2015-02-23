@@ -9,14 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Cocoa/Cocoa.h>
 
-@interface SaverLabListWindowController : NSObject
-{
-    IBOutlet id modulesBrowser;
-    IBOutlet id window;
-}
--(IBAction)moduleSelected:(id)sender;
--(IBAction)showWindow:(id)sender;
+/** Convenience methods for checking and unchecking checkboxes directly, rather than
+setting and comparing the state using NSOnState and NSOffState
+*/
 
--(void)refresh;
+@interface NSButton (SaverLabNSButtonAdditions)
+
+-(BOOL)isChecked;
+-(void)setIsChecked:(BOOL)value;
 
 @end

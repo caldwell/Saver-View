@@ -26,4 +26,10 @@
 -(BOOL)restoreModuleWindowsOnStartup;
 -(void)setRestoreModuleWindowsOnStartup:(BOOL)value;
 
+-(BOOL)isPreviewVisible;
+-(void)setIsPreviewVisible:(BOOL)value;
+
+-(BOOL)autoUpdateModuleList;
+-(void)setAutoUpdateModuleList:(BOOL)value;
+
 @end

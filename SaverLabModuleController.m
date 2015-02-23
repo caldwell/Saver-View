@@ -97,6 +97,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 
 -(void)finishInit {
   isPaused = isAppHidden = isScreenSaverRunning = NO;
+  isInPreviewMode = NO;
   backgroundImageRep = nil;
   lastFPSUpdateTime = [[NSDate distantFuture] timeIntervalSinceReferenceDate];
   
@@ -174,6 +175,14 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   [tmp release];
 }
 
+-(BOOL)isInPreviewMode {
+  return isInPreviewMode;
+}
+
+-(void)setIsInPreviewMode:(BOOL)value {
+  isInPreviewMode = value;
+}
+
 // technically these accessors should be synchronized
 -(NSString *)lastImageDirectory {
   if (gLastImageDirectory) return gLastImageDirectory;
@@ -199,7 +208,8 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   NSRect contentViewRect = [[window contentView] frame];
   [window setTitle:title];
   // the ScreenSaverView subclass in the is the content view of the window
-  screenSaverView = [[[screenSaverClass alloc] initWithFrame:contentViewRect isPreview:NO] autorelease];
+  screenSaverView = [[[screenSaverClass alloc] initWithFrame:contentViewRect 
+                                                   isPreview:[self isInPreviewMode]] autorelease];
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
   // force view to first responder in case this window was already front

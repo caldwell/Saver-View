@@ -27,17 +27,29 @@
             SUPERCLASS = NSObject; 
         }, 
         {
-            ACTIONS = {updateModulesMenu = id; }; 
-            CLASS = SaverLabController; 
+            ACTIONS = {
+                browserModuleSelected = id; 
+                previewCheckboxToggled = id; 
+                showConfigurationSheet = id; 
+                showWindow = id; 
+            }; 
+            CLASS = SaverLabBrowserWindowController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {listWindowController = id; modulesMenu = id; prefsWindowController = id; }; 
+            OUTLETS = {
+                configureButton = id; 
+                modulesBrowser = id; 
+                openInPreviewModeCheckbox = id; 
+                previewCheckbox = id; 
+                previewView = id; 
+                window = id; 
+            }; 
             SUPERCLASS = NSObject; 
         }, 
         {
-            ACTIONS = {moduleSelected = id; showWindow = id; }; 
-            CLASS = SaverLabListWindowController; 
+            ACTIONS = {myAction = id; updateModuleList = id; updateModulesMenu = id; }; 
+            CLASS = SaverLabController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {modulesBrowser = id; sizePopupMenu = id; window = id; }; 
+            OUTLETS = {listWindowController = id; modulesMenu = id; prefsWindowController = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {
@@ -45,6 +57,7 @@
             CLASS = SaverLabPrefsWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                autoUpdateModulesCheckbox = id; 
                 restoreWindowsCheckbox = id; 
                 showListOnStartupCheckbox = id; 
                 showListWhenNoWindowsOpenCheckbox = id; 

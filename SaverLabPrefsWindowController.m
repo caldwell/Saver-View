@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "SaverLabPrefsWindowController.h"
 #import "SaverLabPreferences.h"
+#import "SaverLabNSButtonAdditions.h"
 
 /* Item tags in the size popup menu are stored as integers in the decimal form 
 WWWWHHHH, where WWWW is the width and HHHH is the height. For example, the size
@@ -53,12 +54,10 @@ static int tagForSize(NSSize size) {
   int index = [sizePopupMenu indexOfItemWithTag:tag];
   if (index>=0) [sizePopupMenu selectItemAtIndex:index];
   // checkboxes
-  [restoreWindowsCheckbox setState:([prefs restoreModuleWindowsOnStartup] ? 
-                                    NSOnState : NSOffState)];
-  [showListOnStartupCheckbox setState:([prefs showModuleListOnStartup] ?
-                                       NSOnState : NSOffState)];
-  [showListWhenNoWindowsOpenCheckbox setState:([prefs showModuleListWhenNoOpenWindows] ?  
-                                               NSOnState : NSOffState)];
+  [restoreWindowsCheckbox setIsChecked:[prefs restoreModuleWindowsOnStartup]];
+  [showListOnStartupCheckbox setIsChecked:[prefs showModuleListOnStartup]];
+  [showListWhenNoWindowsOpenCheckbox setIsChecked:[prefs showModuleListWhenNoOpenWindows]];
+  [autoUpdateModulesCheckbox setIsChecked:[prefs autoUpdateModuleList]];
 }
 
 -(void)writePreferences {
@@ -67,9 +66,10 @@ static int tagForSize(NSSize size) {
   NSSize size = sizeForTag([[sizePopupMenu selectedItem] tag]);
   [prefs setDefaultModuleWindowSize:size];
   // checkboxes
-  [prefs setRestoreModuleWindowsOnStartup:([restoreWindowsCheckbox state]==NSOnState)];
-  [prefs setShowModuleListOnStartup:([showListOnStartupCheckbox state]==NSOnState)];
-  [prefs setShowModuleListWhenNoOpenWindows:([showListWhenNoWindowsOpenCheckbox state]==NSOnState)];
+  [prefs setRestoreModuleWindowsOnStartup:[restoreWindowsCheckbox isChecked]];
+  [prefs setShowModuleListOnStartup:[showListOnStartupCheckbox isChecked]];
+  [prefs setShowModuleListWhenNoOpenWindows:[showListWhenNoWindowsOpenCheckbox isChecked]];
+  [prefs setAutoUpdateModuleList:[autoUpdateModulesCheckbox isChecked]];
 }
 
 @end

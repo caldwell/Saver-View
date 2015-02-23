@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     ScreenSaverView *screenSaverView;
     NSImageRep *backgroundImageRep;
     NSString *title;
+    BOOL isInPreviewMode;
     
     BOOL isPaused;
     BOOL isAppHidden;
@@ -50,6 +51,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)title;
 -(NSWindow *)moduleWindow;
 -(BOOL)isFullScreen;
+
+-(BOOL)isInPreviewMode;
+-(void)setIsInPreviewMode:(BOOL)value;
 
 -(NSString *)windowLayerString;
 -(void)setWindowLayerFromString:(NSString *)layerstring;

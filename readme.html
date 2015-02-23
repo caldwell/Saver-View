@@ -8,7 +8,7 @@
 				SaverLab
 			</h2>
 			<p>
-				v1.3 Copyright 2001 by Brian Nenninger
+				v1.4 Copyright 2001 by Brian Nenninger
 		</center>
 		<h3>
 			Overview
@@ -16,9 +16,11 @@
 		<p>
 			SaverLab runs Mac OS X screensaver modules in regular windows. It allows you to run multiple modules simultaneously and allows you to pause and single step through the animations.
 			<p>
-			When SaverLab launches, it locates all available screensaver modules and lists them in the "Modules" menu. Selecting a module from this menu opens a window in which the module runs. You can open any number of windows, including multiple copies of the same module, and they will all run simultaneously. You can resize the windows to any size you like; resizing will cause the screensaver to restart. Selecting  "Show All" will open a window listing all available modules; double-clicking an item in the list will open the corresponding module. You can also double-click a screensaver module in the Finder to open it.
-<p>
-The "Preferences" item in the SaverLab menu allows you to set the default size for new windows, whether the module list window is shown when the application starts, and whether modules that were open in your previous session should be restored.
+			When SaverLab launches, it locates all available screensaver modules and lists them in the "Modules" menu. Selecting a module from this menu opens a window in which the module runs. You can open any number of windows, including multiple copies of the same module, and they will all run simultaneously. You can resize the windows to any size you like; resizing will cause the screensaver to restart. You can also double-click a screensaver module in the Finder to open it.
+			<p>
+			Selecting "Show Browser" will open a window listing all available modules. Checking the "Show Preview" checkbox will expand the window to show a preview of the selected module. Double-clicking a module will open it. If the "Open In Preview Mode" checkbox is checked, double-clicking a module will open it in preview mode. This is useful for modules such as FreeFlow which try to switch the screen resolution when run in non-preview mode.
+			<p>
+			The "Preferences" item in the SaverLab menu allows you to set the default size for new windows, whether the module list window is shown when the application starts, and whether modules that were open in your previous session should be restored.
 			<p>
 			The "Control" menu allows you to control the screensaver module running in the frontmost window. The following commands are available:
 			<ul>
@@ -38,9 +40,9 @@ The "Preferences" item in the SaverLab menu allows you to set the default size f
 			<p>
 			The "Select Background Image..." command allows you to select a background image for the window. This command is only enabled for modules that do not use OpenGL, since OpenGL modules overwrite the background immediately. Selecting this command opens a file selection box, in which you can select any image that Mac OS X can handle (GIF, JPEG, and TIFF images, among others). If you select a readable image, the screensaver module will restart using the new background image.
 			<p>
-			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel. If you can see a screensaver in System Preferences, it should also be accessible in SaverLab.
+			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel. If you can see a screensaver in System Preferences, it should also be accessible in SaverLab. By default, the list of available modules is automatically updated every time SaverLab becomes the foreground application. This behavior can cause a short delay and can be disabled in the preferences window. The "Update List" command in the Modules menu will manually update the list of modules.
 			<p>
-			An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a> or other Mac OS X software sites.
+			An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a>, <a href="http://softrak.stepwise.com">Softrak</a>, or other Mac OS X software sites.
 			<p>
 			<h3>
 				Known Bugs/Issues
@@ -57,6 +59,14 @@ The "Preferences" item in the SaverLab menu allows you to set the default size f
 				Version History
 			</h3>
 			<p>
+			<b>1.4, Jul 1 2001</b>:
+			<ul>
+				<li>Added preview display in browser window.
+				<li>Added ability to open modules in preview mode.
+				<li>Added preference to control auto-update of module list.
+				<li>A much better icon.
+			</ul>
+			<p>
 			<b>1.3, Jun 24 2001</b>:
 			<ul>
 				<li>Added preferences window.
@@ -64,7 +74,7 @@ The "Preferences" item in the SaverLab menu allows you to set the default size f
 				<li>Modules can be opened by double-clicking them in the Finder.
 				<li>Added Edit menu for copying and pasting text when applicable.
 				<li>Several minor bug fixes.
-				<li>An icon! (It's not very good, improvements welcome). 
+				<li>An icon! (It's not very good, improvements welcome).
 			</ul>
 			<p>
 			<b>1.2, Jun 9 2001</b>:
@@ -85,6 +95,16 @@ The "Preferences" item in the SaverLab menu allows you to set the default size f
 			</ul>
 			<p>
 			<b>1.0, Mar 31 2001</b>: initial release
+			<p>
+			<h3>
+				Credits
+			</h3>
+			<p>
+			<ul>
+				<li>Mike Trent, for valuable advice and feedback.
+				<li>Eric Peyton, whose screensaver resources at <a href="http://www.epicware.com/">epicware.com</a> are very useful.
+				<li>Paul Sahner of <a href="http://www.geocities.com/dvgraphics2">DV Graphics</a>, for the excellent icon.
+			</ul>
 			<p>
 			<h3>
 				Feedback

@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     IBOutlet id restoreWindowsCheckbox;
     IBOutlet id showListWhenNoWindowsOpenCheckbox;
     IBOutlet id showListOnStartupCheckbox;
+    IBOutlet id autoUpdateModulesCheckbox;
     IBOutlet id sizePopupMenu;
     IBOutlet id window;
 }
