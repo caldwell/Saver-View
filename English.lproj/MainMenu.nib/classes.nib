@@ -9,7 +9,18 @@
         }, 
         {
             ACTIONS = {
+                makeFullScreen = id; 
+                makeSize160 = id; 
+                makeSize320 = id; 
+                makeSize480 = id; 
+                makeSize640 = id; 
+                makeSize800 = id; 
+                moveToBackLayer = id; 
+                moveToFrontLayer = id; 
+                moveToStandardLayer = id; 
+                reallyClose = id; 
                 restart = id; 
+                selectBackgroundImage = id; 
                 showConfigurationSheet = id; 
                 singleStepAnimation = id; 
                 togglePause = id; 

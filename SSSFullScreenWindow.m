@@ -7,35 +7,17 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import <Cocoa/Cocoa.h>
-#import <ScreenSaver/ScreenSaver.h>
+#import "SSSFullScreenWindow.h"
 
-@interface SSSController : NSObject
-{
-    NSWindow *window;
-    Class screenSaverClass;
-    ScreenSaverView *screenSaverView;
-    NSImageRep *backgroundImageRep;
-    NSString *title;
-    NSMutableArray *checkedMenuItems;
-    
-    BOOL isPaused;
-    BOOL isAppHidden;
-    BOOL isScreenSaverRunning;
+@implementation SSSFullScreenWindow
+
+// normally borderless windows can't become key or main
+-(BOOL)canBecomeKeyWindow {
+  return YES;
 }
 
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)rect;
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t;
--(id)initFullScreen:(NSScreen *)screen withSaverClass:(Class)aClass title:(NSString *)t;
-
--(void)showWindow;
--(void)start;
--(void)togglePause:(id)sender;
--(void)stop;
--(void)startIfPossible;
-
--(void)finishInit;
--(void)setMenuItem:(id <NSMenuItem>)menuItem isChecked:(BOOL)checked;
--(void)checkMenuItem:(id <NSMenuItem>)menuItem ifContentViewHasWidth:(int)w height:(int)h;
+-(BOOL)canBecomeMainWindow {
+  return YES;
+}
 
 @end

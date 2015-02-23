@@ -61,6 +61,28 @@
 			settings = {
 			};
 		};
+		0214AE0E007AEDA27F000001 = {
+			isa = PBXFileReference;
+			path = SSSFullScreenWindow.h;
+			refType = 4;
+		};
+		0214AE0F007AEDA27F000001 = {
+			isa = PBXFileReference;
+			path = SSSFullScreenWindow.m;
+			refType = 4;
+		};
+		0214AE10007AEDA27F000001 = {
+			fileRef = 0214AE0E007AEDA27F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0214AE11007AEDA27F000001 = {
+			fileRef = 0214AE0F007AEDA27F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		043355C9FE30361CC02AAC07 = {
 			buildActionMask = 2147483647;
 			files = (
@@ -74,6 +96,8 @@
 				017AF4DC006ED87EC0A80002,
 				017AF4DF006EF750C0A80002,
 				017AF4E0006EF750C0A80002,
+				0214AE0E007AEDA27F000001,
+				0214AE0F007AEDA27F000001,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -186,7 +210,6 @@
 				701D263B0076C93C7F000001,
 				089C165CFE840E0CC02AAC07,
 				459FBB2B0075ACF27F000001,
-				459FBB2D0075ACF27F000001,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -254,7 +277,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>SaverLab 1.0</string>
+	<string>SaverLab 1.1</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
@@ -266,11 +289,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>SaverLab 1.0</string>
+	<string>SaverLab 1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -287,6 +310,7 @@
 			files = (
 				017AF4DD006ED87EC0A80002,
 				017AF4E2006EF750C0A80002,
+				0214AE10007AEDA27F000001,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -296,7 +320,6 @@
 			files = (
 				089C165EFE840E0CC02AAC07,
 				459FBB2F0075ACF27F000001,
-				459FBB300075ACF27F000001,
 				701D263C0076C93C7F000001,
 			);
 			isa = PBXResourcesBuildPhase;
@@ -308,6 +331,7 @@
 				29B9732CFDCFA39411CA2CEA,
 				017AF4DE006ED87EC0A80002,
 				017AF4E4006EF750C0A80002,
+				0214AE11007AEDA27F000001,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -344,29 +368,8 @@
 			path = English.lproj/MainMenu.nib;
 			refType = 4;
 		};
-		459FBB2D0075ACF27F000001 = {
-			children = (
-				459FBB2E0075ACF27F000001,
-			);
-			isa = PBXVariantGroup;
-			name = ScreenSaverWindow.nib;
-			path = "";
-			refType = 4;
-		};
-		459FBB2E0075ACF27F000001 = {
-			isa = PBXFileReference;
-			name = English;
-			path = English.lproj/ScreenSaverWindow.nib;
-			refType = 4;
-		};
 		459FBB2F0075ACF27F000001 = {
 			fileRef = 459FBB2B0075ACF27F000001;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		459FBB300075ACF27F000001 = {
-			fileRef = 459FBB2D0075ACF27F000001;
 			isa = PBXBuildFile;
 			settings = {
 			};

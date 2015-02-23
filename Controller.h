@@ -12,8 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface Controller : NSObject
 {
     NSMenuItem *modulesMenu;
+    BOOL wasScreenSaverRunning;
 }
 
 -(void)buildModulesMenu;
 -(void)updateModulesMenu;
+-(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
 @end
