@@ -179,6 +179,7 @@
 				017AF4D9006EBDA3C0A80002,
 				0CB90036008A792A7F000001,
 				F577A35A0143638801000001,
+				F565BC2903A9A7CA01A80032,
 			);
 			isa = PBXGroup;
 			name = "Linked Frameworks";
@@ -376,7 +377,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.6.2, © 2001 Brian Nenninger</string>
+	<string>1.7, © 2001 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -388,11 +389,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.2</string>
+	<string>1.7</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.6.2</string>
+	<string>1.7</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -480,6 +481,7 @@
 				017AF4DA006EBDA3C0A80002,
 				0CB90037008A792A7F000001,
 				F577A35B0143638801000001,
+				F565BC2A03A9A7CA01A80032,
 			);
 			isa = PBXFrameworksBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -773,6 +775,18 @@
 		};
 		F55D506900D2F35B01A80002 = {
 			fileRef = F55D506700D2F35B01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F565BC2903A9A7CA01A80032 = {
+			isa = PBXFrameworkReference;
+			name = Carbon.framework;
+			path = /System/Library/Frameworks/Carbon.framework;
+			refType = 0;
+		};
+		F565BC2A03A9A7CA01A80032 = {
+			fileRef = F565BC2903A9A7CA01A80032;
 			isa = PBXBuildFile;
 			settings = {
 			};

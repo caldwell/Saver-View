@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabModuleList.h"
 #import "SaverLabScreenSaverViewAdditions.h"
 #import "SaverLabQTProgressWindowController.h"
+#import "SaverLabNSWindowAdditions.h"
 
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
@@ -331,14 +332,17 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
 //// window layer actions
 -(void)moveToFrontLayer:(id)sender {
   [window setLevel:NSFloatingWindowLevel];
+  [window setClickThrough_:NO];
 }
 
 -(void)moveToStandardLayer:(id)sender {
   [window setLevel:NSNormalWindowLevel];
+  [window setClickThrough_:NO];
 }
 
 -(void)moveToBackLayer:(id)sender {
-  [window setLevel:-1];
+  [window setLevel:kCGDesktopIconWindowLevel-1];
+  [window setClickThrough_:NO];  
 }
 
 -(NSString *)windowLayerString {
@@ -376,8 +380,16 @@ copy the necessary state. The same applies for making a full screen window not f
 
 // makes the window full screen and puts it in the back layer
 -(void)makeDesktopBackground:(id)sender {
-  [self moveToBackLayer:nil];
   [self makeFullScreen:nil];
+  [self moveToBackLayer:nil];
+  [window setClickThrough_:YES];
+}
+
+-(void)makeTransparentForeground:(id)sender {
+  [self moveToFrontLayer:nil];
+  [self makeFullScreen:nil];
+  [window setAlphaValue:0.3];
+  [window setClickThrough_:YES];
 }
 
 -(NSRect)defaultFrameForWidth:(int)w height:(int)h screen:(NSScreen *)screen {
@@ -463,12 +475,66 @@ copy the necessary state. The same applies for making a full screen window not f
   [self updateInfoPanelRefreshingCurrentFPS:NO];
 }
 
+//// copying and saving images
+-(NSData *)tiffDataForSaverImage {
+  NSBitmapImageRep *imageRep;
+  isFrameCaptureInProgress = YES; // so we don't trigger frame counts
+                                  //NSLog(@"%d:getting image",quicktimeFrameCounter);
+  imageRep = [screenSaverView viewContentsAsImageRep];
+  isFrameCaptureInProgress = NO;
+  return [imageRep TIFFRepresentation];
+}
+
+-(void)copy:(id)sender {
+  NSData *tiffData = [self tiffDataForSaverImage];
+  if (tiffData) {
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    [pb declareTypes:[NSArray arrayWithObject:NSTIFFPboardType] owner:nil];
+    [pb setData:tiffData forType:NSTIFFPboardType];
+  }
+  else {
+    NSBeep();
+  }
+}
+
+-(void)cut:(id)sender {
+  [self copy:sender];
+}
+
+-(void)saveFrame:(id)sender {
+  NSData *savedTiffData = [[self tiffDataForSaverImage] retain];
+  if (savedTiffData) {
+    NSImage *image = [[[NSImage alloc] initWithData:savedTiffData] autorelease];
+    NSRect imageRect = NSMakeRect(0,0,160,120);
+    NSImageView *imageView = [[[NSImageView alloc] initWithFrame:imageRect] autorelease];
+    NSSavePanel *panel = [NSSavePanel savePanel];
+
+    [imageView setImageScaling:NSScaleProportionally];
+    [imageView setImageFrameStyle:NSImageFrameNone];
+    [imageView setImage:image];
+    [panel setAccessoryView:imageView];
+    [panel beginSheetForDirectory:nil
+                             file:[title stringByAppendingPathExtension:@"tiff"]
+                   modalForWindow:window
+                    modalDelegate:self
+                   didEndSelector:@selector(saveFramePanelEnded:code:tiffData:)
+                      contextInfo:[savedTiffData retain]];
+  }
+}
+
+-(void)saveFramePanelEnded:(NSSavePanel *)panel code:(int)code tiffData:(NSData *)data {
+  if (code==NSOKButton) {
+    [data writeToFile:[panel filename] atomically:YES];
+  }
+  [data release];
+}
+
 //// menu state
 
 /* -validateMenuItem  sets checkmarks for the front/standard/back window layer items 
 and the window size items. 
 */
--(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem {
+-(BOOL)validateMenuItem:(id)menuItem {
   SEL action = [menuItem action];
   if (action==@selector(makeFullScreen:)) {
     [self setMenuItem:menuItem isChecked:[self isFullScreen]];
@@ -790,16 +856,13 @@ and the window size items.
 
 -(void)_saveQuicktimeFrame:(id)arg {
   if (isRecordingFrames) {
-    NSBitmapImageRep *imageRep;
     NSData *tiffData;
     NSString *filename;
     NSString *path;
-    isFrameCaptureInProgress = YES; // so we don't trigger frame counts
     //NSLog(@"%d:getting image",quicktimeFrameCounter);
-    imageRep = [screenSaverView viewContentsAsImageRep];
-    if (imageRep) {
+    tiffData = [self tiffDataForSaverImage];
+    if (tiffData) {
       //NSLog(@"%d:getting TIFF data", quicktimeFrameCounter);
-      tiffData = [imageRep TIFFRepresentation];
       filename = [[[NSNumber numberWithInt:quicktimeFrameCounter] stringValue]
                             stringByAppendingPathExtension:@"tiff"];
       path = [[self temporaryDirectoryForQuicktimeImages] stringByAppendingPathComponent:filename];
@@ -810,7 +873,6 @@ and the window size items.
       NSBeep();
       isRecordingFrames = NO;
     }
-    isFrameCaptureInProgress = NO;
   }
 }
 
@@ -830,7 +892,7 @@ and the window size items.
   [dict setObject:[NSNumber numberWithInt:quicktimeFrameCounter] forKey:@"numFrames"];
   [dict setObject:[NSNumber numberWithDouble:frameLength] forKey:@"frameLength"];
   [dict setObject:[self temporaryDirectoryForQuicktimeImages] forKey:@"imagesDirectory"];
-  return [dict retain];
+  return dict;
 }
 
 -(void)toggleQuicktimeRecording:(id)sender {
@@ -843,7 +905,7 @@ and the window size items.
                                       modalForWindow:window
                                         modalDelegate:self
                                       didEndSelector:@selector(quicktimeSavePanelEnded:code:movieInfo:)
-                                          contextInfo:[self quicktimeMovieParameters]];
+                                          contextInfo:[[self quicktimeMovieParameters] retain]];
     }
     else {
       // leave the recorded images where they are

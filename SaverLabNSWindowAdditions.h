@@ -20,4 +20,9 @@ be bound to reallyClose: and it will work for full screen and normal windows.
 
 -(void)reallyClose:(id)sender;
 
+/** Sets mouse clicks to be ignored by both Cocoa and Carbon apps. -setIgnoresMouseEvents:
+only works for Cocoa apps, Carbon apps need special handling (see code)
+*/
+-(void)setClickThrough_:(BOOL)clickThrough;
+
 @end

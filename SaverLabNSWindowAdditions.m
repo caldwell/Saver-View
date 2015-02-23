@@ -8,12 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import "SaverLabNSWindowAdditions.h"
-
+#import <Carbon/Carbon.h>
 
 @implementation NSWindow (SaverLabNSWindowAdditions)
 
 -(void)reallyClose:(id)sender {
   [self close];
+}
+
+// copied from http://cocoa.mamasam.com/MACOSXDEV/2002/12/1/52005.php
+-(void)setClickThrough_:(BOOL)clickThrough {
+  /* carbon */
+  void *ref = [self windowRef];
+  if (clickThrough)
+      ChangeWindowAttributes(ref, kWindowIgnoreClicksAttribute,
+kWindowNoAttributes);
+  else
+      ChangeWindowAttributes(ref, kWindowNoAttributes,
+kWindowIgnoreClicksAttribute);
+  /* cocoa */
+  [self setIgnoresMouseEvents:clickThrough];
+
 }
 
 @end

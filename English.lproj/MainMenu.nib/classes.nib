@@ -2,6 +2,7 @@
     IBClasses = (
         {
             ACTIONS = {
+                closeFullscreenWindows = id; 
                 makeDesktopBackground = id; 
                 makeFullScreen = id; 
                 makeSize160 = id; 
@@ -9,6 +10,7 @@
                 makeSize480 = id; 
                 makeSize640 = id; 
                 makeSize800 = id; 
+                makeTransparentForeground = id; 
                 moveToBackLayer = id; 
                 moveToFrontLayer = id; 
                 moveToStandardLayer = id; 
@@ -16,6 +18,7 @@
                 openPreferencesWindow = id; 
                 reallyClose = id; 
                 restart = id; 
+                saveFrame = id; 
                 selectBackgroundImage = id; 
                 showConfigurationSheet = id; 
                 showInfoPanel = id; 

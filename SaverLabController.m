@@ -266,24 +266,27 @@ and possibly shows the browser window if no other windows are open.
   [self saveWindowPositions];
 }
 
+-(NSArray *)moduleWindows {
+  NSMutableArray *windows = [NSMutableArray array];
+  NSEnumerator *we = [[NSApp windows] objectEnumerator];
+  id window;
+  while (window=[we nextObject]) {
+    if ([[window delegate] isKindOfClass:[SaverLabModuleController class]]) {
+      [windows addObject:window];
+    }
+  }
+  return windows;
+}
+
 -(void)saveWindowPositions {
-  NSArray *windows = [NSApp windows]; 
   NSWindow *window;
   SaverLabModuleController *moduleController;
   NSEnumerator *enumerator;
-  NSMutableSet *moduleControllers = [NSMutableSet set];
   NSMutableArray *moduleAttributes  = [NSMutableArray array];
-  // get all unique SaverLabModuleController objects
-  enumerator = [windows objectEnumerator];
-  while (window = [enumerator nextObject]) {
-    id delegate = [window delegate];
-    if ([delegate isKindOfClass:[SaverLabModuleController class]]) {
-      [moduleControllers addObject:delegate];  
-    }
-  }
   // fill moduleAttributes with an NSDictionary for each module
-  enumerator = [moduleControllers objectEnumerator];
-  while (moduleController = [enumerator nextObject]) {
+  enumerator = [[self moduleWindows] objectEnumerator];
+  while (window = [enumerator nextObject]) {
+    moduleController = [window delegate];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:[moduleController title] forKey:@"name"];
     if ([moduleController isFullScreen]) {
@@ -326,6 +329,35 @@ and possibly shows the browser window if no other windows are open.
     }
   }
 }
+
+/* Closes all fullscreen windows
+*/
+-(void)closeFullscreenWindows:(id)sender {
+  NSEnumerator *winenum = [[self moduleWindows] objectEnumerator];
+  NSWindow *window;
+  while (window=[winenum nextObject]) {
+    if ([[window delegate] isFullScreen]) {
+      [window close];
+    }
+  }
+}
+
+/* Enable "Close Fullscreen Windows" menu item only when there actually is one
+*/
+-(BOOL)validateMenuItem:(id)menuItem {
+  if ([menuItem action]==@selector(closeFullscreenWindows:)) {
+    NSEnumerator *winenum = [[self moduleWindows] objectEnumerator];
+    NSWindow *window;
+    while (window=[winenum nextObject]) {
+      if ([[window delegate] isFullScreen]) {
+        return YES;
+      }
+    }
+    return NO;
+  }
+  return YES;
+}
+
 
 /* timer method to poll for the real screen saver being active. If it is, all
 modules will stop so as not to slow it down.
