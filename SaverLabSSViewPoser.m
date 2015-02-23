@@ -7,26 +7,22 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import "SaverLabNSViewPoser.h"
-#import <ScreenSaver/ScreenSaver.h>
+#import "SaverLabSSViewPoser.h"
 
-/** This class poses as NSView so that it can send notifications when unlockFocus is called
-on a ScreenSaverView subclass, indicating that it has just drawn a frame. 
-SaverLabModuleController receives these notifications and uses them to compute the number 
-of frames per second the module is displaying.
+/** This class poses as ScreenSaverView so that it can send notifications when unlockFocus is called, 
+indicating that it has just drawn a frame. SaverLabModuleController receives these notifications and 
+uses them to compute the number of frames per second the module is displaying.
 */
 
-@implementation SaverLabNSViewPoser
+@implementation SaverLabSSViewPoser
 
 +(void)load {
-  [self poseAsClass:[NSView class]];
+  [self poseAsClass:[ScreenSaverView class]];
 }
 
 -(void)unlockFocus {
   [super unlockFocus];
-  if ([self isKindOfClass:[ScreenSaverView class]]) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ScreenSaverDrewFrame" object:self];
-  }
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ScreenSaverDrewFrame" object:self];
 }
 
 @end

@@ -45,21 +45,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   NSString *name = [[modulesBrowser selectedCell] stringValue];
 
   if ([self isPreviewVisible] && ![name isEqualTo:lastSelectedModule]) {
-    previewSaverClass = [[SaverLabModuleList sharedInstance] classForModuleName:name];
-    if (previewSaverClass) {
-      [self removePreviewSaver];
-      
-      previewSaverView = [[[previewSaverClass alloc] initWithFrame:[previewView bounds] 
-                                                         isPreview:YES] autorelease];
-                                                         
-      // 10.1 testing                                                   
-      if ([[[SaverLabModuleList sharedInstance] pathForModuleName:name] hasSuffix:@"slideSaver"]) {
-        NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:name];
-        [previewSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
-                                                   stringByAppendingPathComponent:@"Resources"]];
-      }
-      
-      
+		id newPreviewView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForName:name frame:[previewView bounds] isPreview:YES] autorelease];
+
+    if (newPreviewView) {
+      [self removePreviewSaver];      
+      previewSaverView = newPreviewView;
+			
       [previewSaverView setFrame:[previewView bounds]];
       [previewView addSubview:previewSaverView];
       [previewSaverView startAnimation];

@@ -8,7 +8,7 @@
 				SaverLab
                         </h2>
 			<p>
-				v1.7 Copyright 2002 by Brian Nenninger
+				v1.7.2 Copyright 2001-2005 by Brian Nenninger
 		</center>
 		<h3>
 			Overview
@@ -37,9 +37,9 @@
 			</ul>
 			Single Step, Pause, Speed Up, and Slow Down do not work for all modules, see Known Bugs/Issues.
 			<p>
-			The "Window" menu allows you to set the properties of the active window. The "Front Layer", "Standard Layer", and "Back Layer" commands allow you to set the layer of the window. "Front Layer" causes the window to float above most other windows when it is not active. Use this if you always want the window visible. "Back Layer" causes the window to be displayed behind other windows, even when it is active. This is useful if you don't want the screen saver to obstruct your other windows. "Standard Layer" is the default, when it is selected the window is displayed normally.
+			The "Window" menu allows you to set the properties of the active window. The "Front Layer", "Standard Layer", and "Back Layer" commands allow you to set the layer of the window. "Front Layer" causes the window to float above most other windows when it is not active. Use this if you always want the window visible. "Back Layer" causes the window to be displayed behind other windows, even when it is active. This is useful if you don't want the screen saver to obstruct your other windows. "Standard Layer" is the default; when it is selected the window is displayed normally.
 			<p>
-			The Window menu also shows several predefined window sizes, from 160x120 to 800x600. Selecting one will resize the front window to that size. Selecting the "Full Screen" command causes the window to fill the entire screen. Selecting "Make Desktop Background" will make the window full screen and put it in the back layer, effectively producing an animated desktop. Selecting "Make Transparent Foreground" will make the window full screen and run it in front of all other windows with partial transparency; all other windows will remain visible and usable. A video card supporting Quartz Extreme is recommended when using this feature. The "Close Fullscreen Windows" command is a convenient way to close all fullscreen windows (including desktop background and transparent foreground windows), which can otherwise be difficult to select.
+			The Window menu also shows several predefined window sizes, from 160x120 to 1024x768. Selecting one will resize the front window to that size. Selecting the "Full Screen" command causes the window to fill the entire screen. Selecting "Make Desktop Background" will make the window full screen and put it in the back layer, effectively producing an animated desktop. Selecting "Make Transparent Foreground" will make the window full screen and run it in front of all other windows with partial transparency; all other windows will remain visible and usable. "Make Transparent Background" works like "Make Desktop Background", except that the window is transparent so your desktop picture remains visible. A video card supporting Quartz Extreme is recommended when using the transparency features. The "Close Fullscreen Windows" command is a convenient way to close all fullscreen windows (including desktop background and transparent foreground windows), which can otherwise be difficult to select.
 			<p>
 			The "Select Background Image..." command allows you to select a background image for the window. This command is only enabled for modules that do not use OpenGL, since OpenGL modules overwrite the background immediately. Selecting this command opens a file selection box, in which you can select any image that Mac OS X can handle (GIF, JPEG, and TIFF images, among others). If you select a readable image, the screensaver module will restart using the new background image.
                         <p>
@@ -72,13 +72,28 @@
 				Version History
 			</h3>
 			<p>
+			<b>1.7.2, Apr 30 2005</b>:
+			<ul>
+                          <li>Added support for Quartz Composer screen savers in Mac OS X 10.4.
+                          <li>Stability improvements.
+			</ul>
+			<p>
+			<b>1.7.1, Mar 2 2004</b>:
+			<ul>
+                          <li>Added "Make Transparent Background" command.
+                          <li>Fixed bugs that caused crashes after recording a QuickTime movie.
+                          <li>Fixed bugs related to restoring transparent windows (the clickThrough setting wasn't restored)
+                          <li>We no longer poseAs NSView, only ScreenSaverView, which increases performance and reduces runtime hackery.
+                          <li>Added 1024x768 preset window size.
+			</ul>
+			<p>
 			<b>1.7, Dec 21 2002</b>:
 			<ul>
-              <li>Added "Make Transparent Foreground" command.
-              <li>"Make Desktop Background" command now runs the module behind Finder icons.
-              <li>Added "Save Frame" menu command to save the module's current image to a file.
-              <li>"Copy" menu command copies the module's current image to the clipboard.
-              <li>Requires Mac OS X 10.2 or later.
+                          <li>Added "Make Transparent Foreground" command.
+                          <li>"Make Desktop Background" command now runs the module behind Finder icons.
+                          <li>Added "Save Frame" menu command to save the module's current image to a file.
+                          <li>"Copy" menu command copies the module's current image to the clipboard.
+                          <li>Requires Mac OS X 10.2 or later.
 			</ul>
 			<p>
 			<b>1.6.2, Aug 15 2002</b>:

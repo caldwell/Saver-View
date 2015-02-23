@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 38;
+	objectVersion = 39;
 	objects = {
 		017AF4D9006EBDA3C0A80002 = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = ScreenSaver.framework;
 			path = /System/Library/Frameworks/ScreenSaver.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		017AF4DA006EBDA3C0A80002 = {
 			fileRef = 017AF4D9006EBDA3C0A80002;
@@ -18,14 +20,20 @@
 			};
 		};
 		017AF4DB006ED87EC0A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		017AF4DC006ED87EC0A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		017AF4DD006ED87EC0A80002 = {
 			fileRef = 017AF4DB006ED87EC0A80002;
@@ -40,14 +48,20 @@
 			};
 		};
 		017AF4DF006EF750C0A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabModuleController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		017AF4E0006EF750C0A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabModuleController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		017AF4E2006EF750C0A80002 = {
 			fileRef = 017AF4DF006EF750C0A80002;
@@ -72,14 +86,20 @@
 //023
 //024
 		0214AE0E007AEDA27F000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabFullScreenWindow.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		0214AE0F007AEDA27F000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabFullScreenWindow.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		0214AE10007AEDA27F000001 = {
 			fileRef = 0214AE0E007AEDA27F000001;
@@ -127,13 +147,16 @@
 			isa = PBXVariantGroup;
 			name = InfoPlist.strings;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		089C165DFE840E0CC02AAC07 = {
 			fileEncoding = 10;
 			isa = PBXFileReference;
+			lastKnownFileType = text.plist.strings;
 			name = English;
 			path = English.lproj/InfoPlist.strings;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		089C165EFE840E0CC02AAC07 = {
 			fileRef = 089C165CFE840E0CC02AAC07;
@@ -152,10 +175,12 @@
 //0C3
 //0C4
 		0CB90036008A792A7F000001 = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = OpenGL.framework;
 			path = /System/Library/Frameworks/OpenGL.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		0CB90037008A792A7F000001 = {
 			fileRef = 0CB90036008A792A7F000001;
@@ -184,12 +209,15 @@
 			isa = PBXGroup;
 			name = "Linked Frameworks";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		1058C7A1FEA54F0111CA2CBB = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		1058C7A2FEA54F0111CA2CBB = {
 			children = (
@@ -199,6 +227,7 @@
 			isa = PBXGroup;
 			name = "Other Frameworks";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		1058C7A3FEA54F0111CA2CBB = {
 			fileRef = 1058C7A1FEA54F0111CA2CBB;
@@ -217,9 +246,11 @@
 //173
 //174
 		17587328FF379C6511CA2CBB = {
-			isa = PBXApplicationReference;
+			explicitFileType = wrapper.application;
+			isa = PBXFileReference;
 			path = SaverLab.app;
 			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 //170
 //171
@@ -238,6 +269,7 @@
 			isa = PBXGroup;
 			name = Products;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 //190
 //191
@@ -250,10 +282,13 @@
 //293
 //294
 		29B97313FDCFA39411CA2CEA = {
+			buildSettings = {
+			};
 			buildStyles = (
 				4A9504CCFFE6A4B311CA0CBA,
 				4A9504CDFFE6A4B311CA0CBA,
 			);
+			hasScannedForEncodings = 1;
 			isa = PBXProject;
 			mainGroup = 29B97314FDCFA39411CA2CEA;
 			projectDirPath = "";
@@ -275,6 +310,7 @@
 			name = ScreenSaverShell;
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		29B97315FDCFA39411CA2CEA = {
 			children = (
@@ -286,16 +322,20 @@
 			name = "Other Sources";
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		29B97316FDCFA39411CA2CEA = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = main.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
 				F524BA0A00E9A4AB01A80002,
-				701D263B0076C93C7F000001,
+				D34FC41405F597BF001068B7,
 				089C165CFE840E0CC02AAC07,
 				459FBB2B0075ACF27F000001,
 				F55D506300CF36EB01A80002,
@@ -306,6 +346,7 @@
 			name = Resources;
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA = {
 			children = (
@@ -316,18 +357,23 @@
 			name = Frameworks;
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		29B97324FDCFA39411CA2CEA = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = AppKit.framework;
 			path = /System/Library/Frameworks/AppKit.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		29B97325FDCFA39411CA2CEA = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = Foundation.framework;
 			path = /System/Library/Frameworks/Foundation.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		29B97326FDCFA39411CA2CEA = {
 			buildPhases = (
@@ -377,7 +423,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.7, © 2001 Brian Nenninger</string>
+	<string>1.7.1, © 2004 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -389,11 +435,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7</string>
+	<string>1.7.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.7</string>
+	<string>1.7.1</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -403,7 +449,6 @@
 </dict>
 </plist>
 ";
-			shouldUseHeadermap = 1;
 		};
 		29B97327FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -411,7 +456,6 @@
 				017AF4DD006ED87EC0A80002,
 				017AF4E2006EF750C0A80002,
 				0214AE10007AEDA27F000001,
-				F55D505900CB21AD01A80002,
 				F55D506800D2F35B01A80002,
 				F5E5BB2F00DC774D01A80002,
 				F5E5BB3A00DD5E5201A80002,
@@ -424,6 +468,8 @@
 				F5743281014C45B701A80002,
 				F5743285014C483401A80002,
 				F5154072018C9B3A01A80002,
+				D3B72F6705F5AB3100349CDF,
+				D3549E990823594E0012243F,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,7 +479,7 @@
 			files = (
 				089C165EFE840E0CC02AAC07,
 				459FBB2F0075ACF27F000001,
-				701D263C0076C93C7F000001,
+				D34FC41505F597BF001068B7,
 				F55D506500CF36EB01A80002,
 				F524BA0B00E9A4AB01A80002,
 				F58DF795030CAE2201A80032,
@@ -449,7 +495,6 @@
 				017AF4DE006ED87EC0A80002,
 				017AF4E4006EF750C0A80002,
 				0214AE11007AEDA27F000001,
-				F55D505A00CB21AD01A80002,
 				F55D506900D2F35B01A80002,
 				F5E5BB3000DC774D01A80002,
 				F5E5BB3B00DD5E5201A80002,
@@ -462,6 +507,8 @@
 				F5743282014C45B701A80002,
 				F5743286014C483401A80002,
 				F5154073018C9B3A01A80002,
+				D3B72F6805F5AB3100349CDF,
+				D3549E9A0823594E0012243F,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,12 +551,15 @@
 			name = MainMenu.nib;
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		459FBB2C0075ACF27F000001 = {
 			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = English.lproj/MainMenu.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		459FBB2F0075ACF27F000001 = {
 			fileRef = 459FBB2B0075ACF27F000001;
@@ -528,20 +578,23 @@
 //4A3
 //4A4
 		4A9504CCFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				OPTIMIZATION_CFLAGS = "-O0";
+				ZERO_LINK = YES;
 			};
 			isa = PBXBuildStyle;
 			name = Development;
 		};
 		4A9504CDFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
 			};
 			isa = PBXBuildStyle;
 			name = Deployment;
@@ -557,21 +610,100 @@
 //703
 //704
 		701D263B0076C93C7F000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
-			path = readme.html;
+			lastKnownFileType = text.html;
+			name = English;
+			path = English.lproj/readme.html;
 			refType = 4;
-		};
-		701D263C0076C93C7F000001 = {
-			fileRef = 701D263B0076C93C7F000001;
-			isa = PBXBuildFile;
-			settings = {
-			};
+			sourceTree = "<group>";
 		};
 //700
 //701
 //702
 //703
 //704
+//D30
+//D31
+//D32
+//D33
+//D34
+		D34FC41405F597BF001068B7 = {
+			children = (
+				701D263B0076C93C7F000001,
+			);
+			isa = PBXVariantGroup;
+			name = readme.html;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		D34FC41505F597BF001068B7 = {
+			fileRef = D34FC41405F597BF001068B7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		D3549E970823594E0012243F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SaverLabQCPlayerViewWrapper.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		D3549E980823594E0012243F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SaverLabQCPlayerViewWrapper.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		D3549E990823594E0012243F = {
+			fileRef = D3549E970823594E0012243F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		D3549E9A0823594E0012243F = {
+			fileRef = D3549E980823594E0012243F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		D3B72F6505F5AB3100349CDF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			path = SaverLabSSViewPoser.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		D3B72F6605F5AB3100349CDF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			path = SaverLabSSViewPoser.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		D3B72F6705F5AB3100349CDF = {
+			fileRef = D3B72F6505F5AB3100349CDF;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		D3B72F6805F5AB3100349CDF = {
+			fileRef = D3B72F6605F5AB3100349CDF;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//D30
+//D31
+//D32
+//D33
+//D34
 //F50
 //F51
 //F52
@@ -579,19 +711,27 @@
 //F54
 		F515406E018C99CF01A80002 = {
 			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
 			name = StdoutWindow.nib;
 			path = English.lproj/StdoutWindow.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5154070018C9B3A01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabStdoutWindowController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5154071018C9B3A01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabStdoutWindowController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5154072018C9B3A01A80002 = {
 			fileRef = F5154070018C9B3A01A80002;
@@ -607,8 +747,10 @@
 		};
 		F524BA0A00E9A4AB01A80002 = {
 			isa = PBXFileReference;
+			lastKnownFileType = image.icns;
 			path = SaverLab.icns;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F524BA0B00E9A4AB01A80002 = {
 			fileRef = F524BA0A00E9A4AB01A80002;
@@ -626,6 +768,7 @@
 			isa = PBXGroup;
 			name = Model;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F524BA0F00EEDFD301A80002 = {
 			children = (
@@ -647,16 +790,23 @@
 			isa = PBXGroup;
 			name = Controllers;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F524BA1000EEE59D01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabNSButtonAdditions.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F524BA1100EEE59D01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabNSButtonAdditions.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F524BA1200EEE59D01A80002 = {
 			fileRef = F524BA1000EEE59D01A80002;
@@ -671,14 +821,20 @@
 			};
 		};
 		F53F695700E5795401A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabNSWindowAdditions.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F53F695800E5795401A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabNSWindowAdditions.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F53F695900E5795401A80002 = {
 			fileRef = F53F695700E5795401A80002;
@@ -693,14 +849,20 @@
 			};
 		};
 		F53F695B00E5854F01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabPreferences.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F53F695C00E5854F01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabPreferences.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F53F695D00E5854F01A80002 = {
 			fileRef = F53F695B00E5854F01A80002;
@@ -714,28 +876,6 @@
 			settings = {
 			};
 		};
-		F55D505700CB21AD01A80002 = {
-			isa = PBXFileReference;
-			path = SaverLabNSViewPoser.h;
-			refType = 4;
-		};
-		F55D505800CB21AD01A80002 = {
-			isa = PBXFileReference;
-			path = SaverLabNSViewPoser.m;
-			refType = 4;
-		};
-		F55D505900CB21AD01A80002 = {
-			fileRef = F55D505700CB21AD01A80002;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		F55D505A00CB21AD01A80002 = {
-			fileRef = F55D505800CB21AD01A80002;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		F55D506300CF36EB01A80002 = {
 			children = (
 				F55D506400CF36EB01A80002,
@@ -744,12 +884,15 @@
 			name = ModuleInfoWindow.nib;
 			path = "";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F55D506400CF36EB01A80002 = {
 			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = English.lproj/ModuleInfoWindow.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F55D506500CF36EB01A80002 = {
 			fileRef = F55D506300CF36EB01A80002;
@@ -758,14 +901,20 @@
 			};
 		};
 		F55D506600D2F35B01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabNSOpenGLContextPoser.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F55D506700D2F35B01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabNSOpenGLContextPoser.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F55D506800D2F35B01A80002 = {
 			fileRef = F55D506600D2F35B01A80002;
@@ -780,10 +929,12 @@
 			};
 		};
 		F565BC2903A9A7CA01A80032 = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = Carbon.framework;
 			path = /System/Library/Frameworks/Carbon.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		F565BC2A03A9A7CA01A80032 = {
 			fileRef = F565BC2903A9A7CA01A80032;
@@ -793,19 +944,27 @@
 		};
 		F574327D014C2C0701A80002 = {
 			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
 			name = QuicktimeProgressWindow.nib;
 			path = English.lproj/QuicktimeProgressWindow.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F574327F014C45B701A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabImageEnumerator.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5743280014C45B701A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabImageEnumerator.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5743281014C45B701A80002 = {
 			fileRef = F574327F014C45B701A80002;
@@ -820,14 +979,20 @@
 			};
 		};
 		F5743283014C483401A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabQTProgressWindowController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5743284014C483401A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabQTProgressWindowController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5743285014C483401A80002 = {
 			fileRef = F5743283014C483401A80002;
@@ -842,14 +1007,20 @@
 			};
 		};
 		F577A3510143566A01000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = QuicktimeUtils.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F577A3520143566A01000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = QuicktimeUtils.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F577A3530143566A01000001 = {
 			fileRef = F577A3520143566A01000001;
@@ -864,10 +1035,12 @@
 			};
 		};
 		F577A35A0143638801000001 = {
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
 			name = QuickTime.framework;
 			path = /System/Library/Frameworks/QuickTime.framework;
 			refType = 0;
+			sourceTree = "<absolute>";
 		};
 		F577A35B0143638801000001 = {
 			fileRef = F577A35A0143638801000001;
@@ -876,14 +1049,20 @@
 			};
 		};
 		F581E08C0141EA4C01000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabScreenSaverViewAdditions.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F581E08D0141EA4C01000001 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabScreenSaverViewAdditions.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F581E08E0141EA4C01000001 = {
 			fileRef = F581E08C0141EA4C01000001;
@@ -904,6 +1083,7 @@
 			isa = PBXVariantGroup;
 			name = QuicktimeProgressWindow.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F58DF795030CAE2201A80032 = {
 			fileRef = F58DF794030CAE2201A80032;
@@ -918,6 +1098,7 @@
 			isa = PBXVariantGroup;
 			name = StdoutWindow.nib;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F58DF797030CAE2401A80032 = {
 			fileRef = F58DF796030CAE2401A80032;
@@ -926,14 +1107,20 @@
 			};
 		};
 		F5E5BB2D00DC774D01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabModuleList.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB2E00DC774D01A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabModuleList.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB2F00DC774D01A80002 = {
 			fileRef = F5E5BB2D00DC774D01A80002;
@@ -951,30 +1138,39 @@
 			children = (
 				0214AE0E007AEDA27F000001,
 				0214AE0F007AEDA27F000001,
-				F55D505700CB21AD01A80002,
-				F55D505800CB21AD01A80002,
 				F55D506600D2F35B01A80002,
 				F55D506700D2F35B01A80002,
+				D3B72F6505F5AB3100349CDF,
+				D3B72F6605F5AB3100349CDF,
 				F53F695700E5795401A80002,
 				F53F695800E5795401A80002,
 				F524BA1000EEE59D01A80002,
 				F524BA1100EEE59D01A80002,
 				F581E08C0141EA4C01000001,
 				F581E08D0141EA4C01000001,
+				D3549E970823594E0012243F,
+				D3549E980823594E0012243F,
 			);
 			isa = PBXGroup;
 			name = "Cocoa Additions";
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB3800DD5E5201A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabBrowserWindowController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB3900DD5E5201A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabBrowserWindowController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB3A00DD5E5201A80002 = {
 			fileRef = F5E5BB3800DD5E5201A80002;
@@ -989,14 +1185,20 @@
 			};
 		};
 		F5E5BB3C00E061C101A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
 			path = SaverLabPrefsWindowController.h;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB3D00E061C101A80002 = {
+			fileEncoding = 30;
 			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
 			path = SaverLabPrefsWindowController.m;
 			refType = 4;
+			sourceTree = "<group>";
 		};
 		F5E5BB3E00E061C101A80002 = {
 			fileRef = F5E5BB3C00E061C101A80002;

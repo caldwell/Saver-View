@@ -58,8 +58,8 @@ static void fixVerticalMirroredBitmap(int *data, int w, int h) {
     // extracts the pixels from the NSOpenGLView and returns a NSBitmapImageRep. 
     // Thanks to Peter Ammon for sample code.
     // lock the OpenGLView if we can, thanks Mike
-    BOOL shouldLock = [self respondsToSelector:@selector(lock)] &&
-                      [self respondsToSelector:@selector(unlock)];
+    BOOL shouldLock = [openGLView respondsToSelector:@selector(lock)] &&
+                      [openGLView respondsToSelector:@selector(unlock)];
     // save previous context  
     NSOpenGLContext *previousContext = [NSOpenGLContext currentContext];
     

@@ -266,27 +266,27 @@ and possibly shows the browser window if no other windows are open.
   [self saveWindowPositions];
 }
 
--(NSArray *)moduleWindows {
-  NSMutableArray *windows = [NSMutableArray array];
+-(NSArray *)moduleControllers {
+  // use NSSet because both module and info windows have SaverLabModuleController delegates
+  NSMutableSet *controllers = [NSMutableSet set];
   NSEnumerator *we = [[NSApp windows] objectEnumerator];
   id window;
   while (window=[we nextObject]) {
-    if ([[window delegate] isKindOfClass:[SaverLabModuleController class]]) {
-      [windows addObject:window];
+    if ([window isVisible] && [[window delegate] isKindOfClass:[SaverLabModuleController class]]) {
+      [controllers addObject:[window delegate]];
     }
   }
-  return windows;
+  return [controllers allObjects];
 }
 
 -(void)saveWindowPositions {
-  NSWindow *window;
   SaverLabModuleController *moduleController;
   NSEnumerator *enumerator;
   NSMutableArray *moduleAttributes  = [NSMutableArray array];
   // fill moduleAttributes with an NSDictionary for each module
-  enumerator = [[self moduleWindows] objectEnumerator];
-  while (window = [enumerator nextObject]) {
-    moduleController = [window delegate];
+  // this isn't well-factored, should have -propertyList/-updateFromPropertyList on SaverLabModuleController at least
+  enumerator = [[self moduleControllers] objectEnumerator];
+  while (moduleController = [enumerator nextObject]) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:[moduleController title] forKey:@"name"];
     if ([moduleController isFullScreen]) {
@@ -294,6 +294,12 @@ and possibly shows the browser window if no other windows are open.
     }
     if ([moduleController isInPreviewMode]) {
       [dict setObject:@"YES" forKey:@"preview"];
+    }
+    if ([moduleController isTransparent]) {
+      [dict setObject:@"YES" forKey:@"transparent"];
+    }
+    if ([moduleController ignoresMouseEvents]) {
+      [dict setObject:@"YES" forKey:@"ignoresMouse"];
     }
     [dict setObject:NSStringFromRect([[moduleController moduleWindow] frame]) forKey:@"rect"];
     [dict setObject:[moduleController windowLayerString] forKey:@"layer"];
@@ -323,8 +329,15 @@ and possibly shows the browser window if no other windows are open.
       if ([dict objectForKey:@"preview"]) {
         [controller setIsInPreviewMode:YES];
       }
+      if ([dict objectForKey:@"transparent"]) {
+        [controller setIsTransparent:YES];
+      }
       [controller showModuleWindow];
       [controller setWindowLayerFromString:[dict objectForKey:@"layer"]];
+      if ([dict objectForKey:@"ignoresMouse"]) {
+        // this has to be done after setting the level
+        [controller setIgnoresMouseEvents:YES];
+      }
       [controller start];
     }
   }
@@ -333,11 +346,11 @@ and possibly shows the browser window if no other windows are open.
 /* Closes all fullscreen windows
 */
 -(void)closeFullscreenWindows:(id)sender {
-  NSEnumerator *winenum = [[self moduleWindows] objectEnumerator];
-  NSWindow *window;
-  while (window=[winenum nextObject]) {
-    if ([[window delegate] isFullScreen]) {
-      [window close];
+  NSEnumerator *ce = [[self moduleControllers] objectEnumerator];
+  id controller;
+  while (controller=[ce nextObject]) {
+    if ([controller isFullScreen]) {
+      [[controller moduleWindow] close];
     }
   }
 }
@@ -346,10 +359,10 @@ and possibly shows the browser window if no other windows are open.
 */
 -(BOOL)validateMenuItem:(id)menuItem {
   if ([menuItem action]==@selector(closeFullscreenWindows:)) {
-    NSEnumerator *winenum = [[self moduleWindows] objectEnumerator];
-    NSWindow *window;
-    while (window=[winenum nextObject]) {
-      if ([[window delegate] isFullScreen]) {
+    NSEnumerator *ce = [[self moduleControllers] objectEnumerator];
+    id controller;
+    while (controller=[ce nextObject]) {
+      if ([controller isFullScreen]) {
         return YES;
       }
     }

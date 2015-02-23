@@ -5,11 +5,13 @@
                 closeFullscreenWindows = id; 
                 makeDesktopBackground = id; 
                 makeFullScreen = id; 
+                makeSize1024 = id; 
                 makeSize160 = id; 
                 makeSize320 = id; 
                 makeSize480 = id; 
                 makeSize640 = id; 
                 makeSize800 = id; 
+                makeTransparentBackground = id; 
                 makeTransparentForeground = id; 
                 moveToBackLayer = id; 
                 moveToFrontLayer = id; 
@@ -28,6 +30,7 @@
                 testCopy = id; 
                 togglePause = id; 
                 toggleQuicktimeRecording = id; 
+                toggleTransparency = id; 
             }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 

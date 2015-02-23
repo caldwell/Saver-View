@@ -42,6 +42,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   frameLength = flength;
   deleteImagesDirectoryWhenFinished = deleteImages;
   
+  [fileTextField setStringValue:[outputMovieFile lastPathComponent]];
+  [framesTextField setStringValue:[NSString stringWithFormat:@"0/%d", numberOfFrames]];
+  [progressBar setDoubleValue:0];
+  
+  [window makeKeyAndOrderFront:nil];
+  lastUpdateTime = [NSDate timeIntervalSinceReferenceDate];
+
   [NSThread detachNewThreadSelector:@selector(runInThread:) toTarget:self withObject:nil];
 }
 
@@ -49,14 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)runInThread:(id)arg {
 
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  
-  [fileTextField setStringValue:[outputMovieFile lastPathComponent]];
-  [framesTextField setStringValue:[NSString stringWithFormat:@"0/%d", numberOfFrames]];
-  [progressBar setDoubleValue:0];
-  
-  [window makeKeyAndOrderFront:nil];
-  lastUpdateTime = [NSDate timeIntervalSinceReferenceDate];
-  
+    
   createMovieFromImageEnumerator(outputMovieFile, 
                                  [[[SaverLabImageEnumerator alloc] initWithPath:imagesDirectory] autorelease], 
                                  frameLength, 
@@ -70,11 +70,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   if (abortFlag) {
     [[NSFileManager defaultManager] removeFileAtPath:outputMovieFile handler:nil];
   }
-  
-  [window orderOut:nil];
-  [self autorelease];
+
+  // NSDefaultRunLoopMode is used so we don't close the window if the user is holding down the cancel button until she lets go
+  [self performSelectorOnMainThread:@selector(closeWindow) withObject:nil waitUntilDone:NO modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
   
   [pool release];
+}
+
+-(void)closeWindow {
+  if (![window isReleasedWhenClosed]) {
+    [window autorelease];
+  }
+  [window close];
+  [self autorelease];
+}
+
+-(void)updateFrameNumber:(NSNumber *)imageNum {
+  [framesTextField setStringValue:[NSString stringWithFormat:@"%d/%d", [imageNum intValue], numberOfFrames]];
+  [progressBar setDoubleValue:[imageNum doubleValue]/numberOfFrames];
 }
 
 // The cancel method sets a flag that is checked by the Quicktime thread
@@ -88,9 +101,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   // update UI every 0.2 seconds or at end
   NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
   if (now-lastUpdateTime>=0.2 || imageNum>=numberOfFrames) {
-    [framesTextField setStringValue:[NSString stringWithFormat:@"%d/%d", imageNum, numberOfFrames]];
-    [progressBar setDoubleValue:((double)imageNum)/numberOfFrames];
     lastUpdateTime = now;
+    [self performSelectorOnMainThread:@selector(updateFrameNumber:) withObject:[NSNumber numberWithInt:imageNum] waitUntilDone:NO];
   }
 }
 

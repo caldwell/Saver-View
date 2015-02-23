@@ -38,6 +38,8 @@ static NSString *RECORDING_ERROR_MSG = @"Unable to write to the directory '%@'. 
 static NSString *RECORDING_ERROR_BUTTON1 = @"OK";
 static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
 
+static float gTransparentWindowAlpha = 0.3;
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation SaverLabModuleController
@@ -148,8 +150,8 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
                                              object:nil];
                                              
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(openGLContextActivated:)
-                                               name:@"OpenGLContextActivated"
+                                           selector:@selector(screenSaverDrewOpenGLFrame:)
+                                               name:@"ScreenSaverDrewOpenGLFrame"
                                              object:nil];
 }
 
@@ -227,15 +229,8 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
   NSRect contentViewRect = [[window contentView] frame];
   [self updateWindowTitle];
   // the ScreenSaverView subclass in the is the content view of the window
-  screenSaverView = [[[screenSaverClass alloc] initWithFrame:contentViewRect 
-                                                   isPreview:[self isInPreviewMode]] autorelease];
-                                                   
-      // 10.1 testing                                                   
-      if ([[[SaverLabModuleList sharedInstance] pathForModuleName:title] hasSuffix:@"slideSaver"]) {
-        NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:title];
-        [screenSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
-                                                  stringByAppendingPathComponent:@"Resources"]];
-      }
+	
+	screenSaverView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForName:title frame:contentViewRect isPreview:[self isInPreviewMode]] autorelease];
       
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
@@ -382,19 +377,45 @@ copy the necessary state. The same applies for making a full screen window not f
 -(void)makeDesktopBackground:(id)sender {
   [self makeFullScreen:nil];
   [self moveToBackLayer:nil];
+  [self setIsTransparent:NO];
+  [window setClickThrough_:YES];
+}
+
+-(void)makeTransparentBackground:(id)sender {
+  [self makeFullScreen:nil];
+  [self moveToBackLayer:nil];
+  [self setIsTransparent:YES];
   [window setClickThrough_:YES];
 }
 
 -(void)makeTransparentForeground:(id)sender {
   [self moveToFrontLayer:nil];
   [self makeFullScreen:nil];
-  [window setAlphaValue:0.3];
+  [self setIsTransparent:YES];
   [window setClickThrough_:YES];
 }
 
 -(NSRect)defaultFrameForWidth:(int)w height:(int)h screen:(NSScreen *)screen {
   NSRect screenFrame = [screen frame];
   return NSMakeRect(screenFrame.origin.x+50, screenFrame.origin.y+screenFrame.size.height-60-h, w, h);
+}
+
+-(BOOL)isTransparent {
+  return ([window alphaValue]<1.0);
+}
+-(void)setIsTransparent:(BOOL)value {
+  [window setAlphaValue:(value) ? gTransparentWindowAlpha : 1.0];
+}
+
+-(void)toggleTransparency:(id)sender {
+  [self setIsTransparent:![self isTransparent]];
+}
+
+-(BOOL)ignoresMouseEvents {
+  return [window ignoresMouseEvents];
+}
+-(void)setIgnoresMouseEvents:(BOOL)value {
+  [window setClickThrough_:value];
 }
 
 // width and height are of the content view, not the window itself
@@ -443,6 +464,10 @@ copy the necessary state. The same applies for making a full screen window not f
 
 -(void)makeSize800:(id)sender {
   [self setWindowWidth:800 height:600];
+}
+
+-(void)makeSize1024:(id)sender {
+  [self setWindowWidth:1024 height:768];
 }
 
 -(void)selectBackgroundImage:(id)sender {
@@ -571,13 +596,25 @@ and the window size items.
   else if (action==@selector(makeSize800:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:800 height:600];
   }
+  else if (action==@selector(makeSize1024:)) {
+    [self checkMenuItem:menuItem ifContentViewHasWidth:1024 height:768];
+  }
   else if (action==@selector(makeDesktopBackground:)) {
-    return !([self isFullScreen] && [window level]<NSNormalWindowLevel);
+    return !([self isFullScreen] && [window level]<NSNormalWindowLevel && [window alphaValue]>=1.0);
+  }
+  else if (action==@selector(makeTransparentForeground:)) {
+    return !([self isFullScreen] && [window level]>NSNormalWindowLevel);
+  }
+  else if (action==@selector(makeTransparentBackground:)) {
+    return !([self isFullScreen] && [window level]<NSNormalWindowLevel && [window alphaValue]<1.0);
+  }
+  else if (action==@selector(toggleTransparency:)) {
+    [self setMenuItem:menuItem isChecked:[self isTransparent]];
   }
   else if (action==@selector(singleStepAnimation:)) {
     // disable single step for slide show modules because it can cause crashes.
     // revisit this when ScreenSaver framework is updated
-    return ![self isSlideShow];
+    //return ![self isSlideShow];
   }
   return YES;
 }
@@ -750,17 +787,16 @@ and the window size items.
 -(void)screenSaverDrewFrame:(NSNotification *)note {
   if ([note object]==screenSaverView) {
     ++unlockFocusCount;
-    if (isRecordingFrames && !isFrameCaptureInProgress && ![screenSaverView isOpenGLModule]) [self saveQuicktimeFrame];
+		// some OpenGL modules send this notification as well as the GL-specific one, so ignore this if GL
+    if (isRecordingFrames && !isFrameCaptureInProgress && ![screenSaverView isOpenGLModule]) {
+			[self saveQuicktimeFrame];
+		} 
     //if (framesDrawn%100==0) NSLog(@"%@ %d", [screenSaverView class], unlockFocusCount);
   }
 }
 
--(void)openGLContextActivated:(NSNotification *)note {
-  //NSView *subview = [[screenSaverView subviews] objectAtIndex:0];
-  //if ([subview respondsToSelector:@selector(openGLContext)] && 
-  //    [(NSOpenGLView *)subview openGLContext]==[note object]) {
-  NSOpenGLContext *context = [note object];
-  if ([[context view] superview]==screenSaverView) {
+-(void)screenSaverDrewOpenGLFrame:(NSNotification *)note {
+  if ([note object]==screenSaverView) {
     ++openGLContextCount;
     if (isRecordingFrames && !isFrameCaptureInProgress) [self saveQuicktimeFrame];
   }

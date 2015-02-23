@@ -61,6 +61,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isFullScreen;
 -(BOOL)isSlideShow;
 
+-(BOOL)isTransparent;
+-(void)setIsTransparent:(BOOL)value;
+
+-(BOOL)ignoresMouseEvents;
+-(void)setIgnoresMouseEvents:(BOOL)value;
+
 -(void)updateWindowTitle;
 
 -(BOOL)isInPreviewMode;

@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   [self close];
 }
 
-// copied from http://cocoa.mamasam.com/MACOSXDEV/2002/12/1/52005.php
+// copied from http://cocoa.mamasam.com/MACOSXDEV/2002/12/1/52005.php; workaround for 10.2 bug
 -(void)setClickThrough_:(BOOL)clickThrough {
   /* carbon */
   void *ref = [self windowRef];
@@ -28,7 +28,6 @@ kWindowNoAttributes);
 kWindowIgnoreClicksAttribute);
   /* cocoa */
   [self setIgnoresMouseEvents:clickThrough];
-
 }
 
 @end

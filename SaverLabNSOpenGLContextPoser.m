@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabNSOpenGLContextPoser.h"
 
 /** This class poses as NSOpenGLContext so that it can send notifications when makeCurrentContext
-is called, indicating that an OpenGL view is about to draw a frame. As with SaverLabNSViewPoser,
+is called, indicating that an OpenGL view is about to draw a frame. As with SaverLabSSViewPoser,
 the notification is received by SaverLabModuleController to compute the number of frames per
 second drawn. This class is needed because some modules, such as Aqua Icons, don't call
 lockFocus/unlockFocus.
@@ -23,7 +23,7 @@ lockFocus/unlockFocus.
 }
 
 -(void)makeCurrentContext {
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenGLContextActivated" object:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"ScreenSaverDrewOpenGLFrame" object:[[self view] superview]];
   [super makeCurrentContext];
 }
 

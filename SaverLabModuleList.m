@@ -18,6 +18,7 @@ static NSString *HIDE_PREFIX = @"."; // hide saver bundles starting with "."
 static NSString *SS_FRAMEWORK_MODULE_PATH = @"/System/Library/Frameworks/ScreenSaver.framework/Resources";
 static NSString *MODULE_EXTENSION = @"saver";
 static NSString *SLIDESHOW_MODULE_EXTENSION = @"slideSaver";
+static NSString *QUARTZ_COMPOSER_MODULE_EXTENSION = @"qtz";
 
 // returns all locations to search for .saver bundles
 static NSArray* screenSaverSearchPaths() {
@@ -33,12 +34,21 @@ static NSArray* screenSaverSearchPaths() {
   return array;
 }
 
+static NSArray *gModulesIgnoringHiddenPrefix = nil;
+
+static NSArray *modulesIgnoringHiddenPrefix() {
+	if (!gModulesIgnoringHiddenPrefix) {
+		// we would allow .Mac here, but it doesn't work anyway
+		gModulesIgnoringHiddenPrefix = [[NSArray alloc] initWithObjects:/*@".Mac.slideSaver",*/ nil];
+	}
+	return gModulesIgnoringHiddenPrefix;
+}
 
 @implementation SaverLabModuleList
 
 +(NSArray *)screenSaverSuffixes {
   if (!screenSaverSuffixes) {
-    screenSaverSuffixes = [[NSArray arrayWithObjects:MODULE_EXTENSION,SLIDESHOW_MODULE_EXTENSION,nil] retain];
+    screenSaverSuffixes = [[NSArray arrayWithObjects:MODULE_EXTENSION, SLIDESHOW_MODULE_EXTENSION, QUARTZ_COMPOSER_MODULE_EXTENSION, nil] retain];
   }
   return screenSaverSuffixes;
 }
@@ -60,6 +70,9 @@ static NSArray* screenSaverSearchPaths() {
   return slideShowModulePath;
 }
 
++(NSString *)quartzComposerModulePath {
+	return @"/System/Library/Frameworks/ScreenSaver.framework/Resources/.Quartz Composer.saver";
+}
 
 
 +(SaverLabModuleList *)sharedInstance {
@@ -88,7 +101,7 @@ static NSArray* screenSaverSearchPaths() {
     NSEnumerator *saverBundleEnum = [fileManager enumeratorAtPath:saverDir];
     NSString *saverBundle = nil;
     while (saverBundle=[saverBundleEnum nextObject]) {
-      if (![saverBundle hasPrefix:HIDE_PREFIX] && 
+      if ((![saverBundle hasPrefix:HIDE_PREFIX] || [modulesIgnoringHiddenPrefix() containsObject:saverBundle]) && 
            [[[self class] screenSaverSuffixes] containsObject:[saverBundle pathExtension]]) 
       {
         NSString *path = [saverDir stringByAppendingPathComponent:saverBundle];
@@ -125,6 +138,9 @@ static NSArray* screenSaverSearchPaths() {
   if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION]) {
     path = [[self class] slideShowModulePath];
   }
+	else if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
+		path = [[self class] quartzComposerModulePath];
+	}
   return [NSBundle bundleWithPath:path];
 }
 
@@ -132,5 +148,25 @@ static NSArray* screenSaverSearchPaths() {
   return [[self bundleForModuleName:name] principalClass];
 }
 
+-(id)createScreenSaverViewForName:(NSString *)name frame:(NSRect)frame isPreview:(BOOL)preview {
+	NSString *path = [self pathForModuleName:name];
+	Class screenSaverClass = [self classForModuleName:name];
+	id screenSaverView = nil;
+	// Quartz Composer support
+	if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
+		screenSaverView = [[screenSaverClass alloc] _initWithComposition:path frame:frame isPreview:preview];
+		[NSClassFromString(@"SaverLabQCPlayerViewWrapper") swizzleMethodForClass:screenSaverClass];
+		return screenSaverView;
+	}
+	else {
+		screenSaverView = [[screenSaverClass alloc] initWithFrame:frame isPreview:preview];
+		// slideshow support                                                 
+		if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION] && [screenSaverView respondsToSelector:@selector(setImageDirectory:)]) {
+			[screenSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
+                                                  stringByAppendingPathComponent:@"Resources"]];
+		}
+	}
+	return screenSaverView;
+}
 
 @end
