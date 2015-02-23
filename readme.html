@@ -8,7 +8,7 @@
 				SaverLab
 			</h2>
 			<p>
-				v1.1 Copyright 2001 by Brian Nenninger
+				v1.2 Copyright 2001 by Brian Nenninger
 		</center>
 		<h3>
 			Overview
@@ -23,9 +23,12 @@
 				<li><b>Pause/Resume</b>: Stops the animation of the screensaver module, or restarts it if it was already stopped.
 				<li><b>Single Step</b>: Executes one "tick" of the screensaver module, which will usually cause it to animate a single frame. If the screensaver was not paused, this command will pause it.
 				<li><b>Restart</b>: Resets the module's internal state and restarts the animation.
+				<li><b>Speed Up</b>: Attempts to make the module run faster.
+				<li><b>Slow Down</b>: Attempts to make the module run slower.
+				<li><b>Show Info</b>: Opens an info window which shows and continuously updates the module's "Target FPS" (the number of frames per second it is trying to draw), "Current FPS" (the number of frames it drew in the last second), and content size.
 				<li><b>Configure</b>: This command is only enabled if the screensaver module allows configuration. Selecting it opens the module's configuration sheet allowing you to customize its behavior.
 			</ul>
-			Single Step and Pause do not work perfectly for all modules, see Known Bugs/Issues.
+			Single Step, Pause, Speed Up, and Slow Down do not work for all modules, see Known Bugs/Issues.
 			<p>
 			The "Window" menu allows you to set the properties of the active window. The "Front Layer", "Standard Layer", and "Back Layer" commands allow you to set the layer of the window. "Front Layer" causes the window to float above most other windows when it is not active. Use this if you always want the window visible. "Back Layer" causes the window to be displayed behind other windows, even when it is active. This is useful if you don't want the screen saver to obstruct your other windows. "Standard Layer" is the default, when it is selected the window is displayed normally.
 			<p>
@@ -33,7 +36,7 @@
 			<p>
 			The "Select Background Image..." command allows you to select a background image for the window. This command is only enabled for modules that do not use OpenGL, since OpenGL modules overwrite the background immediately. Selecting this command opens a file selection box, in which you can select any image that Mac OS X can handle (GIF, JPEG, and TIFF images, among others). If you select a readable image, the screensaver module will restart using the new background image.
 			<p>
-			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel (/System/Library/Screen Savers, /Library/Screen Savers, and Library/Screen Savers in your home directory). If you can see a screensaver in System Preferences, it should also be accessible in SaverLab.
+			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel. If you can see a screensaver in System Preferences, it should also be accessible in SaverLab.
 			<p>
 			An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a> or other Mac OS X software sites.
 			<p>
@@ -42,14 +45,23 @@
 			</h3>
 			<ul>
 				<li>The Single Step function does not always work as expected. It does not work for some modules (in particular, the slide show modules that ship with Mac OS X) and it causes some other modules to reset to their initial state. This does not indicate a problem with those modules; it is due to the way SaverLab performs single steps.
-				<li>Similarly, pausing and restarting certain modules causes them to revert to their initial state.
-				<li>The minimize button is disabled in SaverLab windows because minimizing active windows produces erratic results.
+				<li>The "Speed Up" and "Slow Down" commands have no effect on many modules.
+				<li>Pausing and restarting certain modules causes them to revert to their initial state.
+				<li>The minimize button is disabled in module windows because minimizing active windows produces erratic results.
 				<li>All modules run in a single thread, so on multiprocessor machines only one CPU will be used. If you need to have all your CPUs drawing 3d galaxies as fast as possible, you can run a copy of SaverLab for each processor.
 			</ul>
 			<p>
 			<h3>
 				Version History
 			</h3>
+			<p>
+			<b>1.2, Jun 9 2001</b>:
+			<ul>
+				<li>Added info window showing frames per second.
+				<li>Open windows and positions are saved when you exit the program and restored when you restart.
+				<li>Added Speed Up and Slow Down commands.
+				<li>Now properly locates all screen saver modules that appear in System Preferences.
+			</ul>
 			<p>
 			<b>1.1, Apr 8 2001</b>:
 			<ul>

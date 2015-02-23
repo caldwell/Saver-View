@@ -1,13 +1,6 @@
 {
     IBClasses = (
         {
-            ACTIONS = {updateModulesMenu = id; }; 
-            CLASS = Controller; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {modulesMenu = id; }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {
             ACTIONS = {
                 makeFullScreen = id; 
                 makeSize160 = id; 
@@ -23,10 +16,20 @@
                 selectBackgroundImage = id; 
                 showConfigurationSheet = id; 
                 singleStepAnimation = id; 
+                slowDown = id; 
+                speedUp = id; 
+                testCopy = id; 
                 togglePause = id; 
             }; 
             CLASS = FirstResponder; 
             LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {updateModulesMenu = id; }; 
+            CLASS = SaverLabController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {modulesMenu = id; }; 
             SUPERCLASS = NSObject; 
         }
     ); 

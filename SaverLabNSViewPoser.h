@@ -8,34 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import <Cocoa/Cocoa.h>
-#import <ScreenSaver/ScreenSaver.h>
 
-@interface SSSController : NSObject
-{
-    NSWindow *window;
-    Class screenSaverClass;
-    ScreenSaverView *screenSaverView;
-    NSImageRep *backgroundImageRep;
-    NSString *title;
-    NSMutableArray *checkedMenuItems;
-    
-    BOOL isPaused;
-    BOOL isAppHidden;
-    BOOL isScreenSaverRunning;
+
+@interface SaverLabNSViewPoser : NSView {
+
 }
-
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)rect;
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t;
--(id)initFullScreen:(NSScreen *)screen withSaverClass:(Class)aClass title:(NSString *)t;
-
--(void)showWindow;
--(void)start;
--(void)togglePause:(id)sender;
--(void)stop;
--(void)startIfPossible;
-
--(void)finishInit;
--(void)setMenuItem:(id <NSMenuItem>)menuItem isChecked:(BOOL)checked;
--(void)checkMenuItem:(id <NSMenuItem>)menuItem ifContentViewHasWidth:(int)w height:(int)h;
 
 @end

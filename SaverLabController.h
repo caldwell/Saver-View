@@ -7,17 +7,24 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import "SSSFullScreenWindow.h"
+#import <Cocoa/Cocoa.h>
+#import "SaverLabModuleController.h"
 
-@implementation SSSFullScreenWindow
-
-// normally borderless windows can't become key or main
--(BOOL)canBecomeKeyWindow {
-  return YES;
+@interface SaverLabController : NSObject
+{
+    NSMenuItem *modulesMenu;
+    NSMutableDictionary *modulePathDictionary;
+    BOOL wasScreenSaverRunning;
 }
 
--(BOOL)canBecomeMainWindow {
-  return YES;
-}
+-(void)buildModulesMenu;
+-(void)updateModulesMenu;
+-(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
 
+-(SaverLabModuleController *)openModuleWithName:(NSString *)name;
+-(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)rect;
+-(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect;
+
+-(void)saveWindowPositions;
+-(void)restoreWindowPositions;
 @end

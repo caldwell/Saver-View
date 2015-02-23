@@ -7,25 +7,27 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import "SSSController.h"
-#import "SSSFullScreenWindow.h"
+#import "SaverLabModuleController.h"
+#import "SaverLabFullScreenWindow.h"
+
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 
 // default initial window position if not specified
-NSRect defaultContentRect() {
+static NSRect defaultContentRect() {
   NSRect screenFrame = [[NSScreen mainScreen] frame];
   return NSMakeRect(screenFrame.origin.x+50, screenFrame.origin.y+screenFrame.size.height-300, 320, 240);
 }
 
 // keep track of the last directory a background image was opened from
-NSString *gLastImageDirectory = nil;
+static NSString *gLastImageDirectory = nil;
+static NSString *PAUSED_STRING = @": Paused"; // should be localized
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-@implementation SSSController
+@implementation SaverLabModuleController
 
 @class ScreenSaverView;
-
-NSString *PAUSED_STRING = @": Paused"; // should be localized
 
 -(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)contentRect {
   if (!aClass) return nil;
@@ -34,11 +36,7 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   screenSaverClass = aClass;
   title = [t retain];
 
-  window = [[NSWindow alloc] initWithContentRect:contentRect
-                styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask)
-                  backing:[screenSaverClass backingStoreType]
-                    defer:YES];
-
+  window = [self createWindowWithContentRect:contentRect];
   if (!window) return nil;
   
   [self finishInit];
@@ -57,48 +55,77 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   screenSaverClass = aClass;
   title = [t retain];
   
-  // SSSFullScreenWindow subclass of NSWindow is used to allow the borderless window
-  // to become key and main
-  window = [[SSSFullScreenWindow alloc] initWithContentRect:[screen frame]
-                                                  styleMask:NSBorderlessWindowMask
-                                                    backing:[screenSaverClass backingStoreType]
-                                                      defer:YES];
-
+  window = [self createFullScreenWindowOnScreen:screen];
   if (!window) return nil;
 
   [self finishInit];
   return self;
 }
 
+-(NSWindow *)createWindowWithContentRect:(NSRect)rect {
+  window = [[NSWindow alloc] initWithContentRect:rect
+                styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask)
+                  backing:[screenSaverClass backingStoreType]
+                    defer:YES];
+  [window setMinSize:NSMakeSize(120,90)];
+  [window setDelegate:self];
+  return window;
+}
+
+-(NSWindow *)createFullScreenWindowOnScreen:(NSScreen *)screen {
+  // SaverLabFullScreenWindow subclass of NSWindow is used to allow the borderless window
+  // to become key and main
+  window = [[SaverLabFullScreenWindow alloc] initWithContentRect:[screen frame]
+                                                  styleMask:NSBorderlessWindowMask
+                                                    backing:[screenSaverClass backingStoreType]
+                                                      defer:YES];
+  [window setDelegate:self];
+  return window;
+}
+
 -(void)finishInit {
   isPaused = isAppHidden = isScreenSaverRunning = NO;
   backgroundImageRep = nil;
-  [window setMinSize:NSMakeSize(120,90)];
-  [window setDelegate:self];
   checkedMenuItems = [[NSMutableArray array] retain];
   
   // set up application hide/unhide notifications
   [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(appHidden:)
-                                              name:NSApplicationWillHideNotification
-                                            object:nil];
+                                           selector:@selector(appHidden:)
+                                               name:NSApplicationWillHideNotification
+                                             object:nil];
                                             
   [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(appUnhidden:)
-                                              name:NSApplicationDidUnhideNotification
-                                            object:nil];
+                                           selector:@selector(appUnhidden:)
+                                               name:NSApplicationDidUnhideNotification
+                                             object:nil];
   
   // screen saver activation/deactivation notifications
   [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(screenSaverActivated:)
-                                              name:@"ScreenSaverActivated"
-                                            object:nil];
+                                           selector:@selector(screenSaverActivated:)
+                                               name:@"ScreenSaverActivated"
+                                             object:nil];
                                             
   [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(screenSaverDeactivated:)
-                                              name:@"ScreenSaverDeactivated"
-                                            object:nil];
+                                           selector:@selector(screenSaverDeactivated:)
+                                               name:@"ScreenSaverDeactivated"
+                                             object:nil];
+  
+  // frame count timer and notification
+  fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                   target:self
+                                 selector:@selector(updateFPS:)
+                                 userInfo:nil
+                                  repeats:YES];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(screenSaverDrewFrame:)
+                                               name:@"ScreenSaverDrewFrame"
+                                             object:nil];
+                                             
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(openGLContextActivated:)
+                                               name:@"OpenGLContextActivated"
+                                             object:nil];
 }
 
 -(void)dealloc {
@@ -107,7 +134,12 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   [checkedMenuItems release];
   // remove self as observer
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  //NSLog(@"Deallocating SSSController");
+  //NSLog(@"Deallocating SaverLabModuleController");
+  if (fpsTimer) {
+    [fpsTimer invalidate];
+    [fpsTimer release];
+    fpsTimer = nil;
+  }
   [super dealloc];
 }
 
@@ -116,10 +148,19 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
 }
 
 -(void)setBackgroundImageRep:(NSImageRep *)imageRep {
-  if (backgroundImageRep!=imageRep) {
-    [backgroundImageRep release];
-    backgroundImageRep = [imageRep retain];
-  }
+  id tmp = backgroundImageRep;
+  backgroundImageRep = [imageRep retain];
+  [tmp release];
+}
+
+-(NSString *)title {
+  return title;
+}
+
+-(void)setTitle:(NSString *)str {
+  id tmp = title;
+  title = [str retain];
+  [tmp release];
 }
 
 // technically these accessors should be synchronized
@@ -135,7 +176,7 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   }
 }
 
--(NSWindow *)window {
+-(NSWindow *)moduleWindow {
   return window;
 }
 
@@ -143,7 +184,7 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   return ([window styleMask]==NSBorderlessWindowMask);
 }
 
--(void)showWindow {
+-(void)showModuleWindow {
   NSRect contentViewRect = [[window contentView] frame];
   [window setTitle:title];
   // the ScreenSaverView subclass in the is the content view of the window
@@ -151,7 +192,7 @@ NSString *PAUSED_STRING = @": Paused"; // should be localized
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
   // force view to first responder in case this window was already front
-  [window makeFirstResponder:screenSaverView]; 
+  [window makeFirstResponder:screenSaverView];   
 }
 
 -(void)start {
@@ -218,7 +259,7 @@ doesn't work so we need a differently named method.
   // create a new ScreenSaverView and start over
  [self stop];
  isPaused = NO;
- [self showWindow];
+ [self showModuleWindow];
  [self startIfPossible];
 }
 
@@ -250,6 +291,18 @@ doesn't work so we need a differently named method.
   [window setLevel:-1];
 }
 
+-(NSString *)windowLayerString {
+  if ([window level]==NSFloatingWindowLevel) return @"Front";
+  if ([window level]==NSNormalWindowLevel) return @"Normal";
+  return @"Back";
+}
+
+-(void)setWindowLayerFromString:(NSString *)layerstring {
+  if ([layerstring isEqualTo:@"Front"]) [self moveToFrontLayer:nil];
+  else if ([layerstring isEqualTo:@"Back"]) [self moveToBackLayer:nil];
+  else [self moveToStandardLayer:nil];
+}
+
 //// window size methods
 
 /* Full screen windows have no borders, so when the user makes a window full screen
@@ -258,17 +311,16 @@ copy the necessary state. The same applies for making a full screen window not f
 */
 -(void)makeFullScreen:(id)sender {
   if (![self isFullScreen]) {
-    id newController;
+    //id newController;
     int level = [window level];
+    NSScreen *screen = [window screen];
+    isResizingWindow = YES; // prevents release when screen saver window closes
     [window close];
-    // we should only be autoreleased at this point
-    newController = [[SSSController alloc] initFullScreen:[window screen] 
-                                           withSaverClass:screenSaverClass
-                                                    title:title];
-    [newController setBackgroundImageRep:[self backgroundImageRep]];
-    [[newController window] setLevel:level];
-    [newController showWindow];
-    [newController start];
+    window = [self createFullScreenWindowOnScreen:screen];
+    [window setLevel:level];
+    [self showModuleWindow];
+    [self start];
+    [self updateInfoPanelRefreshingCurrentFPS:NO];
   }
 }
 
@@ -280,20 +332,17 @@ copy the necessary state. The same applies for making a full screen window not f
 // width and height are of the content view, not the window itself
 -(void)setWindowWidth:(int)w height:(int)h {
   if ([self isFullScreen]) {
-    id newController;
     int level = [window level];
     NSScreen *windowScreen = [window screen];
     NSRect newRect = [self defaultFrameForWidth:w height:h screen:windowScreen];
+    isResizingWindow = YES; // prevents release when screen saver window closes
     [window close];
-    // we should only be autoreleased at this point
-    newController = [[SSSController alloc] initWithSaverClass:screenSaverClass 
-                                                        title:title 
-                                                  contentRect:newRect];
-
-    [newController setBackgroundImageRep:[self backgroundImageRep]];
-    [[newController window] setLevel:level];
-    [newController showWindow];
-    [newController start];
+    
+    window = [self createWindowWithContentRect:newRect];
+    [window setLevel:level];
+    [self showModuleWindow];
+    [self start];    
+    [self updateInfoPanelRefreshingCurrentFPS:NO];
   }
   else {
     NSRect rect = [window frame];
@@ -336,6 +385,22 @@ copy the necessary state. The same applies for making a full screen window not f
     [self setBackgroundImageRep:imageRep];
     [self restart:nil];
   }  
+}
+
+-(void)speedUp:(id)sender {
+  NSTimeInterval interval = [screenSaverView animationTimeInterval];
+  interval /= 1.5;
+  if (interval<0.009) interval = 0;
+  [screenSaverView setAnimationTimeInterval:interval];
+  [self updateInfoPanelRefreshingCurrentFPS:NO];
+}
+
+-(void)slowDown:(id)sender {
+  NSTimeInterval interval = [screenSaverView animationTimeInterval];
+  if (interval<0.01) interval = 0.01;
+  else interval *= 1.5;
+  [screenSaverView setAnimationTimeInterval:interval];
+  [self updateInfoPanelRefreshingCurrentFPS:NO];
 }
 
 //// menu state
@@ -402,6 +467,81 @@ There's probably a better way to do this.
   }
 }
 
+//// info panel methods
+
+-(NSRect)frameRectForInfoPanel {
+  // try to put info panel on right or left of saver window, making sure it fits on the screen
+  NSRect moduleRect = [window frame];
+  NSRect moduleScreenRect = [[window screen] frame];
+  NSSize infoPanelSize = [infoPanel frame].size;
+  NSRect infoPanelFrame;
+  // try right side
+  infoPanelFrame = NSMakeRect(moduleRect.origin.x+moduleRect.size.width, 
+                              moduleRect.origin.y+moduleRect.size.height-infoPanelSize.height,
+                              infoPanelSize.width,
+                              infoPanelSize.height);
+  if (NSEqualRects(infoPanelFrame, NSIntersectionRect(infoPanelFrame, moduleScreenRect))) {
+    return infoPanelFrame;
+  }
+  // try left side
+  infoPanelFrame.origin.x = moduleRect.origin.x-infoPanelSize.width;
+  if (NSEqualRects(infoPanelFrame, NSIntersectionRect(infoPanelFrame, moduleScreenRect))) {
+    return infoPanelFrame;
+  }
+  // as a default, move info panel 32 pixels down and right from top left of module window
+  infoPanelFrame.origin.x = moduleRect.origin.x+32;
+  infoPanelFrame.origin.y = moduleRect.origin.y+moduleRect.size.height-infoPanelSize.height-32;
+  return infoPanelFrame;
+}
+
+-(void)showInfoPanel:(id)sender {
+  if (!infoPanel) {
+    [NSBundle loadNibNamed:@"ModuleInfoWindow" owner:self];
+    [infoPanel setFrame:[self frameRectForInfoPanel] display:NO];
+    [infoPanel setTitle:[NSString stringWithFormat:@"%@ %@", [self title], @"Info"]];
+    [self updateInfoPanelRefreshingCurrentFPS:YES];
+  }
+  [infoPanel makeKeyAndOrderFront:nil];
+}
+
+-(void)closeInfoPanel {
+  infoPanel = nil;
+}
+
+-(void)updateInfoPanelRefreshingCurrentFPS:(BOOL)refreshCurrentFPS {
+//NSLog(@"-updateInfoPanel: %0.2lf %0.2lf", [self currentFramesPerSecond], [self targetFramesPerSecond]);
+  if (infoPanel) {
+    if (refreshCurrentFPS) [currentFPSField setIntValue:[self currentFramesPerSecond]];
+    if ([self isTargetFramesPerSecondUnlimited]) {
+      [targetFPSField setStringValue:@"Unlimited"];
+    }
+    else {
+      [targetFPSField setIntValue:[self targetFramesPerSecond]];
+    }
+    
+    {
+      NSSize viewRect = [screenSaverView frame].size;
+      [saverSizeField setStringValue:[NSString stringWithFormat:@"%d x %d", 
+                                                                (int)viewRect.width, (int)viewRect.height]];
+    }
+  }
+}
+
+-(int)currentFramesPerSecond {
+//NSLog(@"%d", framesInLastSecond);
+  return framesInLastSecond;
+}
+
+-(int)targetFramesPerSecond {
+  NSTimeInterval interval = [screenSaverView animationTimeInterval];
+  if (interval<=0) return 0;
+  else return (int)(1.0/interval);
+}
+
+-(BOOL)isTargetFramesPerSecondUnlimited {
+  return ([screenSaverView animationTimeInterval]<=0);
+}
+
 //// configuration sheet methods
 
 -(void)showConfigurationSheet:(id)sender {
@@ -420,24 +560,31 @@ There's probably a better way to do this.
 
 //// window delegate methods
 -(void)windowDidResize:(NSNotification *)note {
-  // restart when the window is resized
-  isPaused = NO;
-  [self restart:nil];
+  if ([note object]==window) {
+    // restart when the window is resized
+    isPaused = NO;
+    [self restart:nil];
+    [self updateInfoPanelRefreshingCurrentFPS:NO];
+  }
 }
 
 -(void)windowDidBecomeMain:(NSNotification *)note {
-  // give keypresses to the ScreenSaverView
-  [window makeFirstResponder:screenSaverView];
+  if ([note object]==window) {
+    // give keypresses to the ScreenSaverView
+    [window makeFirstResponder:screenSaverView];
+  }
 }
 
 -(void)windowDidResignMain:(NSNotification *)note {
-  // remove all checkboxes that this window set
-  NSEnumerator *itemEnum = [checkedMenuItems objectEnumerator];
-  NSMenuItem *menuItem;
-  while (menuItem = [itemEnum nextObject]) {
-    [menuItem setState:NSOffState];
+  if ([note object]==window) {
+    // remove all checkboxes that this window set
+    NSEnumerator *itemEnum = [checkedMenuItems objectEnumerator];
+    NSMenuItem *menuItem;
+    while (menuItem = [itemEnum nextObject]) {
+      [menuItem setState:NSOffState];
+    }
+    [checkedMenuItems removeAllObjects];
   }
-  [checkedMenuItems removeAllObjects];
 }
 
 //// notification methods
@@ -458,16 +605,56 @@ There's probably a better way to do this.
   [self stop];
 }
 
--(void)screenSaverDeactivated:(NSNotification *)note {
-  isScreenSaverRunning = NO;
-  [self startIfPossible];
+// notification when screen saver draws itself
+-(void)screenSaverDrewFrame:(NSNotification *)note {
+  if ([note object]==screenSaverView) {
+    ++unlockFocusCount;
+    //if (framesDrawn%100==0) NSLog(@"%@ %d", [screenSaverView class], unlockFocusCount);
+  }
+}
+
+-(void)openGLContextActivated:(NSNotification *)note {
+  //NSView *subview = [[screenSaverView subviews] objectAtIndex:0];
+  //if ([subview respondsToSelector:@selector(openGLContext)] && 
+  //    [(NSOpenGLView *)subview openGLContext]==[note object]) {
+  NSOpenGLContext *context = [note object];
+  if ([[context view] superview]==screenSaverView) {
+    ++openGLContextCount;
+  }
+}
+
+-(void)updateFPS:(NSTimer *)timer {
+  //NSLog(@"%@ %d fps", [screenSaverView class], unlockFocusCount);
+  framesInLastSecond = (unlockFocusCount > openGLContextCount) ? unlockFocusCount : openGLContextCount;
+  unlockFocusCount = openGLContextCount = 0;
+  [self updateInfoPanelRefreshingCurrentFPS:YES];
 }
 
 /* free ourselves when the window closes
 */
 -(void)windowWillClose:(NSNotification *)note {
-  if ([screenSaverView isAnimating]) [self stop];
-  [self autorelease];
+  if ([note object]==window) {
+    if ([screenSaverView isAnimating]) [self stop];
+    if (isResizingWindow) {
+      isResizingWindow = NO;
+    }
+    else {
+      // need to kill the timer now or updateFPS can get called when the ScreenSaverView is released
+      if (fpsTimer) {
+        [fpsTimer invalidate];
+        fpsTimer = nil;
+      }
+      if (infoPanel) [infoPanel close];
+      infoPanel = window = nil;
+      screenSaverView = nil;
+      [self autorelease];
+    }
+  }
+  else if ([note object]==infoPanel) {
+    [self closeInfoPanel];
+  }
 }
+
+
 
 @end
