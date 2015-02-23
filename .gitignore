@@ -1,0 +1,5 @@
+build/
+*~
+SaverLab.xcodeproj/xcuserdata
+SaverLab.xcodeproj/project.xcworkspace/xcuserdata
+SaverLab.xcodeproj/project.xcworkspace
