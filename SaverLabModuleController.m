@@ -22,8 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static NSRect defaultContentRect() {
   NSRect screenFrame = [[NSScreen mainScreen] frame];
   NSSize size = [[SaverLabPreferences sharedInstance] defaultModuleWindowSize];
-  return NSMakeRect(screenFrame.origin.x+50, 
-                    screenFrame.origin.y+screenFrame.size.height-size.height-60, 
+  return NSMakeRect(screenFrame.origin.x+50,
+                    screenFrame.origin.y+screenFrame.size.height-size.height-60,
                     size.width, size.height);
 }
 
@@ -47,7 +47,7 @@ static float gTransparentWindowAlpha = 0.3;
   }
   screenSaverPath = [path retain];
   title = [t retain];
-  
+
   if (screen) {
     window = [self createFullScreenWindowOnScreen:screen];
   }
@@ -58,7 +58,7 @@ static float gTransparentWindowAlpha = 0.3;
     [self release];
     return nil;
   }
-  
+
   [self finishInit];
   return self;
 }
@@ -120,29 +120,29 @@ static float gTransparentWindowAlpha = 0.3;
   backgroundImageRep = nil;
   lastFPSUpdateTime = [[NSDate distantFuture] timeIntervalSinceReferenceDate];
   checkedMenuItems = [[NSMutableArray alloc] init];
-  
+
   // set up application hide/unhide notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self 
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(appHidden:)
                                                name:NSApplicationWillHideNotification
                                              object:nil];
-                                            
-  [[NSNotificationCenter defaultCenter] addObserver:self 
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(appUnhidden:)
                                                name:NSApplicationDidUnhideNotification
                                              object:nil];
-  
+
   // screen saver activation/deactivation notifications
-  [[NSNotificationCenter defaultCenter] addObserver:self 
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(screenSaverActivated:)
                                                name:@"ScreenSaverActivated"
                                              object:nil];
-                                            
-  [[NSNotificationCenter defaultCenter] addObserver:self 
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(screenSaverDeactivated:)
                                                name:@"ScreenSaverDeactivated"
                                              object:nil];
-  
+
   // frame count timer and notification
   fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                    target:self
@@ -154,7 +154,7 @@ static float gTransparentWindowAlpha = 0.3;
                                            selector:@selector(screenSaverDrewFrame:)
                                                name:@"ScreenSaverDrewFrame"
                                              object:nil];
-                                             
+
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(screenSaverDrewOpenGLFrame:)
                                                name:@"ScreenSaverDrewOpenGLFrame"
@@ -236,13 +236,13 @@ static float gTransparentWindowAlpha = 0.3;
   NSRect contentViewRect = [[window contentView] frame];
   [self updateWindowTitle];
   // the ScreenSaverView subclass in the is the content view of the window
-	
-	screenSaverView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForModulePath:screenSaverPath frame:contentViewRect isPreview:[self isInPreviewMode]] autorelease];
-      
+
+  screenSaverView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForModulePath:screenSaverPath frame:contentViewRect isPreview:[self isInPreviewMode]] autorelease];
+
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
   // force view to first responder in case this window was already front
-  [window makeFirstResponder:screenSaverView];   
+  [window makeFirstResponder:screenSaverView];
 }
 
 -(void)start {
@@ -252,7 +252,7 @@ static float gTransparentWindowAlpha = 0.3;
     [screenSaverView displayIfNeeded];
     if (backgroundImageRep) {
       // if we draw the image immediately, the ScreenSaverView will overwrite it, so we draw the
-      // image in a future run loop iteration 
+      // image in a future run loop iteration
       [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(drawBackgroundImage:)
       userInfo:nil repeats:NO];
     }
@@ -272,7 +272,7 @@ static float gTransparentWindowAlpha = 0.3;
   if ([screenSaverView isAnimating]) [screenSaverView stopAnimation];
 }
 
-/* Starts the animation unless a condition exists in which it should not start 
+/* Starts the animation unless a condition exists in which it should not start
 (app is hidden, real screensaver is running, it's already running)
 */
 -(void)startIfPossible {
@@ -344,7 +344,7 @@ static float gTransparentWindowAlpha = 0.3;
 
 -(void)moveToBackLayer:(id)sender {
   [window setLevel:kCGDesktopIconWindowLevel-1];
-  [window setClickThrough_:NO];  
+  [window setClickThrough_:NO];
 }
 
 -(NSString *)windowLayerString {
@@ -432,19 +432,19 @@ copy the necessary state. The same applies for making a full screen window not f
     NSRect newRect = [self defaultFrameForWidth:w height:h screen:windowScreen];
     isResizingWindow = YES; // prevents release when screen saver window closes
     [window close];
-    
+
     window = [self createWindowWithContentRect:newRect];
     [window setLevel:level];
     [self showModuleWindow];
-    [self start];    
+    [self start];
     [self updateInfoPanelRefreshingCurrentFPS:NO];
   }
   else {
     NSRect frameRect = [window frame];
     NSRect oldContentRect = [NSWindow contentRectForFrameRect:frameRect styleMask:[window styleMask]];
-    NSRect contentRect = NSMakeRect(oldContentRect.origin.x, 
-                                    oldContentRect.origin.y+oldContentRect.size.height-h, 
-                                    w, 
+    NSRect contentRect = NSMakeRect(oldContentRect.origin.x,
+                                    oldContentRect.origin.y+oldContentRect.size.height-h,
+                                    w,
                                     h);
     // convert content view size to frame size
     [window setFrame:[NSWindow frameRectForContentRect:contentRect styleMask:[window styleMask]]
@@ -493,7 +493,7 @@ copy the necessary state. The same applies for making a full screen window not f
     [self setLastImageDirectory:directory];
     [self setBackgroundImageRep:imageRep];
     [self restart:nil];
-  }  
+  }
 }
 
 -(void)speedUp:(id)sender {
@@ -568,8 +568,8 @@ copy the necessary state. The same applies for making a full screen window not f
 
 //// menu state
 
-/* -validateMenuItem  sets checkmarks for the front/standard/back window layer items 
-and the window size items. 
+/* -validateMenuItem  sets checkmarks for the front/standard/back window layer items
+and the window size items.
 */
 -(BOOL)validateMenuItem:(id)menuItem {
   SEL action = [menuItem action];
@@ -664,7 +664,7 @@ and the window size items.
   NSRect infoPanelFrame;
   int border = 10;
   // try right side
-  infoPanelFrame = NSMakeRect(moduleRect.origin.x+moduleRect.size.width+border, 
+  infoPanelFrame = NSMakeRect(moduleRect.origin.x+moduleRect.size.width+border,
                               moduleRect.origin.y+moduleRect.size.height-infoPanelSize.height,
                               infoPanelSize.width,
                               infoPanelSize.height);
@@ -706,10 +706,10 @@ and the window size items.
     else {
       [targetFPSField setIntValue:[self targetFramesPerSecond]];
     }
-    
+
     {
       NSSize viewRect = [screenSaverView frame].size;
-      [saverSizeField setStringValue:[NSString stringWithFormat:@"%d x %d", 
+      [saverSizeField setStringValue:[NSString stringWithFormat:@"%d x %d",
                                                                 (int)viewRect.width, (int)viewRect.height]];
     }
   }
@@ -737,7 +737,7 @@ and the window size items.
 
 -(void)showConfigurationSheet:(id)sender {
   [NSApp beginSheet:[screenSaverView configureSheet]
-     modalForWindow:window 
+     modalForWindow:window
       modalDelegate:self
      didEndSelector:@selector(configureSheetEnded:returnCode:contextInfo:)
         contextInfo:nil];
@@ -805,10 +805,10 @@ and the window size items.
 -(void)screenSaverDrewFrame:(NSNotification *)note {
   if ([note object]==screenSaverView) {
     ++unlockFocusCount;
-		// some OpenGL modules send this notification as well as the GL-specific one, so ignore this if GL
+    // some OpenGL modules send this notification as well as the GL-specific one, so ignore this if GL
     if (isRecordingFrames && !isFrameCaptureInProgress && ![screenSaverView isOpenGLModule]) {
-			[self saveQuicktimeFrame];
-		} 
+        [self saveQuicktimeFrame];
+    }
     //if (framesDrawn%100==0) NSLog(@"%@ %d", [screenSaverView class], unlockFocusCount);
   }
 }
@@ -942,7 +942,7 @@ and the window size items.
     if (frameLength<1.0/60) frameLength = 1.0/60;
   }
   if (frameLength<0.01) frameLength = 0.01;
-  
+
   [dict setObject:[NSNumber numberWithInt:quicktimeFrameCounter] forKey:@"numFrames"];
   [dict setObject:[NSNumber numberWithDouble:frameLength] forKey:@"frameLength"];
   [dict setObject:[self temporaryDirectoryForQuicktimeImages] forKey:@"imagesDirectory"];
@@ -971,10 +971,10 @@ and the window size items.
     if (![self temporaryDirectoryForQuicktimeImages]) {
       int result;
       NSBeep();
-      result = NSRunAlertPanel(NSLocalizedString(@"RECORDING_ERROR_TITLE",nil), 
-                               NSLocalizedString(@"RECORDING_ERROR_MSG",nil), 
-                               NSLocalizedString(@"RECORDING_ERROR_OK",nil), 
-                               NSLocalizedString(@"RECORDING_ERROR_PREFERENCES",nil), 
+      result = NSRunAlertPanel(NSLocalizedString(@"RECORDING_ERROR_TITLE",nil),
+                               NSLocalizedString(@"RECORDING_ERROR_MSG",nil),
+                               NSLocalizedString(@"RECORDING_ERROR_OK",nil),
+                               NSLocalizedString(@"RECORDING_ERROR_PREFERENCES",nil),
                                nil,
                                [[SaverLabPreferences sharedInstance] recordedImagesDirectory]);
       if (result==NSAlertAlternateReturn) {
@@ -1012,7 +1012,7 @@ and the window size items.
       // display progress window
       SaverLabQTProgressWindowController *controller = [[SaverLabQTProgressWindowController alloc] init];
       [NSBundle loadNibNamed:@"QuicktimeProgressWindow" owner:controller];
-      [controller createMovieFile:moviePath 
+      [controller createMovieFile:moviePath
             fromImagesInDirectory:imagesDirectory
                        frameCount:numFrames
                       frameLength:frameLength
