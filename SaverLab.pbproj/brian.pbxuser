@@ -36,22 +36,23 @@
 					ActiveTab = 0;
 					Frame = "{{0, 23}, {952, 614}}";
 					Split0 = {
+						ActiveTab = 1;
 						Frame = "{{233, 0}, {719, 614}}";
 						Split0 = {
-							Frame = "{{0, 25}, {719, 589}}";
+							Frame = "{{0, 169}, {719, 445}}";
 						};
 						SplitCount = 1;
 						Tab0 = {
 							Debugger = {
 								ActiveTab = 1;
-								Frame = "{{0, 0}, {696, 207}}";
+								Frame = "{{0, 0}, {719, 207}}";
 								Split0 = {
-									Frame = "{{0, 75}, {696, 132}}";
+									Frame = "{{0, 75}, {719, 132}}";
 									Split0 = {
-										Frame = "{{0, 0}, {333, 132}}";
+										Frame = "{{0, 0}, {344, 132}}";
 									};
 									Split1 = {
-										Frame = "{{342, 0}, {354, 132}}";
+										Frame = "{{353, 0}, {366, 132}}";
 									};
 									SplitCount = 2;
 								};
@@ -60,11 +61,11 @@
 									Frame = "{{0, 0}, {100, 50}}";
 								};
 								Tab1 = {
-									Frame = "{{0, 0}, {696, 50}}";
+									Frame = "{{0, 0}, {719, 50}}";
 								};
 								TabCount = 2;
 							};
-							Frame = "{{0, 0}, {696, 207}}";
+							Frame = "{{0, 0}, {719, 207}}";
 							LauncherConfigVersion = 4;
 						};
 						Tab1 = {
@@ -98,12 +99,12 @@
 						Frame = "{{0, 0}, {200, 100}}";
 					};
 					Tab3 = {
-						Frame = "{{0, 0}, {200, 612}}";
+						Frame = "{{0, 0}, {200, 614}}";
 						Split0 = {
 							Frame = "{{0, 0}, {200, 298}}";
 						};
 						Split1 = {
-							Frame = "{{0, 307}, {200, 305}}";
+							Frame = "{{0, 307}, {200, 307}}";
 						};
 						SplitCount = 2;
 					};
@@ -128,7 +129,7 @@
 	F56B487B0193C38801A80002 = {
 		fileReference = 017AF4E0006EF750C0A80002;
 		isa = PBXFileBreakpoint;
-		lineNumber = 667;
+		lineNumber = 680;
 		state = 1;
 	};
 }

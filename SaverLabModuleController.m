@@ -216,6 +216,12 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
   return ([window styleMask]==NSBorderlessWindowMask);
 }
 
+// returns YES if this module is a slide show (Cosmos, Forest, etc). Used to disable the
+// single step functionality for slide shows because it can cause crashes.
+-(BOOL)isSlideShow {
+  return ([NSStringFromClass([screenSaverView class]) isEqualToString:@"SlideShowView"]);
+}
+
 -(void)showModuleWindow {
   NSRect contentViewRect = [[window contentView] frame];
   [self updateWindowTitle];
@@ -261,15 +267,13 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
   // This stops the module's animation timer. Some modules also reset their
   // internal state, which can make the single step feature behave oddly.
   if ([screenSaverView isAnimating]) [screenSaverView stopAnimation];
-  isPaused = YES;
 }
 
 /* Starts the animation unless a condition exists in which it should not start 
 (app is hidden, real screensaver is running, it's already running)
 */
 -(void)startIfPossible {
-  if (!isAppHidden && !isScreenSaverRunning && ![screenSaverView isAnimating]) {
-    isPaused = NO;
+  if (!isPaused && !isAppHidden && !isScreenSaverRunning && ![screenSaverView isAnimating]) {
     [self start];
   }
 }
@@ -309,15 +313,18 @@ static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
 -(void)singleStepAnimation:(id)sender {
   // This doesn't work in all modules, since when this method is called the module
   // thinks that it is not animating. Seems to work in everything but the slideshows.
-  if ([screenSaverView isAnimating]) {
-    [self stop];
-    [self updateWindowTitle];
+  if (![self isSlideShow]) {
+    if ([screenSaverView isAnimating]) {
+      isPaused = YES;
+      [self stop];
+      [self updateWindowTitle];
+    }
+    [screenSaverView lockFocus];
+    [screenSaverView animateOneFrame];
+    [screenSaverView unlockFocus];
+    // needed for non-OpenGL modules to update the display
+    [screenSaverView displayIfNeeded];
   }
-  [screenSaverView lockFocus];
-  [screenSaverView animateOneFrame];
-  [screenSaverView unlockFocus];
-  // needed for non-OpenGL modules to update the display
-  [screenSaverView displayIfNeeded];
 }
 
 
@@ -500,6 +507,11 @@ and the window size items.
   }
   else if (action==@selector(makeDesktopBackground:)) {
     return !([self isFullScreen] && [window level]<NSNormalWindowLevel);
+  }
+  else if (action==@selector(singleStepAnimation:)) {
+    // disable single step for slide show modules because it can cause crashes.
+    // revisit this when ScreenSaver framework is updated
+    return ![self isSlideShow];
   }
   return YES;
 }
