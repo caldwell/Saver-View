@@ -74,6 +74,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)ignoresMouseEvents;
 -(void)setIgnoresMouseEvents:(BOOL)value;
 
+-(IBAction)makeSize720p:(id)sender;
+-(IBAction)makeSize1080p:(id)sender;
+
 -(void)updateWindowTitle;
 
 -(BOOL)isInPreviewMode;

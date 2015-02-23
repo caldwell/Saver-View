@@ -475,6 +475,12 @@ copy the necessary state. The same applies for making a full screen window not f
 -(void)makeSize1024:(id)sender {
   [self setWindowWidth:1024 height:768];
 }
+-(void)makeSize720p:(id)sender {
+  [self setWindowWidth:1280 height:720];
+}
+-(void)makeSize1080p:(id)sender {
+  [self setWindowWidth:1980 height:1080];
+}
 
 -(void)selectBackgroundImage:(id)sender {
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -604,6 +610,12 @@ and the window size items.
   }
   else if (action==@selector(makeSize1024:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:1024 height:768];
+  }
+  else if (action==@selector(makeSize720p:)) {
+    [self checkMenuItem:menuItem ifContentViewHasWidth:1280 height:720];
+  }
+  else if (action==@selector(makeSize1080p:)) {
+    [self checkMenuItem:menuItem ifContentViewHasWidth:1920 height:1080];
   }
   else if (action==@selector(makeDesktopBackground:)) {
     return !([self isFullScreen] && [window level]<NSNormalWindowLevel && [window alphaValue]>=1.0);
