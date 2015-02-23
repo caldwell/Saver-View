@@ -32,4 +32,24 @@
 -(BOOL)autoUpdateModuleList;
 -(void)setAutoUpdateModuleList:(BOOL)value;
 
+-(BOOL)showConsoleWindowOnOutput;
+-(void)setShowConsoleWindowOnOutput:(BOOL)value;
+
+// QuickTime recording preferences
+
+-(BOOL)createMovieFromRecordedImages;
+-(void)setCreateMovieFromRecordedImages:(BOOL)value;
+
+-(BOOL)deleteRecordedImages;
+-(void)setDeleteRecordedImages:(BOOL)value;
+
+-(BOOL)useCustomFrameRate;
+-(void)setUseCustomFrameRate:(BOOL)value;
+
+-(int)customFrameRate;
+-(void)setCustomFrameRate:(int)value;
+
+-(NSString *)recordedImagesDirectory;
+-(void)setRecordedImagesDirectory:(NSString *)value;
+
 @end

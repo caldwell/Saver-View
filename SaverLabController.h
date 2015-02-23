@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabModuleController.h"
 #import "SaverLabBrowserWindowController.h"
 #import "SaverLabPrefsWindowController.h"
+#import "SaverLabStdoutWindowController.h"
 
 @interface SaverLabController : NSObject
 {
@@ -19,6 +20,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     SaverLabBrowserWindowController *listWindowController;
     SaverLabPrefsWindowController *prefsWindowController;
+    SaverLabStdoutWindowController *stdoutWindowController;
+    
+    NSFileHandle *stdoutHandle;
+    NSFileHandle *stderrHandle;
 }
 
 -(void)rebuildModulesMenu;
@@ -31,4 +36,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)saveWindowPositions;
 -(void)restoreWindowPositions;
+
+-(SaverLabBrowserWindowController *)listWindowController;
+-(SaverLabPrefsWindowController *)prefsWindowController;
+-(SaverLabStdoutWindowController *)stdoutWindowController;
+
+-(void)openPreferencesWindow:(id)sender;
+
 @end

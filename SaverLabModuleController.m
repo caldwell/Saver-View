@@ -28,8 +28,14 @@ static NSRect defaultContentRect() {
 
 // keep track of the last directory a background image was opened from
 static NSString *gLastImageDirectory = nil;
-static NSString *PAUSED_STRING = @": Paused"; // should be localized
+
+// status messages, should be localized
+static NSString *PAUSED_STRING = @": Paused"; 
 static NSString *RECORDING_STRING = @": RECORDING";
+static NSString *RECORDING_ERROR_TITLE = @"Cannot Record";
+static NSString *RECORDING_ERROR_MSG = @"Unable to write to the directory '%@'. Specify a writeable directory in the Recording tab of the Preferences window.";
+static NSString *RECORDING_ERROR_BUTTON1 = @"OK";
+static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -259,10 +265,11 @@ static NSString *RECORDING_STRING = @": RECORDING";
 }
 
 /* Starts the animation unless a condition exists in which it should not start 
-(animation was paused, app is hidden, real screensaver is running, already running)
+(app is hidden, real screensaver is running, it's already running)
 */
 -(void)startIfPossible {
-  if (!isPaused && !isAppHidden && !isScreenSaverRunning && ![screenSaverView isAnimating]) {
+  if (!isAppHidden && !isScreenSaverRunning && ![screenSaverView isAnimating]) {
+    isPaused = NO;
     [self start];
   }
 }
@@ -656,6 +663,11 @@ and the window size items.
   [self stop];
 }
 
+-(void)screenSaverDeactivated:(NSNotification *)note {
+  isScreenSaverRunning = NO;
+  [self startIfPossible];
+}
+
 // notification when screen saver draws itself
 -(void)screenSaverDrewFrame:(NSNotification *)note {
   if ([note object]==screenSaverView) {
@@ -691,12 +703,13 @@ and the window size items.
   [self updateInfoPanelRefreshingCurrentFPS:YES];
 }
 
-/* free ourselves when the window closes
+/* free ourselves when the window closes (except when going to or from full screen)
 */
 -(void)windowWillClose:(NSNotification *)note {
   if ([note object]==window) {
     if ([screenSaverView isAnimating]) [self stop];
     if (isResizingWindow) {
+      // window is switching into or out of full screen; do not release self
       isResizingWindow = NO;
     }
     else {
@@ -712,7 +725,8 @@ and the window size items.
     }
     // abort Quicktime recording
     isRecordingFrames = NO;
-    [self deleteTemporaryQuicktimeImagesDirectory];
+    if ([[SaverLabPreferences sharedInstance] deleteRecordedImages])
+      [self deleteTemporaryQuicktimeImagesDirectory];
   }
   else if ([note object]==infoPanel) {
     [self closeInfoPanel];
@@ -723,13 +737,18 @@ and the window size items.
 
 -(NSString *)temporaryDirectoryForQuicktimeImages {
   if (!temporaryQuicktimeDirectory) {
-    NSString *tmpdir = NSTemporaryDirectory();
-    int i;
-    for(i=0; i<9999 && !temporaryQuicktimeDirectory; i++) {
+    NSString *tmpdir = [[SaverLabPreferences sharedInstance] recordedImagesDirectory];
+    int i, done=0;
+    for(i=0; i<9999 && !done; i++) {
       NSString *testdir = [tmpdir stringByAppendingPathComponent:[NSString stringWithFormat:@"SaverLab%d", i]];
       if (![[NSFileManager defaultManager] fileExistsAtPath:testdir]) {
-        temporaryQuicktimeDirectory = [testdir retain];
-        [[NSFileManager defaultManager] createDirectoryAtPath:testdir attributes:nil];
+        if ([[NSFileManager defaultManager] createDirectoryAtPath:testdir attributes:nil]) {
+          temporaryQuicktimeDirectory = [testdir retain];
+        }
+        else {
+          // failed to create directory, probably a permissions problem, nil will be returned
+        }
+        done = 1;
       }
     }
   }
@@ -785,8 +804,17 @@ and the window size items.
 
 -(NSDictionary *)quicktimeMovieParameters {
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  double frameLength = [screenSaverView animationTimeInterval];
-  if (frameLength<1.0/30) frameLength = 1.0/30;
+  double frameLength;
+  // use either the user-specified rate or the module's current rate
+  if ([[SaverLabPreferences sharedInstance] useCustomFrameRate]) {
+    frameLength = 1.0/[[SaverLabPreferences sharedInstance] customFrameRate];
+  }
+  else {
+    frameLength = [screenSaverView animationTimeInterval];
+    if (frameLength<1.0/60) frameLength = 1.0/60;
+  }
+  if (frameLength<0.01) frameLength = 0.01;
+  
   [dict setObject:[NSNumber numberWithInt:quicktimeFrameCounter] forKey:@"numFrames"];
   [dict setObject:[NSNumber numberWithDouble:frameLength] forKey:@"frameLength"];
   [dict setObject:[self temporaryDirectoryForQuicktimeImages] forKey:@"imagesDirectory"];
@@ -796,16 +824,36 @@ and the window size items.
 -(void)toggleQuicktimeRecording:(id)sender {
   if (isRecordingFrames) {
     isRecordingFrames = NO;
-    [[NSSavePanel savePanel] beginSheetForDirectory:nil
-                                               file:[title stringByAppendingPathExtension:@"mov"]
-                                     modalForWindow:window
-                                      modalDelegate:self
-                                     didEndSelector:@selector(quicktimeSavePanelEnded:code:movieInfo:)
-                                        contextInfo:[self quicktimeMovieParameters]];
+    // only show the save panel if saving movies is enabled
+    if ([[SaverLabPreferences sharedInstance] createMovieFromRecordedImages]) {
+      [[NSSavePanel savePanel] beginSheetForDirectory:nil
+                                                file:[title stringByAppendingPathExtension:@"mov"]
+                                      modalForWindow:window
+                                        modalDelegate:self
+                                      didEndSelector:@selector(quicktimeSavePanelEnded:code:movieInfo:)
+                                          contextInfo:[self quicktimeMovieParameters]];
+    }
+    else {
+      // leave the recorded images where they are
+      [self forgetTemporaryQuicktimeImagesDirectory];
+    }
   }
   else {
-    isRecordingFrames = YES;
-    quicktimeFrameCounter = 0;
+    // make sure we have a directory to write frames to
+    if (![self temporaryDirectoryForQuicktimeImages]) {
+      int result;
+      NSBeep();
+      result = NSRunAlertPanel(RECORDING_ERROR_TITLE, RECORDING_ERROR_MSG, 
+                               RECORDING_ERROR_BUTTON1, RECORDING_ERROR_BUTTON2, nil,
+                               [[SaverLabPreferences sharedInstance] recordedImagesDirectory]);
+      if (result==NSAlertAlternateReturn) {
+        [NSApp sendAction:@selector(openPreferencesWindow:) to:nil from:self];
+      }
+    }
+    else {
+      isRecordingFrames = YES;
+      quicktimeFrameCounter = 0;
+    }
   }
   [self updateWindowTitle];
 }
@@ -837,11 +885,16 @@ and the window size items.
             fromImagesInDirectory:imagesDirectory
                        frameCount:numFrames
                       frameLength:frameLength
-             deleteImagesWhenDone:YES];
+             deleteImagesWhenDone:[[SaverLabPreferences sharedInstance] deleteRecordedImages]];
     }
   }
   else {
-    [self deleteTemporaryQuicktimeImagesDirectory];
+    if ([[SaverLabPreferences sharedInstance] deleteRecordedImages]) {
+      [self deleteTemporaryQuicktimeImagesDirectory];
+    }
+    else {
+      [self forgetTemporaryQuicktimeImagesDirectory];
+    }
   }
   [info release];
 }

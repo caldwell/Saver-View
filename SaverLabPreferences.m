@@ -34,53 +34,107 @@ static SaverLabPreferences *_sharedInstance = nil;
   [[NSUserDefaults standardUserDefaults] setInteger:(int)value.height forKey:@"defaultWindowHeight"];
 }
 
+// internal methods to get and set boolean values using defaults
+-(BOOL)booleanValueForKey:(NSString *)key defaultValue:(BOOL)def {
+  id value = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+  return (value) ? ([value intValue]!=0) : def;
+}
+
+-(void)setBooleanValue:(BOOL)value forKey:(NSString *)key {
+  [[NSUserDefaults standardUserDefaults] setBool:value forKey:key];
+}
+
 // defaults to false
 -(BOOL)showModuleListOnStartup {
-  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"showListOnStartup"];
-  return ([value intValue]!=0);
+  return [self booleanValueForKey:@"showListOnStartup" defaultValue:NO];
 }
 -(void)setShowModuleListOnStartup:(BOOL)value {
-  NSString *string = (value) ? @"1" : @"0";
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"showListOnStartup"];
+  [self setBooleanValue:value forKey:@"showListOnStartup"];
 }
 
 // defaults to true
 -(BOOL)showModuleListWhenNoOpenWindows {
-  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"showListWhenNoOpenWindows"];
-  return (!value || [value intValue]!=0);
+  return [self booleanValueForKey:@"showListWhenNoOpenWindows" defaultValue:YES];
 }
 -(void)setShowModuleListWhenNoOpenWindows:(BOOL)value {
-  NSString *string = (value) ? @"1" : @"0";
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"showListWhenNoOpenWindows"];
+  [self setBooleanValue:value forKey:@"showListWhenNoOpenWindows"];
 }
 
 // defaults to true
 -(BOOL)restoreModuleWindowsOnStartup {
-  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"restoreWindowsOnStartup"];
-  return (!value || [value intValue]!=0);
+  return [self booleanValueForKey:@"restoreWindowsOnStartup" defaultValue:YES];
 }
 -(void)setRestoreModuleWindowsOnStartup:(BOOL)value {
-  NSString *string = (value) ? @"1" : @"0";
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"restoreWindowsOnStartup"];
+  [self setBooleanValue:value forKey:@"restoreWindowsOnStartup"];
 }
 
 // defaults to true
 -(BOOL)autoUpdateModuleList {
-  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"autoUpdateModuleList"];
-  return (!value || [value intValue]!=0);
+  return [self booleanValueForKey:@"autoUpdateModuleList" defaultValue:YES];
 }
 -(void)setAutoUpdateModuleList:(BOOL)value {
-  NSString *string = (value) ? @"1" : @"0";
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"autoUpdateModuleList"];
+  [self setBooleanValue:value forKey:@"autoUpdateModuleList"];
 }
+
+// defaults to true
+-(BOOL)showConsoleWindowOnOutput {
+  return [self booleanValueForKey:@"showConsoleWindowOnOutput" defaultValue:YES];
+}
+-(void)setShowConsoleWindowOnOutput:(BOOL)value {
+  [self setBooleanValue:value forKey:@"showConsoleWindowOnOutput"];
+}
+
 
 // defaults to false
 -(BOOL)isPreviewVisible {
-  return [[NSUserDefaults standardUserDefaults] boolForKey:@"isPreviewVisible"];
+  return [self booleanValueForKey:@"isPreviewVisible" defaultValue:NO];
 }
 -(void)setIsPreviewVisible:(BOOL)value {
   [[NSUserDefaults standardUserDefaults] setBool:value forKey:@"isPreviewVisible"];
 }
+
+// defaults to true
+-(BOOL)createMovieFromRecordedImages {
+  return [self booleanValueForKey:@"createMovie" defaultValue:YES];
+}
+-(void)setCreateMovieFromRecordedImages:(BOOL)value {
+  [[NSUserDefaults standardUserDefaults] setBool:value forKey:@"createMovie"];
+}
+
+// defaults to true
+-(BOOL)deleteRecordedImages {
+  return [self booleanValueForKey:@"deleteRecordedImages" defaultValue:YES];
+}
+-(void)setDeleteRecordedImages:(BOOL)value {
+  [[NSUserDefaults standardUserDefaults] setBool:value forKey:@"deleteRecordedImages"];
+}
+
+// defaults to false
+-(BOOL)useCustomFrameRate {
+  return [self booleanValueForKey:@"useCustomFrameRate" defaultValue:NO];
+}
+-(void)setUseCustomFrameRate:(BOOL)value {
+  [[NSUserDefaults standardUserDefaults] setBool:value forKey:@"useCustomFrameRate"];
+}
+
+// defaults to 30
+-(int)customFrameRate {
+  int value = [[[NSUserDefaults standardUserDefaults] objectForKey:@"customFrameRate"] intValue];
+  return (value<=0) ? 30 : value;
+}
+-(void)setCustomFrameRate:(int)value {
+  [[NSUserDefaults standardUserDefaults] setInteger:value forKey:@"customFrameRate"];
+}
+
+// defaults to NSTemporaryDirectory
+-(NSString *)recordedImagesDirectory {
+  NSString *value = [[NSUserDefaults standardUserDefaults] objectForKey:@"imagesDirectory"];
+  return (value) ? value : NSHomeDirectory();
+}
+-(void)setRecordedImagesDirectory:(NSString *)value {
+  [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"imagesDirectory"];
+}
+
 
 
 @end

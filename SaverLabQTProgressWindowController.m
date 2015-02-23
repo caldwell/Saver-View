@@ -100,7 +100,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // notification method called before app quits
 -(void)appWillQuit:(NSNotification *)note {
-NSLog(@"In appWillQuit:%@:%@", imagesDirectory, outputMovieFile);
   // remove temporary images directory and (incomplete) saved movie
   if (imagesDirectory) {
     [[NSFileManager defaultManager] removeFileAtPath:imagesDirectory handler:nil];

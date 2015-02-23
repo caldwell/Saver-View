@@ -19,3 +19,11 @@ setting and comparing the state using NSOnState and NSOffState
 -(void)setIsChecked:(BOOL)value;
 
 @end
+
+@interface NSButtonCell (SaverLabNSButtonAdditions)
+
+-(BOOL)isChecked;
+-(void)setIsChecked:(BOOL)value;
+
+@end
+

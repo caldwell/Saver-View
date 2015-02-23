@@ -8,7 +8,7 @@
 				SaverLab
                         </h2>
 			<p>
-				v1.5 Copyright 2001 by Brian Nenninger
+				v1.6 Copyright 2001 by Brian Nenninger
 		</center>
 		<h3>
 			Overview
@@ -18,9 +18,9 @@
 			<p>
 			When SaverLab launches, it locates all available screensaver modules and lists them in the "Modules" menu. Selecting a module from this menu opens a window in which the module runs. You can open any number of windows, including multiple copies of the same module, and they will all run simultaneously. You can resize the windows to any size you like; resizing will cause the screensaver to restart. You can also double-click a screensaver module in the Finder to open it.
 			<p>
-			Selecting "Show Browser" will open a window listing all available modules. Checking the "Show Preview" checkbox will expand the window to show a preview of the selected module. Double-clicking a module will open it. If the "Open In Preview Mode" checkbox is checked, double-clicking a module will open it in preview mode. This is useful for modules such as FreeFlow which try to switch the screen resolution when run in non-preview mode.
+			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel. If you can see a screensaver in System Preferences, it should also be accessible in SaverLab. By default, the list of available modules is automatically updated every time SaverLab becomes the foreground application. This behavior can cause a short delay and can be disabled in the preferences window. The "Update List" command in the Modules menu will manually update the list of modules.
 			<p>
-			The "Preferences" item in the SaverLab menu allows you to set the default size for new windows, whether the module list window is shown when the application starts, and whether modules that were open in your previous session should be restored.
+			Selecting "Show Browser" will open a window listing all available modules. Checking the "Show Preview" checkbox will expand the window to show a preview of the selected module. Double-clicking a module will open it. If the "Open In Preview Mode" checkbox is checked, double-clicking a module will open it in preview mode. This is useful for modules such as FreeFlow which try to switch the screen resolution when run in non-preview mode.
 			<p>
 			The "Control" menu allows you to control the screensaver module running in the frontmost window. The following commands are available:
 			<ul>
@@ -31,7 +31,8 @@
 				<li><b>Slow Down</b>: Attempts to make the module run slower.
 				<li><b>Show Info</b>: Opens an info window which shows and continuously updates the module's "Target FPS" (the number of frames per second it is trying to draw), "Current FPS" (the number of frames it drew in the last second), and content size.
 				<li><b>Configure</b>: This command is only enabled if the screensaver module allows configuration. Selecting it opens the module's configuration sheet allowing you to customize its behavior.
-                                <li><b>Toggle QuickTime Recording</b>: This command is used to start and stop recording animations. When you select it the first time, "RECORDING" will appear in the window's title bar. Every frame will be saved until you select this command again. When you do, recording will stop and you will be prompted for the location to save the QuickTime movie which will be created from the frames. A status window will open displaying the progress of creating the movie; clicking the "Cancel" button will abort the process.
+                                <li><b>Show Console</b>: Opens a window showing messages written by the running screensaver modules. This is primarily useful when testing modules that you are writing; any output to stdout or stderr will appear in this window.
+                                <li><b>Toggle QuickTime Recording</b>: This command is used to start and stop recording animations. When you select it the first time, "RECORDING" will appear in the window's title bar. Every frame will be saved until you select this command again. When you do, recording will stop and you will be prompted for the location to save the QuickTime movie which will be created from the frames. A status window will open displaying the progress of creating the movie; clicking the "Cancel" button will abort the process. Settings in the Preferences window control the exact behaviour of the recording process; see below for details.
 			</ul>
 			Single Step, Pause, Speed Up, and Slow Down do not work for all modules, see Known Bugs/Issues.
 			<p>
@@ -40,8 +41,16 @@
 			The Window menu also shows several predefined window sizes, from 160x120 to 800x600. Selecting one will resize the front window to that size. Selecting the "Full Screen" command causes the window to fill the entire screen. Selecting the "Make Desktop Background" will make the window full screen and put it in the back layer, effectively producing an animated desktop. (However, any icons on the desktop will be covered).
 			<p>
 			The "Select Background Image..." command allows you to select a background image for the window. This command is only enabled for modules that do not use OpenGL, since OpenGL modules overwrite the background immediately. Selecting this command opens a file selection box, in which you can select any image that Mac OS X can handle (GIF, JPEG, and TIFF images, among others). If you select a readable image, the screensaver module will restart using the new background image.
-			<p>
-			SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel. If you can see a screensaver in System Preferences, it should also be accessible in SaverLab. By default, the list of available modules is automatically updated every time SaverLab becomes the foreground application. This behavior can cause a short delay and can be disabled in the preferences window. The "Update List" command in the Modules menu will manually update the list of modules.
+                        <p>
+			The "Preferences" item in the SaverLab menu opens the Preferences window. The "General" tab has several checkboxes to control SaverLab's behavior:
+                        <ul>
+                        <li><b>Restore module windows on startup</b>: If selected, screensaver modules that were running when you last quit the application will be automatically started when you run it again.
+                        <li><b>Show module list on startup</b>: If selected, the list of screensaver modules will always be shown when you launch the application.
+                        <li><b>Automatically update available modules</b>: If selected, whenever the application comes to the foreground it will recompute the list of available screensaver modules, allowing it to pick up modules that you have added or deleted. This can cause a noticeable delay, so you may wish to keep it disabled and manually update the module list using the "Update List" command in the Modules menu.
+                        <li><b>Show module list when Dock icon is clicked</b>: If selected, the list of screensaver modules will appear when you activate SaverLab and no other windows are open.
+                        <li><b>Show console window when new output is received</b>: If selected, the console window will always be shown and brought forward whenever it receives output from a screensaver module. If not selected, the console window will only automatically appear the first time it receives output; after that you can show the window using the "Show Console" command in the Control window.
+                        </ul><br>
+                        The "Recording" tab controls how screensaver animations are recorded. When recording, SaverLab captures each frame and writes it to a separate file. By default, when you stop recording SaverLab creates a QuickTime movie and then deletes the individual images. The first group of radio buttons allow you to keep the individual images, with or without creating a QuickTime movie. This is useful if you want to obtain individual images, or if you want to use another program to create a movie. If you choose to save the individual images, they will be created inside a folder named "SaverLab" followed by a unique number ("SaverLab0", "SaverLab1", etc). By default these folders are created in your home directory; you can specify a different location by changing the "Images Directory" setting. You can do this by clicking the "Set" button and picking a folder, or by entering a new path in the text field. The second set of radio buttons allows you to control the frame rate of movies that SaverLab creates. By default, the frame rate of the created movie is the same rate at which the screensaver is actually running ("Target FPS" in the Show Info window). You can alternatively specify a fixed frame rate for the created movies.
 			<p>
 			An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a>, <a href="http://softrak.stepwise.com">Softrak</a>, or other Mac OS X software sites.
 			<p>
@@ -62,6 +71,12 @@
 				Version History
 			</h3>
 			<p>
+			<b>1.6, Nov 1 2001</b>:
+			<ul>
+				<li>Added preferences to control recording.
+				<li>Added console window.
+                                <li>Fixed bug where random number generator was not initialized.
+			</ul>
 			<b>1.5, Sep 26 2001</b>:
 			<ul>
 				<li>Added ability to record animations and save them as QuickTime movies.

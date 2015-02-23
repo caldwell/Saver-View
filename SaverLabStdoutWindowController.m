@@ -7,28 +7,33 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import "SaverLabNSButtonAdditions.h"
+#import "SaverLabStdoutWindowController.h"
+#import "SaverLabPreferences.h"
 
+@implementation SaverLabStdoutWindowController
 
-@implementation NSButton (SaverLabNSButtonAdditions)
-
--(BOOL)isChecked {
-  return [self state]==NSOnState;
+-(BOOL)loadNibIfNeeded {
+  if (!window) {
+    [NSBundle loadNibNamed:@"StdoutWindow" owner:self];
+    return YES;
+  }
+  return NO;
 }
--(void)setIsChecked:(BOOL)value {
-  [self setState:((value) ? NSOnState : NSOffState)];
+
+-(void)showWindow:(id)sender {
+  [self loadNibIfNeeded];
+  [window makeKeyAndOrderFront:self];
+}
+
+-(void)addData:(NSData *)data isStderr:(BOOL)isStderr {
+  [self loadNibIfNeeded];
+  // show window if this is the first output or if preference is set to always show on new output
+  if ([[outputTextView string] length]==0 || [[SaverLabPreferences sharedInstance]showConsoleWindowOnOutput]) {
+    [window makeKeyAndOrderFront:self];
+  }
+  [outputTextView replaceCharactersInRange:NSMakeRange([[outputTextView string] length],0)
+     withString:[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]];
+  [outputTextView scrollRangeToVisible:NSMakeRange([[outputTextView string] length], 0)];
 }
 
 @end
-
-@implementation NSButtonCell (SaverLabNSButtonCellAdditions)
-
--(BOOL)isChecked {
-  return [self state]==NSOnState;
-}
--(void)setIsChecked:(BOOL)value {
-  [self setState:((value) ? NSOnState : NSOffState)];
-}
-
-@end
-

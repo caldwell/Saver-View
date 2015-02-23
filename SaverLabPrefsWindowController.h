@@ -11,16 +11,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface SaverLabPrefsWindowController : NSObject
 {
+    // "General" widgets
     IBOutlet id restoreWindowsCheckbox;
     IBOutlet id showListWhenNoWindowsOpenCheckbox;
     IBOutlet id showListOnStartupCheckbox;
     IBOutlet id autoUpdateModulesCheckbox;
     IBOutlet id sizePopupMenu;
+    IBOutlet id showConsoleWindowCheckbox;
+    
+    // "Recording" widgets
+    IBOutlet id createYesDeleteYesRadioButton;
+    IBOutlet id createYesDeleteNoRadioButton;
+    IBOutlet id createNoDeleteNoRadioButton;
+    
+    IBOutlet id moduleRateRadioButton;
+    IBOutlet id customRateRadioButton;
+    IBOutlet id customRateTextField;
+    
+    IBOutlet id imagesDirectoryTextField;
+    
     IBOutlet id window;
 }
 -(IBAction)showWindow:(id)sender;
 -(IBAction)cancelPreferences:(id)sender;
 -(IBAction)savePreferences:(id)sender;
+-(IBAction)chooseImagesDirectory:(id)sender;
+-(IBAction)resetImagesDirectory:(id)sender;
 
 -(void)readPreferences;
 -(void)writePreferences;

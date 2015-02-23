@@ -58,10 +58,28 @@ static int tagForSize(NSSize size) {
   [showListOnStartupCheckbox setIsChecked:[prefs showModuleListOnStartup]];
   [showListWhenNoWindowsOpenCheckbox setIsChecked:[prefs showModuleListWhenNoOpenWindows]];
   [autoUpdateModulesCheckbox setIsChecked:[prefs autoUpdateModuleList]];
+  [showConsoleWindowCheckbox setIsChecked:[prefs showConsoleWindowOnOutput]];
+  
+  // recording settings
+  [createYesDeleteYesRadioButton setIsChecked:[prefs createMovieFromRecordedImages] &&
+                                              [prefs deleteRecordedImages]];                     
+  [createYesDeleteNoRadioButton  setIsChecked:[prefs createMovieFromRecordedImages] &&
+                                              ![prefs deleteRecordedImages]];
+  [createNoDeleteNoRadioButton   setIsChecked:![prefs createMovieFromRecordedImages] &&
+                                              ![prefs deleteRecordedImages]];
+  
+  [moduleRateRadioButton setIsChecked:![prefs useCustomFrameRate]];
+  [customRateRadioButton setIsChecked:[prefs useCustomFrameRate]];
+  [customRateTextField setIntValue:[prefs customFrameRate]];
+  
+  [imagesDirectoryTextField setStringValue:[prefs recordedImagesDirectory]];
 }
 
 -(void)writePreferences {
   SaverLabPreferences *prefs = [SaverLabPreferences sharedInstance];
+  
+  // todo: validate images directory is writeable
+  
   // size popup menu
   NSSize size = sizeForTag([[sizePopupMenu selectedItem] tag]);
   [prefs setDefaultModuleWindowSize:size];
@@ -70,6 +88,41 @@ static int tagForSize(NSSize size) {
   [prefs setShowModuleListOnStartup:[showListOnStartupCheckbox isChecked]];
   [prefs setShowModuleListWhenNoOpenWindows:[showListWhenNoWindowsOpenCheckbox isChecked]];
   [prefs setAutoUpdateModuleList:[autoUpdateModulesCheckbox isChecked]];
+  [prefs setShowConsoleWindowOnOutput:[showConsoleWindowCheckbox isChecked]];
+  
+  // recording settings
+  [prefs setCreateMovieFromRecordedImages:[createYesDeleteYesRadioButton isChecked] ||
+                                          [createYesDeleteNoRadioButton isChecked]];
+  [prefs setDeleteRecordedImages:[createYesDeleteYesRadioButton isChecked]];
+  [prefs setUseCustomFrameRate:[customRateRadioButton isChecked]];
+  [prefs setCustomFrameRate:[customRateTextField intValue]];
+  [prefs setRecordedImagesDirectory:[imagesDirectoryTextField stringValue]];
 }
+
+// images directory support
+-(IBAction)chooseImagesDirectory:(id)sender {
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
+  [panel setCanChooseDirectories:YES];
+  [panel setCanChooseFiles:NO];
+  [panel beginSheetForDirectory:NSHomeDirectory()
+                           file:nil 
+                          types:nil
+                 modalForWindow:window 
+                  modalDelegate:self 
+                 didEndSelector:@selector(imageDirectoryPanelClosed:result:info:)
+                    contextInfo:nil];
+}
+
+-(void)imageDirectoryPanelClosed:(NSOpenPanel *)panel result:(int)result info:(void *)unused {
+  if (result==NSOKButton) {
+    [imagesDirectoryTextField setStringValue:[panel directory]];
+  }
+  [panel orderOut:nil];
+}
+
+-(IBAction)resetImagesDirectory:(id)sender {
+  [imagesDirectoryTextField setStringValue:NSHomeDirectory()];
+}
+
 
 @end

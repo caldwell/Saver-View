@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // for isProcessRunningWithName
 #include <sys/sysctl.h>
+// for stdout/stderr redirection
+#include <unistd.h>
 
 static int MODULE_MENU_PERMANENT_ITEMS = 3;
 
@@ -64,12 +66,32 @@ static BOOL appHasVisibleWindows() {
   return NO;
 }
 
+/* Given an output stream (as a FILE *), creates a pipe and redirects output to the write end of
+the pipe. Returns an NSFileHandle which can read from the read end of the pipe. Used to create
+handles for stdout and stderr so that output can be captured and displayed in a text view.
+*/
+// could be a category on NSFileHandle
+static NSFileHandle* createPipeForOuptputStream(FILE *stream) {
+  int fd[2];
+  NSFileHandle *fileHandle;
+  pipe(fd);
+  // fd[1] is output, data written appears on fd[0]
+  dup2(fd[1], fileno(stream));
+  close(fd[1]);
+  fileHandle = [[NSFileHandle alloc] initWithFileDescriptor:fd[0]];
+  return fileHandle;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 @implementation SaverLabController
 
 -(void)applicationDidFinishLaunching:(NSNotification *)note {
   [self rebuildModulesMenu];
+  
+  // seed random number generator
+  srandom(time(NULL));
+  
   // set up timer to poll for ScreenSaverEngine process
   wasScreenSaverRunning = NO;
   [NSTimer scheduledTimerWithTimeInterval:5.0
@@ -78,15 +100,29 @@ static BOOL appHasVisibleWindows() {
                                  userInfo:nil
                                   repeats:YES];
                                   
+  // set up stdout/stderr redirection
+  stdoutHandle = createPipeForOuptputStream(stdout);
+  stderrHandle = createPipeForOuptputStream(stderr);
+   
+    
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(didReadStdoutData:)
+                                               name:NSFileHandleReadCompletionNotification
+                                             object:nil];
+  [stdoutHandle readInBackgroundAndNotify];
+  [stderrHandle readInBackgroundAndNotify];
+                
+  // restore window positions and open module list if necessary
   {
     SaverLabPreferences *prefs = [SaverLabPreferences sharedInstance];
     if ([prefs restoreModuleWindowsOnStartup]) [self restoreWindowPositions];
     // show module list if there are no windows open
     if ([prefs showModuleListOnStartup] || 
         ([prefs showModuleListWhenNoOpenWindows] && !appHasVisibleWindows())) {
-      [listWindowController showWindow:self];
+      [[self listWindowController] showWindow:self];
     }
   }
+  
 }
 
 /** Called when the application becomes active. Updates the available modules if
@@ -104,7 +140,7 @@ and possibly shows the browser window if no other windows are open.
   }
   // maybe show module list if there are no windows open
   if ([[SaverLabPreferences sharedInstance] showModuleListWhenNoOpenWindows] && !appHasVisibleWindows()) {
-    [listWindowController showWindow:self];
+    [[self listWindowController] showWindow:self];
   }
 }
 
@@ -113,7 +149,7 @@ and possibly shows the browser window if no other windows are open.
 -(void)updateModuleList:(id)sender {
   if ([[SaverLabModuleList sharedInstance] updateList]) {
     [self rebuildModulesMenu];
-    [listWindowController refresh];
+    [[self listWindowController] refresh];
   }
 }
 
@@ -309,15 +345,42 @@ modules will stop so as not to slow it down.
   [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
 }
 
-/*
-#import <QuickTime/QuickTime.h>
-
-- (void)awakeFromNib
-{
-    EnterMovies();
-    //createMovieFromImagesInDirectory(@"/Users/brian/tmp/SaverLab/SaverLab.mov",@"/Users/brian/tmp/SaverLab",30);
+// access to other controllers. 
+-(SaverLabBrowserWindowController *)listWindowController {
+  return listWindowController;
 }
-*/
+
+-(SaverLabPrefsWindowController *)prefsWindowController {
+  return prefsWindowController;
+}
+
+-(SaverLabStdoutWindowController *)stdoutWindowController {
+  // this is in a separate nib, as the others should be also
+  if (!stdoutWindowController) {
+    stdoutWindowController = [[SaverLabStdoutWindowController alloc] init];
+  }
+  return stdoutWindowController;
+}
+
+
+// called when data is written to stdout
+-(void)didReadStdoutData:(NSNotification *)note {
+  if ([note object]==stdoutHandle || [note object]==stderrHandle) {
+    NSData *data = [[note userInfo] objectForKey:NSFileHandleNotificationDataItem];
+    [[self stdoutWindowController] addData:data isStderr:([note object]==stderrHandle)];
+    [[note object] readInBackgroundAndNotify];
+  }
+}
+
+// opens the preferences window
+-(void)openPreferencesWindow:(id)sender {
+  [[self prefsWindowController] showWindow:sender];
+}
+
+// opens the console window
+-(void)openConsoleWindow:(id)sender {
+  [[self stdoutWindowController] showWindow:sender];
+}
 
 
 @end

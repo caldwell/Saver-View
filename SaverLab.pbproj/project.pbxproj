@@ -299,6 +299,7 @@
 				459FBB2B0075ACF27F000001,
 				F55D506300CF36EB01A80002,
 				F574327D014C2C0701A80002,
+				F515406E018C99CF01A80002,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -336,9 +337,11 @@
 				043355C9FE30361CC02AAC07,
 			);
 			buildSettings = {
+				DEBUGGING_SYMBOLS = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O3";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SaverLab;
@@ -374,7 +377,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.5, © 2001 Brian Nenninger</string>
+	<string>1.6, © 2001 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -386,11 +389,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -420,6 +423,7 @@
 				F577A3530143566A01000001,
 				F5743281014C45B701A80002,
 				F5743285014C483401A80002,
+				F5154072018C9B3A01A80002,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -433,6 +437,7 @@
 				F55D506500CF36EB01A80002,
 				F524BA0B00E9A4AB01A80002,
 				F574327E014C2C0701A80002,
+				F515406F018C99CF01A80002,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -456,6 +461,7 @@
 				F577A3540143566A01000001,
 				F5743282014C45B701A80002,
 				F5743286014C483401A80002,
+				F5154073018C9B3A01A80002,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -570,6 +576,39 @@
 //F52
 //F53
 //F54
+		F515406E018C99CF01A80002 = {
+			isa = PBXFileReference;
+			path = StdoutWindow.nib;
+			refType = 4;
+		};
+		F515406F018C99CF01A80002 = {
+			fileRef = F515406E018C99CF01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5154070018C9B3A01A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabStdoutWindowController.h;
+			refType = 4;
+		};
+		F5154071018C9B3A01A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabStdoutWindowController.m;
+			refType = 4;
+		};
+		F5154072018C9B3A01A80002 = {
+			fileRef = F5154070018C9B3A01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5154073018C9B3A01A80002 = {
+			fileRef = F5154071018C9B3A01A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F524BA0A00E9A4AB01A80002 = {
 			isa = PBXFileReference;
 			path = SaverLab.icns;
@@ -606,6 +645,8 @@
 				F5743280014C45B701A80002,
 				F5743283014C483401A80002,
 				F5743284014C483401A80002,
+				F5154070018C9B3A01A80002,
+				F5154071018C9B3A01A80002,
 			);
 			isa = PBXGroup;
 			name = Controllers;
