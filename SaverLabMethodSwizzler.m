@@ -16,9 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   Method m = class_getInstanceMethod(self, targetSelector);
   if (!m) return NULL;
   
-  IMP origImp = m->method_imp;
+  IMP origImp = method_getImplementation(m);
   IMP newImp  = [srcClass instanceMethodForSelector:srcSelector];
-  m->method_imp = newImp;
+  method_setImplementation(m, newImp);
   return origImp;
 }
 
