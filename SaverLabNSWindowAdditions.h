@@ -25,4 +25,9 @@ only works for Cocoa apps, Carbon apps need special handling (see code)
 */
 -(void)setClickThrough_:(BOOL)clickThrough;
 
+/** Resolution independence support. Only available in Tiger, so return the default value of 1.0 if
+-userSpaceScaleFactor isn't available.
+*/
+-(float)userSpaceScaleFactor_;
+
 @end

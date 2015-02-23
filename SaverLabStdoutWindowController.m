@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addData:(NSData *)data isStderr:(BOOL)isStderr {
   [self loadNibIfNeeded];
   // show window if this is the first output or if preference is set to always show on new output
-  if ([[outputTextView string] length]==0 || [[SaverLabPreferences sharedInstance]showConsoleWindowOnOutput]) {
+  if ([[outputTextView string] length]==0 || [[SaverLabPreferences sharedInstance] showConsoleWindowOnOutput]) {
     [window makeKeyAndOrderFront:self];
   }
   [outputTextView replaceCharactersInRange:NSMakeRange([[outputTextView string] length],0)

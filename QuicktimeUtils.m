@@ -69,7 +69,7 @@ static void CopyNSImageToGWorld(NSImage *image, GWorldPtr gWorldPtr)
         
         if ([imageRepresentation isKindOfClass:[NSBitmapImageRep class]])
         {
-            Ptr bitMapDataPtr = [(NSBitmapImageRep *)imageRepresentation bitmapData];
+            Ptr bitMapDataPtr = (Ptr)[(NSBitmapImageRep *)imageRepresentation bitmapData];
             int hasAlpha = [imageRepresentation hasAlpha];
 
             if ((bitMapDataPtr != nil) && (pixBaseAddr != nil))
@@ -79,8 +79,8 @@ static void CopyNSImageToGWorld(NSImage *image, GWorldPtr gWorldPtr)
                 NSSize imageSize = [(NSBitmapImageRep *)imageRepresentation size];
                 for (i=0; i< imageSize.height; i++)
                 {
-                    unsigned char *src = bitMapDataPtr + i * [(NSBitmapImageRep *)imageRepresentation bytesPerRow];
-                    unsigned char *dst = pixBaseAddr + i * pixmapRowBytes;
+                    unsigned char *src = (unsigned char *)(bitMapDataPtr + i * [(NSBitmapImageRep *)imageRepresentation bytesPerRow]);
+                    unsigned char *dst = (unsigned char *)(pixBaseAddr + i * pixmapRowBytes);
                     for (j = 0; j < imageSize.width; j++)
                     {
                       // get alpha if present in source

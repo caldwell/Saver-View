@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabPreferences.h"
 #import "SaverLabModuleController.h"
 #import "SaverLabNSButtonAdditions.h"
+#import "SaverLabNSWindowAdditions.h"
 
 @implementation SaverLabBrowserWindowController
 
@@ -109,14 +110,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return frame;
 }
 
--(int)windowWidthWithPreviewVisible:(BOOL)visible {
+-(float)windowWidthWithPreviewVisible:(BOOL)visible {
+  float width;
   NSRect previewViewFrame = [previewView frame];
   if (visible) {
-    return previewViewFrame.origin.x + previewViewFrame.size.width + 20;
+    width = previewViewFrame.origin.x + previewViewFrame.size.width + 20;
   }
   else {
-    return previewViewFrame.origin.x - 1;
+    width = previewViewFrame.origin.x - 1;
   }
+  return width*[window userSpaceScaleFactor_];
 }
 
 -(void)refresh {

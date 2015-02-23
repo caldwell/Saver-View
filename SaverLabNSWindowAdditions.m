@@ -30,4 +30,11 @@ kWindowIgnoreClicksAttribute);
   [self setIgnoresMouseEvents:clickThrough];
 }
 
+-(float)userSpaceScaleFactor_ {
+  if ([self respondsToSelector:@selector(userSpaceScaleFactor)]) {
+    return (float)[self userSpaceScaleFactor];
+  }
+  else return 1.0f;
+}
+
 @end

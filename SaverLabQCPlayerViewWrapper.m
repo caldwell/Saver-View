@@ -34,7 +34,7 @@ static IMP gOrigAnimateOneFrame = NULL;
 
 -(void)oneStepReplacement:(id)arg {
 	// call the real method
-	(* gOrigAnimateOneFrame)(self, @selector(oneStep:), arg);
+	(* gOrigAnimateOneFrame)(self, @selector(_oneStep:), arg);
 	// then notify that we drew a frame
   [[NSNotificationCenter defaultCenter] postNotificationName:@"ScreenSaverDrewOpenGLFrame" object:self];
 }

@@ -1,0 +1,613 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D3FB5D120935973500D0B2C4 /* SaverLabController.h in Headers */ = {isa = PBXBuildFile; fileRef = 017AF4DB006ED87EC0A80002 /* SaverLabController.h */; };
+		D3FB5D130935973500D0B2C4 /* SaverLabModuleController.h in Headers */ = {isa = PBXBuildFile; fileRef = 017AF4DF006EF750C0A80002 /* SaverLabModuleController.h */; };
+		D3FB5D140935973500D0B2C4 /* SaverLabFullScreenWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0214AE0E007AEDA27F000001 /* SaverLabFullScreenWindow.h */; };
+		D3FB5D150935973500D0B2C4 /* SaverLabNSOpenGLContextPoser.h in Headers */ = {isa = PBXBuildFile; fileRef = F55D506600D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.h */; };
+		D3FB5D160935973500D0B2C4 /* SaverLabModuleList.h in Headers */ = {isa = PBXBuildFile; fileRef = F5E5BB2D00DC774D01A80002 /* SaverLabModuleList.h */; };
+		D3FB5D170935973500D0B2C4 /* SaverLabBrowserWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5E5BB3800DD5E5201A80002 /* SaverLabBrowserWindowController.h */; };
+		D3FB5D180935973500D0B2C4 /* SaverLabPrefsWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5E5BB3C00E061C101A80002 /* SaverLabPrefsWindowController.h */; };
+		D3FB5D190935973500D0B2C4 /* SaverLabNSWindowAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F53F695700E5795401A80002 /* SaverLabNSWindowAdditions.h */; };
+		D3FB5D1A0935973500D0B2C4 /* SaverLabPreferences.h in Headers */ = {isa = PBXBuildFile; fileRef = F53F695B00E5854F01A80002 /* SaverLabPreferences.h */; };
+		D3FB5D1B0935973500D0B2C4 /* SaverLabNSButtonAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F524BA1000EEE59D01A80002 /* SaverLabNSButtonAdditions.h */; };
+		D3FB5D1C0935973500D0B2C4 /* SaverLabScreenSaverViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = F581E08C0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.h */; };
+		D3FB5D1D0935973500D0B2C4 /* QuicktimeUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F577A3520143566A01000001 /* QuicktimeUtils.h */; };
+		D3FB5D1E0935973500D0B2C4 /* SaverLabImageEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = F574327F014C45B701A80002 /* SaverLabImageEnumerator.h */; };
+		D3FB5D1F0935973500D0B2C4 /* SaverLabQTProgressWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5743283014C483401A80002 /* SaverLabQTProgressWindowController.h */; };
+		D3FB5D200935973500D0B2C4 /* SaverLabStdoutWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F5154070018C9B3A01A80002 /* SaverLabStdoutWindowController.h */; };
+		D3FB5D210935973500D0B2C4 /* SaverLabSSViewPoser.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B72F6505F5AB3100349CDF /* SaverLabSSViewPoser.h */; };
+		D3FB5D220935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = D3549E970823594E0012243F /* SaverLabQCPlayerViewWrapper.h */; };
+		D3FB5D240935973500D0B2C4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		D3FB5D250935973500D0B2C4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 459FBB2B0075ACF27F000001 /* MainMenu.nib */; };
+		D3FB5D260935973500D0B2C4 /* readme.html in Resources */ = {isa = PBXBuildFile; fileRef = D34FC41405F597BF001068B7 /* readme.html */; };
+		D3FB5D270935973500D0B2C4 /* ModuleInfoWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = F55D506300CF36EB01A80002 /* ModuleInfoWindow.nib */; };
+		D3FB5D280935973500D0B2C4 /* SaverLab.icns in Resources */ = {isa = PBXBuildFile; fileRef = F524BA0A00E9A4AB01A80002 /* SaverLab.icns */; };
+		D3FB5D290935973500D0B2C4 /* QuicktimeProgressWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = F58DF794030CAE2201A80032 /* QuicktimeProgressWindow.nib */; };
+		D3FB5D2A0935973500D0B2C4 /* StdoutWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = F58DF796030CAE2401A80032 /* StdoutWindow.nib */; };
+		D3FB5D2C0935973500D0B2C4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		D3FB5D2D0935973500D0B2C4 /* SaverLabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 017AF4DC006ED87EC0A80002 /* SaverLabController.m */; };
+		D3FB5D2E0935973500D0B2C4 /* SaverLabModuleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 017AF4E0006EF750C0A80002 /* SaverLabModuleController.m */; };
+		D3FB5D2F0935973500D0B2C4 /* SaverLabFullScreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0214AE0F007AEDA27F000001 /* SaverLabFullScreenWindow.m */; };
+		D3FB5D300935973500D0B2C4 /* SaverLabNSOpenGLContextPoser.m in Sources */ = {isa = PBXBuildFile; fileRef = F55D506700D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.m */; };
+		D3FB5D310935973500D0B2C4 /* SaverLabModuleList.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E5BB2E00DC774D01A80002 /* SaverLabModuleList.m */; };
+		D3FB5D320935973500D0B2C4 /* SaverLabBrowserWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E5BB3900DD5E5201A80002 /* SaverLabBrowserWindowController.m */; };
+		D3FB5D330935973500D0B2C4 /* SaverLabPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E5BB3D00E061C101A80002 /* SaverLabPrefsWindowController.m */; };
+		D3FB5D340935973500D0B2C4 /* SaverLabNSWindowAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F53F695800E5795401A80002 /* SaverLabNSWindowAdditions.m */; };
+		D3FB5D350935973500D0B2C4 /* SaverLabPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F53F695C00E5854F01A80002 /* SaverLabPreferences.m */; };
+		D3FB5D360935973500D0B2C4 /* SaverLabNSButtonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F524BA1100EEE59D01A80002 /* SaverLabNSButtonAdditions.m */; };
+		D3FB5D370935973500D0B2C4 /* SaverLabScreenSaverViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F581E08D0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.m */; };
+		D3FB5D380935973500D0B2C4 /* QuicktimeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = F577A3510143566A01000001 /* QuicktimeUtils.m */; };
+		D3FB5D390935973500D0B2C4 /* SaverLabImageEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F5743280014C45B701A80002 /* SaverLabImageEnumerator.m */; };
+		D3FB5D3A0935973500D0B2C4 /* SaverLabQTProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5743284014C483401A80002 /* SaverLabQTProgressWindowController.m */; };
+		D3FB5D3B0935973500D0B2C4 /* SaverLabStdoutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5154071018C9B3A01A80002 /* SaverLabStdoutWindowController.m */; };
+		D3FB5D3C0935973500D0B2C4 /* SaverLabSSViewPoser.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B72F6605F5AB3100349CDF /* SaverLabSSViewPoser.m */; };
+		D3FB5D3D0935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D3549E980823594E0012243F /* SaverLabQCPlayerViewWrapper.m */; };
+		D3FB5D3F0935973500D0B2C4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D3FB5D400935973500D0B2C4 /* ScreenSaver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 017AF4D9006EBDA3C0A80002 /* ScreenSaver.framework */; };
+		D3FB5D410935973500D0B2C4 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CB90036008A792A7F000001 /* OpenGL.framework */; };
+		D3FB5D420935973500D0B2C4 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F577A35A0143638801000001 /* QuickTime.framework */; };
+		D3FB5D430935973500D0B2C4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F565BC2903A9A7CA01A80032 /* Carbon.framework */; };
+		D3FB5D440935973500D0B2C4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39CBD8A082DC17A00D1B8D4 /* QTKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		4A9504CCFFE6A4B311CA0CBA /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OPTIMIZATION_CFLAGS = "-O0";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		4A9504CDFFE6A4B311CA0CBA /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		017AF4D9006EBDA3C0A80002 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = /System/Library/Frameworks/ScreenSaver.framework; sourceTree = "<absolute>"; };
+		017AF4DB006ED87EC0A80002 /* SaverLabController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabController.h; sourceTree = "<group>"; };
+		017AF4DC006ED87EC0A80002 /* SaverLabController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabController.m; sourceTree = "<group>"; };
+		017AF4DF006EF750C0A80002 /* SaverLabModuleController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabModuleController.h; sourceTree = "<group>"; };
+		017AF4E0006EF750C0A80002 /* SaverLabModuleController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabModuleController.m; sourceTree = "<group>"; };
+		0214AE0E007AEDA27F000001 /* SaverLabFullScreenWindow.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabFullScreenWindow.h; sourceTree = "<group>"; };
+		0214AE0F007AEDA27F000001 /* SaverLabFullScreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabFullScreenWindow.m; sourceTree = "<group>"; };
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0CB90036008A792A7F000001 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		459FBB2C0075ACF27F000001 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		701D263B0076C93C7F000001 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = English; path = English.lproj/readme.html; sourceTree = "<group>"; };
+		D3549E970823594E0012243F /* SaverLabQCPlayerViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaverLabQCPlayerViewWrapper.h; sourceTree = "<group>"; };
+		D3549E980823594E0012243F /* SaverLabQCPlayerViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaverLabQCPlayerViewWrapper.m; sourceTree = "<group>"; };
+		D39CBD8A082DC17A00D1B8D4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		D3B72F6505F5AB3100349CDF /* SaverLabSSViewPoser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabSSViewPoser.h; sourceTree = "<group>"; };
+		D3B72F6605F5AB3100349CDF /* SaverLabSSViewPoser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabSSViewPoser.m; sourceTree = "<group>"; };
+		D3FB5D4A0935973500D0B2C4 /* Info-SaverLab.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-SaverLab.plist"; sourceTree = "<group>"; };
+		D3FB5D4B0935973500D0B2C4 /* SaverLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaverLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F515406E018C99CF01A80002 /* StdoutWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = StdoutWindow.nib; path = English.lproj/StdoutWindow.nib; sourceTree = "<group>"; };
+		F5154070018C9B3A01A80002 /* SaverLabStdoutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabStdoutWindowController.h; sourceTree = "<group>"; };
+		F5154071018C9B3A01A80002 /* SaverLabStdoutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabStdoutWindowController.m; sourceTree = "<group>"; };
+		F524BA0A00E9A4AB01A80002 /* SaverLab.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SaverLab.icns; sourceTree = "<group>"; };
+		F524BA1000EEE59D01A80002 /* SaverLabNSButtonAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabNSButtonAdditions.h; sourceTree = "<group>"; };
+		F524BA1100EEE59D01A80002 /* SaverLabNSButtonAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabNSButtonAdditions.m; sourceTree = "<group>"; };
+		F53F695700E5795401A80002 /* SaverLabNSWindowAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabNSWindowAdditions.h; sourceTree = "<group>"; };
+		F53F695800E5795401A80002 /* SaverLabNSWindowAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabNSWindowAdditions.m; sourceTree = "<group>"; };
+		F53F695B00E5854F01A80002 /* SaverLabPreferences.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabPreferences.h; sourceTree = "<group>"; };
+		F53F695C00E5854F01A80002 /* SaverLabPreferences.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabPreferences.m; sourceTree = "<group>"; };
+		F55D506400CF36EB01A80002 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ModuleInfoWindow.nib; sourceTree = "<group>"; };
+		F55D506600D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabNSOpenGLContextPoser.h; sourceTree = "<group>"; };
+		F55D506700D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabNSOpenGLContextPoser.m; sourceTree = "<group>"; };
+		F565BC2903A9A7CA01A80032 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		F574327D014C2C0701A80002 /* QuicktimeProgressWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = QuicktimeProgressWindow.nib; path = English.lproj/QuicktimeProgressWindow.nib; sourceTree = "<group>"; };
+		F574327F014C45B701A80002 /* SaverLabImageEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabImageEnumerator.h; sourceTree = "<group>"; };
+		F5743280014C45B701A80002 /* SaverLabImageEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabImageEnumerator.m; sourceTree = "<group>"; };
+		F5743283014C483401A80002 /* SaverLabQTProgressWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabQTProgressWindowController.h; sourceTree = "<group>"; };
+		F5743284014C483401A80002 /* SaverLabQTProgressWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabQTProgressWindowController.m; sourceTree = "<group>"; };
+		F577A3510143566A01000001 /* QuicktimeUtils.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = QuicktimeUtils.m; sourceTree = "<group>"; };
+		F577A3520143566A01000001 /* QuicktimeUtils.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = QuicktimeUtils.h; sourceTree = "<group>"; };
+		F577A35A0143638801000001 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
+		F581E08C0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabScreenSaverViewAdditions.h; sourceTree = "<group>"; };
+		F581E08D0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabScreenSaverViewAdditions.m; sourceTree = "<group>"; };
+		F5E5BB2D00DC774D01A80002 /* SaverLabModuleList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabModuleList.h; sourceTree = "<group>"; };
+		F5E5BB2E00DC774D01A80002 /* SaverLabModuleList.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabModuleList.m; sourceTree = "<group>"; };
+		F5E5BB3800DD5E5201A80002 /* SaverLabBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabBrowserWindowController.h; sourceTree = "<group>"; };
+		F5E5BB3900DD5E5201A80002 /* SaverLabBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabBrowserWindowController.m; sourceTree = "<group>"; };
+		F5E5BB3C00E061C101A80002 /* SaverLabPrefsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabPrefsWindowController.h; sourceTree = "<group>"; };
+		F5E5BB3D00E061C101A80002 /* SaverLabPrefsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabPrefsWindowController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D3FB5D3E0935973500D0B2C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3FB5D3F0935973500D0B2C4 /* Cocoa.framework in Frameworks */,
+				D3FB5D400935973500D0B2C4 /* ScreenSaver.framework in Frameworks */,
+				D3FB5D410935973500D0B2C4 /* OpenGL.framework in Frameworks */,
+				D3FB5D420935973500D0B2C4 /* QuickTime.framework in Frameworks */,
+				D3FB5D430935973500D0B2C4 /* Carbon.framework in Frameworks */,
+				D3FB5D440935973500D0B2C4 /* QTKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				017AF4D9006EBDA3C0A80002 /* ScreenSaver.framework */,
+				0CB90036008A792A7F000001 /* OpenGL.framework */,
+				F577A35A0143638801000001 /* QuickTime.framework */,
+				F565BC2903A9A7CA01A80032 /* Carbon.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D39CBD8A082DC17A00D1B8D4 /* QTKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D3FB5D4B0935973500D0B2C4 /* SaverLab.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* ScreenSaverShell */ = {
+			isa = PBXGroup;
+			children = (
+				F524BA0E00EEDFD301A80002 /* Model */,
+				F524BA0F00EEDFD301A80002 /* Controllers */,
+				F5E5BB3700DD408801A80002 /* Cocoa Additions */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = ScreenSaverShell;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				F577A3510143566A01000001 /* QuicktimeUtils.m */,
+				F577A3520143566A01000001 /* QuicktimeUtils.h */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F524BA0A00E9A4AB01A80002 /* SaverLab.icns */,
+				D34FC41405F597BF001068B7 /* readme.html */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				D3FB5D4A0935973500D0B2C4 /* Info-SaverLab.plist */,
+				459FBB2B0075ACF27F000001 /* MainMenu.nib */,
+				F55D506300CF36EB01A80002 /* ModuleInfoWindow.nib */,
+				F58DF794030CAE2201A80032 /* QuicktimeProgressWindow.nib */,
+				F58DF796030CAE2401A80032 /* StdoutWindow.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F524BA0E00EEDFD301A80002 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F5E5BB2D00DC774D01A80002 /* SaverLabModuleList.h */,
+				F5E5BB2E00DC774D01A80002 /* SaverLabModuleList.m */,
+				F53F695B00E5854F01A80002 /* SaverLabPreferences.h */,
+				F53F695C00E5854F01A80002 /* SaverLabPreferences.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		F524BA0F00EEDFD301A80002 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				017AF4DB006ED87EC0A80002 /* SaverLabController.h */,
+				017AF4DC006ED87EC0A80002 /* SaverLabController.m */,
+				017AF4DF006EF750C0A80002 /* SaverLabModuleController.h */,
+				017AF4E0006EF750C0A80002 /* SaverLabModuleController.m */,
+				F5E5BB3800DD5E5201A80002 /* SaverLabBrowserWindowController.h */,
+				F5E5BB3900DD5E5201A80002 /* SaverLabBrowserWindowController.m */,
+				F5E5BB3C00E061C101A80002 /* SaverLabPrefsWindowController.h */,
+				F5E5BB3D00E061C101A80002 /* SaverLabPrefsWindowController.m */,
+				F574327F014C45B701A80002 /* SaverLabImageEnumerator.h */,
+				F5743280014C45B701A80002 /* SaverLabImageEnumerator.m */,
+				F5743283014C483401A80002 /* SaverLabQTProgressWindowController.h */,
+				F5743284014C483401A80002 /* SaverLabQTProgressWindowController.m */,
+				F5154070018C9B3A01A80002 /* SaverLabStdoutWindowController.h */,
+				F5154071018C9B3A01A80002 /* SaverLabStdoutWindowController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		F5E5BB3700DD408801A80002 /* Cocoa Additions */ = {
+			isa = PBXGroup;
+			children = (
+				0214AE0E007AEDA27F000001 /* SaverLabFullScreenWindow.h */,
+				0214AE0F007AEDA27F000001 /* SaverLabFullScreenWindow.m */,
+				F55D506600D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.h */,
+				F55D506700D2F35B01A80002 /* SaverLabNSOpenGLContextPoser.m */,
+				D3B72F6505F5AB3100349CDF /* SaverLabSSViewPoser.h */,
+				D3B72F6605F5AB3100349CDF /* SaverLabSSViewPoser.m */,
+				F53F695700E5795401A80002 /* SaverLabNSWindowAdditions.h */,
+				F53F695800E5795401A80002 /* SaverLabNSWindowAdditions.m */,
+				F524BA1000EEE59D01A80002 /* SaverLabNSButtonAdditions.h */,
+				F524BA1100EEE59D01A80002 /* SaverLabNSButtonAdditions.m */,
+				F581E08C0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.h */,
+				F581E08D0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.m */,
+				D3549E970823594E0012243F /* SaverLabQCPlayerViewWrapper.h */,
+				D3549E980823594E0012243F /* SaverLabQCPlayerViewWrapper.m */,
+			);
+			name = "Cocoa Additions";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D3FB5D110935973500D0B2C4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3FB5D120935973500D0B2C4 /* SaverLabController.h in Headers */,
+				D3FB5D130935973500D0B2C4 /* SaverLabModuleController.h in Headers */,
+				D3FB5D140935973500D0B2C4 /* SaverLabFullScreenWindow.h in Headers */,
+				D3FB5D150935973500D0B2C4 /* SaverLabNSOpenGLContextPoser.h in Headers */,
+				D3FB5D160935973500D0B2C4 /* SaverLabModuleList.h in Headers */,
+				D3FB5D170935973500D0B2C4 /* SaverLabBrowserWindowController.h in Headers */,
+				D3FB5D180935973500D0B2C4 /* SaverLabPrefsWindowController.h in Headers */,
+				D3FB5D190935973500D0B2C4 /* SaverLabNSWindowAdditions.h in Headers */,
+				D3FB5D1A0935973500D0B2C4 /* SaverLabPreferences.h in Headers */,
+				D3FB5D1B0935973500D0B2C4 /* SaverLabNSButtonAdditions.h in Headers */,
+				D3FB5D1C0935973500D0B2C4 /* SaverLabScreenSaverViewAdditions.h in Headers */,
+				D3FB5D1D0935973500D0B2C4 /* QuicktimeUtils.h in Headers */,
+				D3FB5D1E0935973500D0B2C4 /* SaverLabImageEnumerator.h in Headers */,
+				D3FB5D1F0935973500D0B2C4 /* SaverLabQTProgressWindowController.h in Headers */,
+				D3FB5D200935973500D0B2C4 /* SaverLabStdoutWindowController.h in Headers */,
+				D3FB5D210935973500D0B2C4 /* SaverLabSSViewPoser.h in Headers */,
+				D3FB5D220935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D3FB5D100935973500D0B2C4 /* SaverLab */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3FB5D460935973500D0B2C4 /* Build configuration list for PBXNativeTarget "SaverLab" */;
+			buildPhases = (
+				D3FB5D110935973500D0B2C4 /* Headers */,
+				D3FB5D230935973500D0B2C4 /* Resources */,
+				D3FB5D2B0935973500D0B2C4 /* Sources */,
+				D3FB5D3E0935973500D0B2C4 /* Frameworks */,
+				D3FB5D450935973500D0B2C4 /* Rez */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DEBUGGING_SYMBOLS = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SaverLab;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			dependencies = (
+			);
+			name = SaverLab;
+			productName = ScreenSaverShell;
+			productReference = D3FB5D4B0935973500D0B2C4 /* SaverLab.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = D3FB5CB8093590E600D0B2C4 /* Build configuration list for PBXProject "SaverLab" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				4A9504CCFFE6A4B311CA0CBA /* Development */,
+				4A9504CDFFE6A4B311CA0CBA /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* ScreenSaverShell */;
+			projectDirPath = "";
+			targets = (
+				D3FB5D100935973500D0B2C4 /* SaverLab */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D3FB5D230935973500D0B2C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3FB5D240935973500D0B2C4 /* InfoPlist.strings in Resources */,
+				D3FB5D250935973500D0B2C4 /* MainMenu.nib in Resources */,
+				D3FB5D260935973500D0B2C4 /* readme.html in Resources */,
+				D3FB5D270935973500D0B2C4 /* ModuleInfoWindow.nib in Resources */,
+				D3FB5D280935973500D0B2C4 /* SaverLab.icns in Resources */,
+				D3FB5D290935973500D0B2C4 /* QuicktimeProgressWindow.nib in Resources */,
+				D3FB5D2A0935973500D0B2C4 /* StdoutWindow.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		D3FB5D450935973500D0B2C4 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D3FB5D2B0935973500D0B2C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3FB5D2C0935973500D0B2C4 /* main.m in Sources */,
+				D3FB5D2D0935973500D0B2C4 /* SaverLabController.m in Sources */,
+				D3FB5D2E0935973500D0B2C4 /* SaverLabModuleController.m in Sources */,
+				D3FB5D2F0935973500D0B2C4 /* SaverLabFullScreenWindow.m in Sources */,
+				D3FB5D300935973500D0B2C4 /* SaverLabNSOpenGLContextPoser.m in Sources */,
+				D3FB5D310935973500D0B2C4 /* SaverLabModuleList.m in Sources */,
+				D3FB5D320935973500D0B2C4 /* SaverLabBrowserWindowController.m in Sources */,
+				D3FB5D330935973500D0B2C4 /* SaverLabPrefsWindowController.m in Sources */,
+				D3FB5D340935973500D0B2C4 /* SaverLabNSWindowAdditions.m in Sources */,
+				D3FB5D350935973500D0B2C4 /* SaverLabPreferences.m in Sources */,
+				D3FB5D360935973500D0B2C4 /* SaverLabNSButtonAdditions.m in Sources */,
+				D3FB5D370935973500D0B2C4 /* SaverLabScreenSaverViewAdditions.m in Sources */,
+				D3FB5D380935973500D0B2C4 /* QuicktimeUtils.m in Sources */,
+				D3FB5D390935973500D0B2C4 /* SaverLabImageEnumerator.m in Sources */,
+				D3FB5D3A0935973500D0B2C4 /* SaverLabQTProgressWindowController.m in Sources */,
+				D3FB5D3B0935973500D0B2C4 /* SaverLabStdoutWindowController.m in Sources */,
+				D3FB5D3C0935973500D0B2C4 /* SaverLabSSViewPoser.m in Sources */,
+				D3FB5D3D0935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		459FBB2B0075ACF27F000001 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				459FBB2C0075ACF27F000001 /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		D34FC41405F597BF001068B7 /* readme.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				701D263B0076C93C7F000001 /* English */,
+			);
+			name = readme.html;
+			sourceTree = "<group>";
+		};
+		F55D506300CF36EB01A80002 /* ModuleInfoWindow.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F55D506400CF36EB01A80002 /* English */,
+			);
+			name = ModuleInfoWindow.nib;
+			sourceTree = "<group>";
+		};
+		F58DF794030CAE2201A80032 /* QuicktimeProgressWindow.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F574327D014C2C0701A80002 /* QuicktimeProgressWindow.nib */,
+			);
+			name = QuicktimeProgressWindow.nib;
+			sourceTree = "<group>";
+		};
+		F58DF796030CAE2401A80032 /* StdoutWindow.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F515406E018C99CF01A80002 /* StdoutWindow.nib */,
+			);
+			name = StdoutWindow.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D3FB5CB9093590E600D0B2C4 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Development;
+		};
+		D3FB5CBA093590E600D0B2C4 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		D3FB5CBB093590E600D0B2C4 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Default;
+		};
+		D3FB5D470935973500D0B2C4 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-SaverLab.plist";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SaverLab;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		D3FB5D480935973500D0B2C4 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-SaverLab.plist";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SaverLab;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		D3FB5D490935973500D0B2C4 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-SaverLab.plist";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = SaverLab;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D3FB5CB8093590E600D0B2C4 /* Build configuration list for PBXProject "SaverLab" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3FB5CB9093590E600D0B2C4 /* Development */,
+				D3FB5CBA093590E600D0B2C4 /* Deployment */,
+				D3FB5CBB093590E600D0B2C4 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		D3FB5D460935973500D0B2C4 /* Build configuration list for PBXNativeTarget "SaverLab" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3FB5D470935973500D0B2C4 /* Development */,
+				D3FB5D480935973500D0B2C4 /* Deployment */,
+				D3FB5D490935973500D0B2C4 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

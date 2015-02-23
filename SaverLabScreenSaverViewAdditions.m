@@ -8,13 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import "SaverLabScreenSaverViewAdditions.h"
+#import "SaverLabNSWindowAdditions.h"
 #include <OpenGL/glu.h>
 
 // corrects a vertically mirrored image by re-flipping. Pixels are assumed to be int-sized.
 static void fixVerticalMirroredBitmap(int *data, int w, int h) {
   int cols = h/2;
   int x, y;
-  // could probably optimize by unrolling inner loop and using doubles
+  // could probably optimize by unrolling inner loop and using doubles/Altivec
   for(y=0; y<cols; y++) {
     int *topptr = data + (y*w);
     int *botptr = data + ((h-y-1)*w);
@@ -47,12 +48,15 @@ static void fixVerticalMirroredBitmap(int *data, int w, int h) {
 }
 
 -(NSBitmapImageRep *)viewContentsAsImageRep {
+  static int first = 0;
   NSBitmapImageRep *bitmap = nil;
   NSOpenGLView *openGLView = [self _openGLSubview];
   if (!openGLView) {
+    NSRect r2 = [self convertRect:[self frame] toView:nil];
     [self lockFocus];
-    bitmap = [[[NSBitmapImageRep alloc] initWithFocusedViewRect:[self frame]] autorelease];
+    bitmap = [[[NSBitmapImageRep alloc] initWithFocusedViewRect:r2] autorelease];
     [self unlockFocus];  
+    //NSLog(@"%@ %@ %@", NSStringFromSize([self frame].size), NSStringFromSize(r2.size), NSStringFromSize([bitmap size]));
   }  
   else {
     // extracts the pixels from the NSOpenGLView and returns a NSBitmapImageRep. 
@@ -63,8 +67,13 @@ static void fixVerticalMirroredBitmap(int *data, int w, int h) {
     // save previous context  
     NSOpenGLContext *previousContext = [NSOpenGLContext currentContext];
     
-    int h=NSHeight([openGLView bounds]);
-    int w=NSWidth([openGLView bounds]);
+    float scale = [[self window] userSpaceScaleFactor_];
+    int h=NSHeight([openGLView bounds])*scale;
+    int w=NSWidth([openGLView bounds])*scale;
+    if (!first) {
+      //NSLog(@"%d %d", w, h);
+      first = 1;
+    }
     bitmap=[[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
                                                       pixelsWide:w
                                                       pixelsHigh:h

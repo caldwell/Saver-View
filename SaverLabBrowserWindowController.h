@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(IBAction)browserModuleSelected:(id)sender;
 -(IBAction)showWindow:(id)sender;
 -(NSRect)frameRectWithPreviewVisible:(BOOL)visible;
--(int)windowWidthWithPreviewVisible:(BOOL)visible;
+-(float)windowWidthWithPreviewVisible:(BOOL)visible;
 
 -(BOOL)isPreviewCheckboxChecked;
 -(BOOL)isPreviewVisible;

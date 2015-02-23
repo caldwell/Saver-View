@@ -86,6 +86,7 @@ static NSArray *modulesIgnoringHiddenPrefix() {
 // never actually called
 -(void)dealloc {
   [modulePathDictionary release];
+  [super dealloc];
 }
 
 // updates module names and paths, returns true if anything changed
