@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "SaverLabModuleController.h"
 #import "SaverLabFullScreenWindow.h"
+#import "SaverLabPreferences.h"
 
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
@@ -16,7 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // default initial window position if not specified
 static NSRect defaultContentRect() {
   NSRect screenFrame = [[NSScreen mainScreen] frame];
-  return NSMakeRect(screenFrame.origin.x+50, screenFrame.origin.y+screenFrame.size.height-300, 320, 240);
+  NSSize size = [[SaverLabPreferences sharedInstance] defaultModuleWindowSize];
+  return NSMakeRect(screenFrame.origin.x+50, 
+                    screenFrame.origin.y+screenFrame.size.height-size.height-60, 
+                    size.width, size.height);
 }
 
 // keep track of the last directory a background image was opened from
@@ -45,6 +49,14 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 
 -(id)initWithSaverClass:(Class)aClass title:(NSString *)t {
   NSRect contentRect = defaultContentRect();
+  return [self initWithSaverClass:aClass title:t contentRect:contentRect];
+}
+
+-(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentSize:(NSSize)contentSize {
+  NSRect contentRect = defaultContentRect();
+  if (contentSize.width>0 && contentSize.height>0) {
+    contentRect.size = contentSize;
+  }
   return [self initWithSaverClass:aClass title:t contentRect:contentRect];
 }
 
@@ -86,7 +98,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 -(void)finishInit {
   isPaused = isAppHidden = isScreenSaverRunning = NO;
   backgroundImageRep = nil;
-  checkedMenuItems = [[NSMutableArray array] retain];
+  lastFPSUpdateTime = [[NSDate distantFuture] timeIntervalSinceReferenceDate];
   
   // set up application hide/unhide notifications
   [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -131,7 +143,6 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 -(void)dealloc {
   [title release];
   [backgroundImageRep release];
-  [checkedMenuItems release];
   // remove self as observer
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   //NSLog(@"Deallocating SaverLabModuleController");
@@ -230,14 +241,6 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
     [self start];
   }
 }
-
-/* AppKit is fairly determined not to let borderless windows be closed; overridding performClose:
-doesn't work so we need a differently named method.
-*/
--(void)reallyClose:(id)sender {
-  [window close];
-}
-
 
 //// menu actions
 
@@ -345,8 +348,12 @@ copy the necessary state. The same applies for making a full screen window not f
     [self updateInfoPanelRefreshingCurrentFPS:NO];
   }
   else {
-    NSRect rect = [window frame];
-    NSRect contentRect = NSMakeRect(rect.origin.x, rect.origin.y+rect.size.height-h, w, h);
+    NSRect frameRect = [window frame];
+    NSRect oldContentRect = [NSWindow contentRectForFrameRect:frameRect styleMask:[window styleMask]];
+    NSRect contentRect = NSMakeRect(oldContentRect.origin.x, 
+                                    oldContentRect.origin.y+oldContentRect.size.height-h, 
+                                    w, 
+                                    h);
     // convert content view size to frame size
     [window setFrame:[NSWindow frameRectForContentRect:contentRect styleMask:[window styleMask]]
              display:NO];
@@ -458,11 +465,9 @@ There's probably a better way to do this.
 
 -(void)setMenuItem:(id <NSMenuItem>)menuItem isChecked:(BOOL)checked {
   if (checked) {
-    [checkedMenuItems addObject:menuItem];
     [menuItem setState:NSOnState];
   }
   else {
-    [checkedMenuItems removeObject:menuItem];
     [menuItem setState:NSOffState];
   }
 }
@@ -475,8 +480,9 @@ There's probably a better way to do this.
   NSRect moduleScreenRect = [[window screen] frame];
   NSSize infoPanelSize = [infoPanel frame].size;
   NSRect infoPanelFrame;
+  int border = 10;
   // try right side
-  infoPanelFrame = NSMakeRect(moduleRect.origin.x+moduleRect.size.width, 
+  infoPanelFrame = NSMakeRect(moduleRect.origin.x+moduleRect.size.width+border, 
                               moduleRect.origin.y+moduleRect.size.height-infoPanelSize.height,
                               infoPanelSize.width,
                               infoPanelSize.height);
@@ -484,7 +490,7 @@ There's probably a better way to do this.
     return infoPanelFrame;
   }
   // try left side
-  infoPanelFrame.origin.x = moduleRect.origin.x-infoPanelSize.width;
+  infoPanelFrame.origin.x = moduleRect.origin.x-infoPanelSize.width-border;
   if (NSEqualRects(infoPanelFrame, NSIntersectionRect(infoPanelFrame, moduleScreenRect))) {
     return infoPanelFrame;
   }
@@ -534,8 +540,11 @@ There's probably a better way to do this.
 
 -(int)targetFramesPerSecond {
   NSTimeInterval interval = [screenSaverView animationTimeInterval];
+  double fps;
   if (interval<=0) return 0;
-  else return (int)(1.0/interval);
+  fps = 1.0/interval;
+  if (fmod(fps,1.0)>=0.5) return ((int)fps)+1;
+  else return (int)fps;
 }
 
 -(BOOL)isTargetFramesPerSecondUnlimited {
@@ -572,18 +581,6 @@ There's probably a better way to do this.
   if ([note object]==window) {
     // give keypresses to the ScreenSaverView
     [window makeFirstResponder:screenSaverView];
-  }
-}
-
--(void)windowDidResignMain:(NSNotification *)note {
-  if ([note object]==window) {
-    // remove all checkboxes that this window set
-    NSEnumerator *itemEnum = [checkedMenuItems objectEnumerator];
-    NSMenuItem *menuItem;
-    while (menuItem = [itemEnum nextObject]) {
-      [menuItem setState:NSOffState];
-    }
-    [checkedMenuItems removeAllObjects];
   }
 }
 
@@ -625,7 +622,15 @@ There's probably a better way to do this.
 
 -(void)updateFPS:(NSTimer *)timer {
   //NSLog(@"%@ %d fps", [screenSaverView class], unlockFocusCount);
-  framesInLastSecond = (unlockFocusCount > openGLContextCount) ? unlockFocusCount : openGLContextCount;
+  NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+  if (now>lastFPSUpdateTime) {
+    int frames = (unlockFocusCount > openGLContextCount) ? unlockFocusCount : openGLContextCount;
+    double fps = frames/(now-lastFPSUpdateTime);
+    // round up if needed
+    if (fmod(fps,1.0)>=0.5) framesInLastSecond = ((int)fps)+1;
+    else framesInLastSecond = (int)fps;
+  }
+  lastFPSUpdateTime = now;
   unlockFocusCount = openGLContextCount = 0;
   [self updateInfoPanelRefreshingCurrentFPS:YES];
 }

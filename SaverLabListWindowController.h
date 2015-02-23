@@ -8,26 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import <Cocoa/Cocoa.h>
-#import "SaverLabModuleController.h"
-#import "SaverLabListWindowController.h"
-#import "SaverLabPrefsWindowController.h"
 
-@interface SaverLabController : NSObject
+@interface SaverLabListWindowController : NSObject
 {
-    NSMenuItem *modulesMenu;
-    BOOL wasScreenSaverRunning;
-    
-    SaverLabListWindowController *listWindowController;
-    SaverLabPrefsWindowController *prefsWindowController;
+    IBOutlet id modulesBrowser;
+    IBOutlet id window;
 }
+-(IBAction)moduleSelected:(id)sender;
+-(IBAction)showWindow:(id)sender;
 
--(void)rebuildModulesMenu;
--(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
+-(void)refresh;
 
--(SaverLabModuleController *)openModuleWithName:(NSString *)name;
--(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)rect;
--(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect;
-
--(void)saveWindowPositions;
--(void)restoreWindowPositions;
 @end

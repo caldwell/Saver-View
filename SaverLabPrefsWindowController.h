@@ -8,26 +8,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import <Cocoa/Cocoa.h>
-#import "SaverLabModuleController.h"
-#import "SaverLabListWindowController.h"
-#import "SaverLabPrefsWindowController.h"
 
-@interface SaverLabController : NSObject
+@interface SaverLabPrefsWindowController : NSObject
 {
-    NSMenuItem *modulesMenu;
-    BOOL wasScreenSaverRunning;
-    
-    SaverLabListWindowController *listWindowController;
-    SaverLabPrefsWindowController *prefsWindowController;
+    IBOutlet id restoreWindowsCheckbox;
+    IBOutlet id showListWhenNoWindowsOpenCheckbox;
+    IBOutlet id showListOnStartupCheckbox;
+    IBOutlet id sizePopupMenu;
+    IBOutlet id window;
 }
+-(IBAction)showWindow:(id)sender;
+-(IBAction)cancelPreferences:(id)sender;
+-(IBAction)savePreferences:(id)sender;
 
--(void)rebuildModulesMenu;
--(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
-
--(SaverLabModuleController *)openModuleWithName:(NSString *)name;
--(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)rect;
--(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect;
-
--(void)saveWindowPositions;
--(void)restoreWindowPositions;
+-(void)readPreferences;
+-(void)writePreferences;
 @end

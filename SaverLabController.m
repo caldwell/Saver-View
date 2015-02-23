@@ -8,29 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 #import "SaverLabController.h"
+#import "SaverLabModuleList.h"
+#import "SaverLabPreferences.h"
 
 // for isProcessRunningWithName
 #include <sys/sysctl.h>
 
-static NSString *SCREEN_SAVER_DIR = @"Screen Savers";
-static NSString *SCREEN_SAVER_SUFFIX = @".saver";
-static NSString *HIDE_PREFIX = @"."; // hide saver bundles starting with "."
-static int MODULE_MENU_PERMANENT_ITEMS = 0;
-
-// returns all locations to search for .saver bundles
-static NSArray* screenSaverSearchPaths() {
-  NSMutableArray *array = [NSMutableArray array];
-  NSArray *libPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);
-  NSString *path;
-  NSEnumerator *pathenum = [libPaths objectEnumerator];
-  [array addObject:@"/System/Library/Frameworks/ScreenSaver.framework/Resources"];
-  while (path=[pathenum nextObject]) {
-    [array addObject:[path stringByAppendingPathComponent:SCREEN_SAVER_DIR]];
-  }
-  //NSLog(@"screenSaverSearchPaths() returning:%@", array);
-  return array;
-}
-
+static int MODULE_MENU_PERMANENT_ITEMS = 2;
 
 // apparently the BSD calls to get process names only allow 16 characters, so
 // "ScreenSaverEngine" becomes "ScreenSaverEngin"
@@ -67,12 +51,25 @@ static int isProcessRunningWithName(const char *procname) {
   return found;
 }
 
+/* Returns true if there are any visible windows. Should possibly be a category
+method on NSApplication.
+*/
+static BOOL appHasVisibleWindows() {
+  NSArray *windows = [NSApp windows];
+  NSEnumerator *wenum = [windows objectEnumerator];
+  NSWindow *window;
+  while (window=[wenum nextObject]) {
+    if ([window isVisible]) return YES;
+  }
+  return NO;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 @implementation SaverLabController
 
 -(void)applicationDidFinishLaunching:(NSNotification *)note {
-  [self buildModulesMenu];
+  [self rebuildModulesMenu];
   // set up timer to poll for ScreenSaverEngine process
   wasScreenSaverRunning = NO;
   [NSTimer scheduledTimerWithTimeInterval:5.0
@@ -80,71 +77,63 @@ static int isProcessRunningWithName(const char *procname) {
                                  selector:@selector(checkForScreenSaver:)
                                  userInfo:nil
                                   repeats:YES];
-  [self restoreWindowPositions];
+                                  
+  {
+    SaverLabPreferences *prefs = [SaverLabPreferences sharedInstance];
+    if ([prefs restoreModuleWindowsOnStartup]) [self restoreWindowPositions];
+    // show module list if there are no windows open
+    if ([prefs showModuleListOnStartup] || 
+        ([prefs showModuleListWhenNoOpenWindows] && !appHasVisibleWindows())) {
+      [listWindowController showWindow:self];
+    }
+  }
 }
 
 /** Reload the modules list whenever the app becomes active. This causes a slight
 delay which is hopefully not significant unless you have a ton of modules.
 */
 -(void)applicationDidBecomeActive:(NSNotification *)note {
-  [self updateModulesMenu];
+  if ([[SaverLabModuleList sharedInstance] updateList]) {
+    [self rebuildModulesMenu];
+    [listWindowController refresh];
+  }
   // restart modules if they were stopped by the real screen saver
   if (wasScreenSaverRunning) {
     wasScreenSaverRunning = NO;
     [self broadcastScreenSaverIsRunning:NO];
   }
+  // maybe show module list if there are no windows open
+  if ([[SaverLabPreferences sharedInstance] showModuleListWhenNoOpenWindows] && !appHasVisibleWindows()) {
+    [listWindowController showWindow:self];
+  }
 }
 
--(void)updateModulesMenu {
+-(void)rebuildModulesMenu {
+  // make an item for each bundle
+  NSString *saverName  = nil;
+  NSMenuItem *menuItem = nil;
+
   // remove everything
   NSMenu *modulesSubmenu = [modulesMenu submenu];
   while ([modulesSubmenu numberOfItems]>MODULE_MENU_PERMANENT_ITEMS) {
     [modulesSubmenu removeItemAtIndex:[modulesSubmenu numberOfItems]-1];
   }
-  [self buildModulesMenu];
-}
-
--(void)buildModulesMenu {
-  // get library paths (/System/Library, /Library, ~/Library)
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSArray *libraryDirs = screenSaverSearchPaths();
-  NSEnumerator *saverDirEnum = [libraryDirs objectEnumerator];
-  NSString *saverDir = nil;
   
-  [modulePathDictionary release];
-  modulePathDictionary = [[NSMutableDictionary alloc] init];
-  
-  // append "Screen Savers" to each library path and search for .saver bundles
-  while (saverDir = [saverDirEnum nextObject]) {
-    NSEnumerator *saverBundleEnum = [fileManager enumeratorAtPath:saverDir];
-    NSString *saverBundle = nil;
-    while (saverBundle=[saverBundleEnum nextObject]) {
-      if ([saverBundle hasSuffix:SCREEN_SAVER_SUFFIX] && ![saverBundle hasPrefix:HIDE_PREFIX]) {
-        NSString *path = [saverDir stringByAppendingPathComponent:saverBundle];
-        // this assumes all filenames are unique
-        [modulePathDictionary setObject:path 
-                          forKey:[[path lastPathComponent] stringByDeletingPathExtension]];
-      }
-    }
-  }
-  // make an item for each bundle, with the full path as the represented object
+  // create menu items
   {
-    NSString *saverName  = nil;
-    NSMenuItem *menuItem = nil;
-    // sort menu by module name
-    NSArray *sortedNames = [[modulePathDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    NSArray *sortedNames = [[SaverLabModuleList sharedInstance] sortedModuleNames];
     NSEnumerator *nameEnum = [sortedNames objectEnumerator];
     while (saverName = [nameEnum nextObject]) {
       menuItem = [[NSMenuItem alloc] initWithTitle:saverName
                                             action:@selector(moduleSelected:) 
-                                     keyEquivalent:@""];
+                                      keyEquivalent:@""];
       [[modulesMenu submenu] addItem:menuItem];
     }
   }
 }
 
 -(SaverLabModuleController *)openModuleWithName:(NSString *)name {
-  NSBundle *saverBundle = [NSBundle bundleWithPath:[modulePathDictionary objectForKey:name]];
+  NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
   Class saverClass = [saverBundle principalClass];
   SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
                                                initWithSaverClass:saverClass
@@ -155,7 +144,7 @@ delay which is hopefully not significant unless you have a ton of modules.
 -(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)frameRect {
   if (NSIsEmptyRect(frameRect)) return [self openModuleWithName:name];
   else {
-    NSBundle *saverBundle = [NSBundle bundleWithPath:[modulePathDictionary objectForKey:name]];
+    NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
     Class saverClass = [saverBundle principalClass];
     NSRect rect = [NSWindow contentRectForFrameRect:frameRect styleMask:NSTitledWindowMask];
     SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
@@ -167,7 +156,7 @@ delay which is hopefully not significant unless you have a ton of modules.
 }
 
 -(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect {
-  NSBundle *saverBundle = [NSBundle bundleWithPath:[modulePathDictionary objectForKey:name]];
+  NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
   Class saverClass = [saverBundle principalClass];
   // try to find the screen corresponding to the given NSRect
   NSArray *screens = [NSScreen screens];
@@ -207,6 +196,24 @@ delay which is hopefully not significant unless you have a ton of modules.
     [controller start];
   }
 }
+
+/* Called when a .saver bundle is opened from the Finder or elsewhere.
+*/
+-(BOOL)application:(NSApplication *)app openFile:(NSString *)filename{
+  NSBundle *saverBundle = [NSBundle bundleWithPath:filename];
+  Class saverClass = [saverBundle principalClass];
+  NSString *name = [[filename lastPathComponent] stringByDeletingPathExtension];
+  SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
+                                               initWithSaverClass:saverClass
+                                                            title:name];
+  if (controller) {
+    [controller showModuleWindow];
+    [controller start];
+    return YES;
+  }
+  return NO;
+}
+
 
 /* On application termination, save the location of all open module windows.
 */

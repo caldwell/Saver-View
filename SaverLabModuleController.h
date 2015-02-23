@@ -17,7 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     ScreenSaverView *screenSaverView;
     NSImageRep *backgroundImageRep;
     NSString *title;
-    NSMutableArray *checkedMenuItems;
     
     BOOL isPaused;
     BOOL isAppHidden;
@@ -28,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // fps calculations
     int framesInLastSecond;
     NSTimer *fpsTimer;
+    NSTimeInterval lastFPSUpdateTime;
     
     int unlockFocusCount;
     int openGLContextCount;
@@ -40,6 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)rect;
+-(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentSize:(NSSize)contentSize;
 -(id)initWithSaverClass:(Class)aClass title:(NSString *)t;
 -(id)initFullScreen:(NSScreen *)screen withSaverClass:(Class)aClass title:(NSString *)t;
 

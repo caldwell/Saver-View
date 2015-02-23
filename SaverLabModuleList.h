@@ -7,27 +7,20 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#import <Cocoa/Cocoa.h>
-#import "SaverLabModuleController.h"
-#import "SaverLabListWindowController.h"
-#import "SaverLabPrefsWindowController.h"
+#import <Foundation/Foundation.h>
 
-@interface SaverLabController : NSObject
-{
-    NSMenuItem *modulesMenu;
-    BOOL wasScreenSaverRunning;
-    
-    SaverLabListWindowController *listWindowController;
-    SaverLabPrefsWindowController *prefsWindowController;
+
+@interface SaverLabModuleList : NSObject {
+    NSMutableDictionary *modulePathDictionary;
+    NSArray *sortedModuleNames;
 }
 
--(void)rebuildModulesMenu;
--(void)broadcastScreenSaverIsRunning:(BOOL)ssRunning;
++(SaverLabModuleList *)sharedInstance;
 
--(SaverLabModuleController *)openModuleWithName:(NSString *)name;
--(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)rect;
--(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect;
+-(BOOL)updateList;
+-(NSArray *)sortedModuleNames;
+-(NSString *)pathForModuleName:(NSString *)name;
+-(NSBundle *)bundleForModuleName:(NSString *)name;
+-(Class)classForModuleName:(NSString *)name;
 
--(void)saveWindowPositions;
--(void)restoreWindowPositions;
 @end

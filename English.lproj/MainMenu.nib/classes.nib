@@ -30,7 +30,27 @@
             ACTIONS = {updateModulesMenu = id; }; 
             CLASS = SaverLabController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {modulesMenu = id; }; 
+            OUTLETS = {listWindowController = id; modulesMenu = id; prefsWindowController = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {moduleSelected = id; showWindow = id; }; 
+            CLASS = SaverLabListWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {modulesBrowser = id; sizePopupMenu = id; window = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {cancelPreferences = id; savePreferences = id; showWindow = id; }; 
+            CLASS = SaverLabPrefsWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                restoreWindowsCheckbox = id; 
+                showListOnStartupCheckbox = id; 
+                showListWhenNoWindowsOpenCheckbox = id; 
+                sizePopupMenu = id; 
+                window = id; 
+            }; 
             SUPERCLASS = NSObject; 
         }
     ); 
