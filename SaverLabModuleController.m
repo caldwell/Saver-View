@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabModuleController.h"
 #import "SaverLabFullScreenWindow.h"
 #import "SaverLabPreferences.h"
+#import "SaverLabModuleList.h"
+#import "SaverLabScreenSaverViewAdditions.h"
+#import "SaverLabQTProgressWindowController.h"
 
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
@@ -26,6 +29,7 @@ static NSRect defaultContentRect() {
 // keep track of the last directory a background image was opened from
 static NSString *gLastImageDirectory = nil;
 static NSString *PAUSED_STRING = @": Paused"; // should be localized
+static NSString *RECORDING_STRING = @": RECORDING";
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -100,6 +104,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   isInPreviewMode = NO;
   backgroundImageRep = nil;
   lastFPSUpdateTime = [[NSDate distantFuture] timeIntervalSinceReferenceDate];
+  checkedMenuItems = [[NSMutableArray alloc] init];
   
   // set up application hide/unhide notifications
   [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -144,6 +149,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 -(void)dealloc {
   [title release];
   [backgroundImageRep release];
+  [checkedMenuItems release];
   // remove self as observer
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   //NSLog(@"Deallocating SaverLabModuleController");
@@ -206,10 +212,18 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
 
 -(void)showModuleWindow {
   NSRect contentViewRect = [[window contentView] frame];
-  [window setTitle:title];
+  [self updateWindowTitle];
   // the ScreenSaverView subclass in the is the content view of the window
   screenSaverView = [[[screenSaverClass alloc] initWithFrame:contentViewRect 
                                                    isPreview:[self isInPreviewMode]] autorelease];
+                                                   
+      // 10.1 testing                                                   
+      if ([[[SaverLabModuleList sharedInstance] pathForModuleName:title] hasSuffix:@"slideSaver"]) {
+        NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:title];
+        [screenSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
+                                                  stringByAppendingPathComponent:@"Resources"]];
+      }
+      
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
   // force view to first responder in case this window was already front
@@ -241,6 +255,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   // This stops the module's animation timer. Some modules also reset their
   // internal state, which can make the single step feature behave oddly.
   if ([screenSaverView isAnimating]) [screenSaverView stopAnimation];
+  isPaused = YES;
 }
 
 /* Starts the animation unless a condition exists in which it should not start 
@@ -252,20 +267,28 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   }
 }
 
+/* Updates the window title to reflect the paused and/or recording states.
+*/
+-(void)updateWindowTitle {
+  NSString *windowTitle = title;
+  if (isPaused) windowTitle = [windowTitle stringByAppendingString:PAUSED_STRING];
+  if (isRecordingFrames) windowTitle = [windowTitle stringByAppendingString:RECORDING_STRING];
+  [window setTitle:windowTitle];
+}
+
 //// menu actions
 
 -(void)togglePause:(id)sender {
   BOOL isPausing = [screenSaverView isAnimating];
   if (isPausing) {
-    [window setTitle:[title stringByAppendingString:PAUSED_STRING]];
     isPaused = YES;
     [self stop];
   }
   else {
-    [window setTitle:title];
     isPaused = NO;
     [self startIfPossible];
   }
+  [self updateWindowTitle];
 }
 
 -(void)restart:(id)sender {
@@ -281,7 +304,7 @@ static NSString *PAUSED_STRING = @": Paused"; // should be localized
   // thinks that it is not animating. Seems to work in everything but the slideshows.
   if ([screenSaverView isAnimating]) {
     [self stop];
-    [window setTitle:[title stringByAppendingString:PAUSED_STRING]];
+    [self updateWindowTitle];
   }
   [screenSaverView lockFocus];
   [screenSaverView animateOneFrame];
@@ -335,6 +358,12 @@ copy the necessary state. The same applies for making a full screen window not f
     [self start];
     [self updateInfoPanelRefreshingCurrentFPS:NO];
   }
+}
+
+// makes the window full screen and puts it in the back layer
+-(void)makeDesktopBackground:(id)sender {
+  [self moveToBackLayer:nil];
+  [self makeFullScreen:nil];
 }
 
 -(NSRect)defaultFrameForWidth:(int)w height:(int)h screen:(NSScreen *)screen {
@@ -423,46 +452,47 @@ copy the necessary state. The same applies for making a full screen window not f
 //// menu state
 
 /* -validateMenuItem  sets checkmarks for the front/standard/back window layer items 
-and the window size items. It calls setMenuItem:isChecked: to do this, which keeps 
-track of checked items so they can be unchecked when the window is no longer main. 
-There's probably a better way to do this.
+and the window size items. 
 */
 -(BOOL)validateMenuItem:(id <NSMenuItem>)menuItem {
   SEL action = [menuItem action];
   if (action==@selector(makeFullScreen:)) {
     [self setMenuItem:menuItem isChecked:[self isFullScreen]];
   }
-  if (action==@selector(selectBackgroundImage:)) {
+  else if (action==@selector(selectBackgroundImage:)) {
     // don't allow selecting background images for OpenGL modules
     if ([[[screenSaverView subviews] lastObject] isKindOfClass:[NSOpenGLView class]]) return NO;
     else return YES;
   }
-  if (action==@selector(showConfigurationSheet:)) {
+  else if (action==@selector(showConfigurationSheet:)) {
     return [screenSaverView hasConfigureSheet];
   }
-  if (action==@selector(moveToFrontLayer:)) {
+  else if (action==@selector(moveToFrontLayer:)) {
     [self setMenuItem:menuItem isChecked:([window level]>NSNormalWindowLevel)];
   }
-  if (action==@selector(moveToStandardLayer:)) {
+  else if (action==@selector(moveToStandardLayer:)) {
     [self setMenuItem:menuItem isChecked:([window level]==NSNormalWindowLevel)];
   }
-  if (action==@selector(moveToBackLayer:)) {
+  else if (action==@selector(moveToBackLayer:)) {
     [self setMenuItem:menuItem isChecked:([window level]<NSNormalWindowLevel)];
   }
-  if (action==@selector(makeSize160:)) {
+  else if (action==@selector(makeSize160:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:160 height:120];
   }
-  if (action==@selector(makeSize320:)) {
+  else if (action==@selector(makeSize320:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:320 height:240];
   }
-  if (action==@selector(makeSize480:)) {
+  else if (action==@selector(makeSize480:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:480 height:360];
   }
-  if (action==@selector(makeSize640:)) {
+  else if (action==@selector(makeSize640:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:640 height:480];
   }
-  if (action==@selector(makeSize800:)) {
+  else if (action==@selector(makeSize800:)) {
     [self checkMenuItem:menuItem ifContentViewHasWidth:800 height:600];
+  }
+  else if (action==@selector(makeDesktopBackground:)) {
+    return !([self isFullScreen] && [window level]<NSNormalWindowLevel);
   }
   return YES;
 }
@@ -476,9 +506,11 @@ There's probably a better way to do this.
 -(void)setMenuItem:(id <NSMenuItem>)menuItem isChecked:(BOOL)checked {
   if (checked) {
     [menuItem setState:NSOnState];
+    [checkedMenuItems addObject:menuItem];
   }
   else {
     [menuItem setState:NSOffState];
+    [checkedMenuItems removeObject:menuItem];
   }
 }
 
@@ -594,6 +626,18 @@ There's probably a better way to do this.
   }
 }
 
+// uncheck checked menu items
+- (void)windowDidResignMain:(NSNotification *)aNotification {
+  NSEnumerator *e = [checkedMenuItems objectEnumerator];
+  id menuItem;
+  while (menuItem=[e nextObject]) {
+    [menuItem setState:NSOffState];
+  }
+  [checkedMenuItems removeAllObjects];
+}
+
+
+
 //// notification methods
 // stop animations when app is hidden, restart when unhidden if it was previously running
 -(void)appHidden:(NSNotification *)note {
@@ -616,6 +660,7 @@ There's probably a better way to do this.
 -(void)screenSaverDrewFrame:(NSNotification *)note {
   if ([note object]==screenSaverView) {
     ++unlockFocusCount;
+    if (isRecordingFrames && !isFrameCaptureInProgress && ![screenSaverView isOpenGLModule]) [self saveQuicktimeFrame];
     //if (framesDrawn%100==0) NSLog(@"%@ %d", [screenSaverView class], unlockFocusCount);
   }
 }
@@ -627,6 +672,7 @@ There's probably a better way to do this.
   NSOpenGLContext *context = [note object];
   if ([[context view] superview]==screenSaverView) {
     ++openGLContextCount;
+    if (isRecordingFrames && !isFrameCaptureInProgress) [self saveQuicktimeFrame];
   }
 }
 
@@ -664,12 +710,142 @@ There's probably a better way to do this.
       screenSaverView = nil;
       [self autorelease];
     }
+    // abort Quicktime recording
+    isRecordingFrames = NO;
+    [self deleteTemporaryQuicktimeImagesDirectory];
   }
   else if ([note object]==infoPanel) {
     [self closeInfoPanel];
   }
 }
 
+// Support for saving animations as Quicktime movies
+
+-(NSString *)temporaryDirectoryForQuicktimeImages {
+  if (!temporaryQuicktimeDirectory) {
+    NSString *tmpdir = NSTemporaryDirectory();
+    int i;
+    for(i=0; i<9999 && !temporaryQuicktimeDirectory; i++) {
+      NSString *testdir = [tmpdir stringByAppendingPathComponent:[NSString stringWithFormat:@"SaverLab%d", i]];
+      if (![[NSFileManager defaultManager] fileExistsAtPath:testdir]) {
+        temporaryQuicktimeDirectory = [testdir retain];
+        [[NSFileManager defaultManager] createDirectoryAtPath:testdir attributes:nil];
+      }
+    }
+  }
+  return temporaryQuicktimeDirectory;
+}
+
+-(void)deleteTemporaryQuicktimeImagesDirectory {
+  if (temporaryQuicktimeDirectory) {
+    [[NSFileManager defaultManager] removeFileAtPath:temporaryQuicktimeDirectory handler:nil];
+    [temporaryQuicktimeDirectory release];
+    temporaryQuicktimeDirectory = nil;
+  }
+}
+
+-(void)forgetTemporaryQuicktimeImagesDirectory {
+  [temporaryQuicktimeDirectory release];
+  temporaryQuicktimeDirectory = nil;
+}
+
+-(void)saveQuicktimeFrame {
+  if (isRecordingFrames) {
+    // for some reason this can't be done in this iteration of the run loop
+    [self performSelector:@selector(_saveQuicktimeFrame:) withObject:nil afterDelay:0];
+  }
+  //[self _saveQuicktimeFrame:nil];
+}
+
+-(void)_saveQuicktimeFrame:(id)arg {
+  if (isRecordingFrames) {
+    NSBitmapImageRep *imageRep;
+    NSData *tiffData;
+    NSString *filename;
+    NSString *path;
+    isFrameCaptureInProgress = YES; // so we don't trigger frame counts
+    //NSLog(@"%d:getting image",quicktimeFrameCounter);
+    imageRep = [screenSaverView viewContentsAsImageRep];
+    if (imageRep) {
+      //NSLog(@"%d:getting TIFF data", quicktimeFrameCounter);
+      tiffData = [imageRep TIFFRepresentation];
+      filename = [[[NSNumber numberWithInt:quicktimeFrameCounter] stringValue]
+                            stringByAppendingPathExtension:@"tiff"];
+      path = [[self temporaryDirectoryForQuicktimeImages] stringByAppendingPathComponent:filename];
+      [tiffData writeToFile:path atomically:NO];
+      ++quicktimeFrameCounter;
+    }
+    else {
+      NSBeep();
+      isRecordingFrames = NO;
+    }
+    isFrameCaptureInProgress = NO;
+  }
+}
+
+-(NSDictionary *)quicktimeMovieParameters {
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+  double frameLength = [screenSaverView animationTimeInterval];
+  if (frameLength<1.0/30) frameLength = 1.0/30;
+  [dict setObject:[NSNumber numberWithInt:quicktimeFrameCounter] forKey:@"numFrames"];
+  [dict setObject:[NSNumber numberWithDouble:frameLength] forKey:@"frameLength"];
+  [dict setObject:[self temporaryDirectoryForQuicktimeImages] forKey:@"imagesDirectory"];
+  return [dict retain];
+}
+
+-(void)toggleQuicktimeRecording:(id)sender {
+  if (isRecordingFrames) {
+    isRecordingFrames = NO;
+    [[NSSavePanel savePanel] beginSheetForDirectory:nil
+                                               file:[title stringByAppendingPathExtension:@"mov"]
+                                     modalForWindow:window
+                                      modalDelegate:self
+                                     didEndSelector:@selector(quicktimeSavePanelEnded:code:movieInfo:)
+                                        contextInfo:[self quicktimeMovieParameters]];
+  }
+  else {
+    isRecordingFrames = YES;
+    quicktimeFrameCounter = 0;
+  }
+  [self updateWindowTitle];
+}
+
+-(void)removeTemporaryImagesFromDirectory:(NSString *)dir count:(int)count {
+  int i;
+  for(i=0; i<count; i++) {
+    NSString *file = [[[NSNumber numberWithInt:i] stringValue] stringByAppendingPathExtension:@"tiff"];
+    NSString *path = [dir stringByAppendingPathComponent:file];
+    [[NSFileManager defaultManager] removeFileAtPath:path handler:nil];
+  }
+}
+
+
+-(void)quicktimeSavePanelEnded:(NSSavePanel *)panel code:(int)code movieInfo:(NSDictionary *)info {
+  if (code==NSOKButton) {
+    // parameters for movie creation
+    NSString *moviePath = [panel filename];
+    NSString *imagesDirectory = [info objectForKey:@"imagesDirectory"];
+    int numFrames = [[info objectForKey:@"numFrames"] intValue];
+    double frameLength = [[info objectForKey:@"frameLength"] doubleValue];
+    // images directory is no longer our responsibility, SaverLabQTProgressWindowController will delete it
+    [self forgetTemporaryQuicktimeImagesDirectory];
+    {
+      // display progress window
+      SaverLabQTProgressWindowController *controller = [[SaverLabQTProgressWindowController alloc] init];
+      [NSBundle loadNibNamed:@"QuicktimeProgressWindow" owner:controller];
+      [controller createMovieFile:moviePath 
+            fromImagesInDirectory:imagesDirectory
+                       frameCount:numFrames
+                      frameLength:frameLength
+             deleteImagesWhenDone:YES];
+    }
+  }
+  else {
+    [self deleteTemporaryQuicktimeImagesDirectory];
+  }
+  [info release];
+}
 
 
 @end
+

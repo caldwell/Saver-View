@@ -309,4 +309,15 @@ modules will stop so as not to slow it down.
   [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
 }
 
+/*
+#import <QuickTime/QuickTime.h>
+
+- (void)awakeFromNib
+{
+    EnterMovies();
+    //createMovieFromImagesInDirectory(@"/Users/brian/tmp/SaverLab/SaverLab.mov",@"/Users/brian/tmp/SaverLab",30);
+}
+*/
+
+
 @end

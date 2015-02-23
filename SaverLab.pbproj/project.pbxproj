@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 32;
+	objectVersion = 34;
 	objects = {
 		017AF4D9006EBDA3C0A80002 = {
 			isa = PBXFrameworkReference;
@@ -176,9 +176,9 @@
 		1058C7A0FEA54F0111CA2CBB = {
 			children = (
 				1058C7A1FEA54F0111CA2CBB,
-				242572A8008909147F000001,
 				017AF4D9006EBDA3C0A80002,
 				0CB90036008A792A7F000001,
+				F577A35A0143638801000001,
 			);
 			isa = PBXGroup;
 			name = "Linked Frameworks";
@@ -243,22 +243,6 @@
 //192
 //193
 //194
-//240
-//241
-//242
-//243
-//244
-		242572A8008909147F000001 = {
-			isa = PBXFrameworkReference;
-			name = CoreGraphics.framework;
-			path = /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework;
-			refType = 0;
-		};
-//240
-//241
-//242
-//243
-//244
 //290
 //291
 //292
@@ -294,6 +278,8 @@
 		29B97315FDCFA39411CA2CEA = {
 			children = (
 				29B97316FDCFA39411CA2CEA,
+				F577A3510143566A01000001,
+				F577A3520143566A01000001,
 			);
 			isa = PBXGroup;
 			name = "Other Sources";
@@ -312,6 +298,7 @@
 				089C165CFE840E0CC02AAC07,
 				459FBB2B0075ACF27F000001,
 				F55D506300CF36EB01A80002,
+				F574327D014C2C0701A80002,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -349,11 +336,9 @@
 				043355C9FE30361CC02AAC07,
 			);
 			buildSettings = {
-				DEBUGGING_SYMBOLS = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SaverLab;
@@ -389,7 +374,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.4, © 2001 Brian Nenninger</string>
+	<string>1.5, © 2001 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -401,11 +386,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4</string>
+	<string>1.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.4</string>
+	<string>1.5</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -431,6 +416,10 @@
 				F53F695900E5795401A80002,
 				F53F695D00E5854F01A80002,
 				F524BA1200EEE59D01A80002,
+				F581E08E0141EA4C01000001,
+				F577A3530143566A01000001,
+				F5743281014C45B701A80002,
+				F5743285014C483401A80002,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -443,6 +432,7 @@
 				701D263C0076C93C7F000001,
 				F55D506500CF36EB01A80002,
 				F524BA0B00E9A4AB01A80002,
+				F574327E014C2C0701A80002,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
@@ -462,6 +452,10 @@
 				F53F695A00E5795401A80002,
 				F53F695E00E5854F01A80002,
 				F524BA1300EEE59D01A80002,
+				F581E08F0141EA4C01000001,
+				F577A3540143566A01000001,
+				F5743282014C45B701A80002,
+				F5743286014C483401A80002,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
@@ -480,6 +474,7 @@
 				1058C7A3FEA54F0111CA2CBB,
 				017AF4DA006EBDA3C0A80002,
 				0CB90037008A792A7F000001,
+				F577A35B0143638801000001,
 			);
 			isa = PBXFrameworksBuildPhase;
 			name = "Frameworks & Libraries";
@@ -530,6 +525,7 @@
 			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				OPTIMIZATION_CFLAGS = "-O0";
 			};
 			isa = PBXBuildStyle;
 			name = Development;
@@ -606,6 +602,10 @@
 				F5E5BB3900DD5E5201A80002,
 				F5E5BB3C00E061C101A80002,
 				F5E5BB3D00E061C101A80002,
+				F574327F014C45B701A80002,
+				F5743280014C45B701A80002,
+				F5743283014C483401A80002,
+				F5743284014C483401A80002,
 			);
 			isa = PBXGroup;
 			name = Controllers;
@@ -742,6 +742,117 @@
 			settings = {
 			};
 		};
+		F574327D014C2C0701A80002 = {
+			isa = PBXFileReference;
+			path = QuicktimeProgressWindow.nib;
+			refType = 4;
+		};
+		F574327E014C2C0701A80002 = {
+			fileRef = F574327D014C2C0701A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F574327F014C45B701A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabImageEnumerator.h;
+			refType = 4;
+		};
+		F5743280014C45B701A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabImageEnumerator.m;
+			refType = 4;
+		};
+		F5743281014C45B701A80002 = {
+			fileRef = F574327F014C45B701A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5743282014C45B701A80002 = {
+			fileRef = F5743280014C45B701A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5743283014C483401A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabQTProgressWindowController.h;
+			refType = 4;
+		};
+		F5743284014C483401A80002 = {
+			isa = PBXFileReference;
+			path = SaverLabQTProgressWindowController.m;
+			refType = 4;
+		};
+		F5743285014C483401A80002 = {
+			fileRef = F5743283014C483401A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5743286014C483401A80002 = {
+			fileRef = F5743284014C483401A80002;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F577A3510143566A01000001 = {
+			isa = PBXFileReference;
+			path = QuicktimeUtils.m;
+			refType = 4;
+		};
+		F577A3520143566A01000001 = {
+			isa = PBXFileReference;
+			path = QuicktimeUtils.h;
+			refType = 4;
+		};
+		F577A3530143566A01000001 = {
+			fileRef = F577A3520143566A01000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F577A3540143566A01000001 = {
+			fileRef = F577A3510143566A01000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F577A35A0143638801000001 = {
+			isa = PBXFrameworkReference;
+			name = QuickTime.framework;
+			path = /System/Library/Frameworks/QuickTime.framework;
+			refType = 0;
+		};
+		F577A35B0143638801000001 = {
+			fileRef = F577A35A0143638801000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F581E08C0141EA4C01000001 = {
+			isa = PBXFileReference;
+			path = SaverLabScreenSaverViewAdditions.h;
+			refType = 4;
+		};
+		F581E08D0141EA4C01000001 = {
+			isa = PBXFileReference;
+			path = SaverLabScreenSaverViewAdditions.m;
+			refType = 4;
+		};
+		F581E08E0141EA4C01000001 = {
+			fileRef = F581E08C0141EA4C01000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F581E08F0141EA4C01000001 = {
+			fileRef = F581E08D0141EA4C01000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		F5E5BB2D00DC774D01A80002 = {
 			isa = PBXFileReference;
 			path = SaverLabModuleList.h;
@@ -776,6 +887,8 @@
 				F53F695800E5795401A80002,
 				F524BA1000EEE59D01A80002,
 				F524BA1100EEE59D01A80002,
+				F581E08C0141EA4C01000001,
+				F581E08D0141EA4C01000001,
 			);
 			isa = PBXGroup;
 			name = "Cocoa Additions";

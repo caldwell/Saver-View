@@ -51,6 +51,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       
       previewSaverView = [[[previewSaverClass alloc] initWithFrame:[previewView bounds] 
                                                          isPreview:YES] autorelease];
+                                                         
+      // 10.1 testing                                                   
+      if ([[[SaverLabModuleList sharedInstance] pathForModuleName:name] hasSuffix:@"slideSaver"]) {
+        NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:name];
+        [previewSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
+                                                   stringByAppendingPathComponent:@"Resources"]];
+      }
+      
+      
       [previewSaverView setFrame:[previewView bounds]];
       [previewView addSubview:previewSaverView];
       [previewSaverView startAnimation];
@@ -147,7 +156,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   [sheet orderOut:nil];
   // the saver module should restart itself if needed
 }
-
 
 // NSBrowser delegate methods
 

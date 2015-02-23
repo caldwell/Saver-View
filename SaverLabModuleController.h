@@ -25,6 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     BOOL isResizingWindow;
     
+    NSMutableArray *checkedMenuItems;
+    
     // fps calculations
     int framesInLastSecond;
     NSTimer *fpsTimer;
@@ -38,6 +40,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSTextField *targetFPSField;
     NSTextField *currentFPSField;
     NSTextField *saverSizeField;
+    
+    int quicktimeFrameCounter;
+    BOOL isRecordingFrames;
+    BOOL isFrameCaptureInProgress;
+    BOOL isCreatingQuicktimeMovie;
+    NSString *temporaryQuicktimeDirectory;
 }
 
 -(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)rect;
@@ -51,6 +59,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)title;
 -(NSWindow *)moduleWindow;
 -(BOOL)isFullScreen;
+
+-(void)updateWindowTitle;
 
 -(BOOL)isInPreviewMode;
 -(void)setIsInPreviewMode:(BOOL)value;
@@ -74,3 +84,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)updateInfoPanelRefreshingCurrentFPS:(BOOL)refreshCurrentFPS;
 
 @end
+

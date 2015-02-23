@@ -12,8 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static SaverLabModuleList *_sharedInstance = nil;
 
 static NSString *SCREEN_SAVER_DIR = @"Screen Savers";
-static NSString *SCREEN_SAVER_SUFFIX = @".saver";
+static NSArray *screenSaverSuffixes = nil;
 static NSString *HIDE_PREFIX = @"."; // hide saver bundles starting with "."
+static NSString *SLIDE_SHOW_MODULE_NAME = @"Slide Show";
 
 // returns all locations to search for .saver bundles
 static NSArray* screenSaverSearchPaths() {
@@ -29,7 +30,15 @@ static NSArray* screenSaverSearchPaths() {
   return array;
 }
 
+
 @implementation SaverLabModuleList
+
++(NSArray *)screenSaverSuffixes {
+  if (!screenSaverSuffixes) {
+    screenSaverSuffixes = [[NSArray arrayWithObjects:@"saver",@"slideSaver",nil] retain];
+  }
+  return screenSaverSuffixes;
+}
 
 +(SaverLabModuleList *)sharedInstance {
   if (!_sharedInstance) {
@@ -57,7 +66,9 @@ static NSArray* screenSaverSearchPaths() {
     NSEnumerator *saverBundleEnum = [fileManager enumeratorAtPath:saverDir];
     NSString *saverBundle = nil;
     while (saverBundle=[saverBundleEnum nextObject]) {
-      if ([saverBundle hasSuffix:SCREEN_SAVER_SUFFIX] && ![saverBundle hasPrefix:HIDE_PREFIX]) {
+      if (![saverBundle hasPrefix:HIDE_PREFIX] && 
+           [[[self class] screenSaverSuffixes] containsObject:[saverBundle pathExtension]]) 
+      {
         NSString *path = [saverDir stringByAppendingPathComponent:saverBundle];
         // this assumes all filenames are unique
         [newPathDictionary setObject:path 
@@ -87,11 +98,17 @@ static NSArray* screenSaverSearchPaths() {
 }
 
 -(NSBundle *)bundleForModuleName:(NSString *)name {
-  return [NSBundle bundleWithPath:[self pathForModuleName:name]];
+  // special case for "slideSaver" modules
+  NSString *path = [self pathForModuleName:name];
+  if ([path hasSuffix:@"slideSaver"]) {
+    path = [self pathForModuleName:SLIDE_SHOW_MODULE_NAME];
+  }
+  return [NSBundle bundleWithPath:path];
 }
 
 -(Class)classForModuleName:(NSString *)name {
   return [[self bundleForModuleName:name] principalClass];
 }
+
 
 @end
