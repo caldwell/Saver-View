@@ -1,4 +1,4 @@
-/* Copyright 2001 by Brian Nenninger
+/* Copyright 2001-2007 by Brian Nenninger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // for stdout/stderr redirection
 #include <unistd.h>
 
-static int MODULE_MENU_PERMANENT_ITEMS = 3;
+static int MODULE_MENU_PERMANENT_ITEMS = 4;
 
 // apparently the BSD calls to get process names only allow 16 characters, so
 // "ScreenSaverEngine" becomes "ScreenSaverEngin"
@@ -100,21 +100,23 @@ static NSFileHandle* createPipeForOuptputStream(FILE *stream) {
                                  userInfo:nil
                                   repeats:YES];
                                   
+  SaverLabPreferences *prefs = [SaverLabPreferences sharedInstance];
   // set up stdout/stderr redirection
-  stdoutHandle = createPipeForOuptputStream(stdout);
-  stderrHandle = createPipeForOuptputStream(stderr);
-   
+  if ([prefs consoleWindowEnabled]) {
+    stdoutHandle = createPipeForOuptputStream(stdout);
+    stderrHandle = createPipeForOuptputStream(stderr);
     
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(didReadStdoutData:)
-                                               name:NSFileHandleReadCompletionNotification
-                                             object:nil];
-  [stdoutHandle readInBackgroundAndNotify];
-  [stderrHandle readInBackgroundAndNotify];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReadStdoutData:)
+                                                 name:NSFileHandleReadCompletionNotification
+                                               object:nil];
+    [stdoutHandle readInBackgroundAndNotify];
+    [stderrHandle readInBackgroundAndNotify];
+  }
                 
   // restore window positions and open module list if necessary
   {
-    SaverLabPreferences *prefs = [SaverLabPreferences sharedInstance];
     if ([prefs restoreModuleWindowsOnStartup]) [self restoreWindowPositions];
     // show module list if there are no windows open
     if ([prefs showModuleListOnStartup] || 
@@ -169,40 +171,29 @@ and possibly shows the browser window if no other windows are open.
     NSArray *sortedNames = [[SaverLabModuleList sharedInstance] sortedModuleNames];
     NSEnumerator *nameEnum = [sortedNames objectEnumerator];
     while (saverName = [nameEnum nextObject]) {
-      menuItem = [[NSMenuItem alloc] initWithTitle:saverName
-                                            action:@selector(moduleSelected:) 
-                                      keyEquivalent:@""];
+      menuItem = [[[NSMenuItem alloc] initWithTitle:saverName
+                                             action:@selector(moduleSelected:) 
+                                       keyEquivalent:@""] autorelease];
       [[modulesMenu submenu] addItem:menuItem];
     }
   }
 }
 
 -(SaverLabModuleController *)openModuleWithName:(NSString *)name {
-  NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
-  Class saverClass = [saverBundle principalClass];
-  SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
-                                               initWithSaverClass:saverClass
-                                                            title:name];
+  SaverLabModuleController *controller = [[SaverLabModuleController alloc] initWithModuleName:name];
   return controller;  
 }
 
 -(SaverLabModuleController *)openModuleWithName:(NSString *)name rect:(NSRect)frameRect {
   if (NSIsEmptyRect(frameRect)) return [self openModuleWithName:name];
   else {
-    NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
-    Class saverClass = [saverBundle principalClass];
     NSRect rect = [NSWindow contentRectForFrameRect:frameRect styleMask:NSTitledWindowMask];
-    SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
-                                                initWithSaverClass:saverClass
-                                                              title:name
-                                                        contentRect:rect];
+    SaverLabModuleController *controller = [[SaverLabModuleController alloc] initWithModuleName:name contentRect:rect];
     return controller;  
   }
 }
 
 -(SaverLabModuleController *)openFullScreenModuleWithName:(NSString *)name rect:(NSRect)rect {
-  NSBundle *saverBundle = [[SaverLabModuleList sharedInstance] bundleForModuleName:name];
-  Class saverClass = [saverBundle principalClass];
   // try to find the screen corresponding to the given NSRect
   NSArray *screens = [NSScreen screens];
   NSScreen *matchingScreen = nil;
@@ -220,16 +211,13 @@ and possibly shows the browser window if no other windows are open.
     }
   }
   if (matchingScreen!=nil) {
-    return [[SaverLabModuleController alloc] initFullScreen:matchingScreen
-                                             withSaverClass:saverClass
-                                                      title:name];
+    return [[SaverLabModuleController alloc] initFullScreen:matchingScreen withModuleName:name];
   }
   else {
     // run in a window if no screen matches. This may not be what we want if the screen resolutions
     // have changed, but it's probably better than the possibility of incorrectly running multiple
     // modules full screen on the same screen.
-    return [[SaverLabModuleController alloc] initWithSaverClass:saverClass
-                                                          title:name];
+    return [[SaverLabModuleController alloc] initWithModuleName:name];
   }
 }
 
@@ -244,19 +232,23 @@ and possibly shows the browser window if no other windows are open.
 
 /* Called when a .saver bundle is opened from the Finder or elsewhere.
 */
--(BOOL)application:(NSApplication *)app openFile:(NSString *)filename{
-  NSBundle *saverBundle = [NSBundle bundleWithPath:filename];
-  Class saverClass = [saverBundle principalClass];
-  NSString *name = [[filename lastPathComponent] stringByDeletingPathExtension];
-  SaverLabModuleController *controller = [[SaverLabModuleController alloc] 
-                                               initWithSaverClass:saverClass
-                                                            title:name];
+-(BOOL)application:(NSApplication *)app openFile:(NSString *)filepath {
+  SaverLabModuleController *controller = [[SaverLabModuleController alloc] initWithModulePath:filepath];
   if (controller) {
     [controller showModuleWindow];
     [controller start];
     return YES;
   }
   return NO;
+}
+
+/* Called by "Open Module..." menu command
+*/
+-(IBAction)openDocument:(id)sender {
+  NSOpenPanel *panel = [NSOpenPanel openPanel];
+  if ([panel runModalForTypes:[SaverLabModuleList screenSaverSuffixes]]==NSOKButton) {
+    [self application:NSApp openFile:[panel filename]];
+  }
 }
 
 

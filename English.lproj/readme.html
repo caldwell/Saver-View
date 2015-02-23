@@ -8,10 +8,10 @@
 				SaverLab
                         </h2>
 			<p>
-				v1.7.3 Copyright 2001-2005 by Brian Nenninger
+				v1.7.4 Copyright 2001-2007 by Brian Nenninger
 <p>
 SaverLab is free, but your <a href="#donate">support</a> is welcome.<br>
-SaverLab source code is available at <a href="http://www.dozingcatsoftware.com">http://www.dozingcat.com</a>.
+SaverLab source code is available at <a href="http://www.dozingcatsoftware.com">http://www.dozingcatsoftware.com</a>.
 		</center>
 		<h3>
 			Overview
@@ -56,7 +56,7 @@ SaverLab source code is available at <a href="http://www.dozingcatsoftware.com">
                         </ul><br>
                         The "Recording" tab controls how screensaver animations are recorded. When recording, SaverLab captures each frame and writes it to a separate file. By default, when you stop recording SaverLab creates a QuickTime movie and then deletes the individual images. The first group of radio buttons allow you to keep the individual images, with or without creating a QuickTime movie. This is useful if you want to obtain individual images, or if you want to use another program to create a movie. If you choose to save the individual images, they will be created inside a folder named "SaverLab" followed by a unique number ("SaverLab0", "SaverLab1", etc). By default these folders are created in your home directory; you can specify a different location by changing the "Images Directory" setting. You can do this by clicking the "Set" button and picking a folder, or by entering a new path in the text field. The second set of radio buttons allows you to control the frame rate of movies that SaverLab creates. By default, the frame rate of the created movie is the same rate at which the screensaver is actually running ("Target FPS" in the Show Info window). You can alternatively specify a fixed frame rate for the created movies.
 			<p>
-			An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a>, <a href="http://softrak.stepwise.com">Softrak</a>, or other Mac OS X software sites.
+			Jamie Zawinski maintains an excellent collection of screensaver modules at <a href="http://www.jwz.org/xscreensaver/download.html">http://www.jwz.org/xscreensaver/download.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a> or other Mac OS X software sites.
 			<p>
 			<h3>
 				Known Bugs/Issues
@@ -73,18 +73,27 @@ SaverLab source code is available at <a href="http://www.dozingcatsoftware.com">
 <a name="donate">
 <h3>Tip Jar</h3>
 <p>
-SaverLab is completely free, but if you find it useful you can support its development by:
-<li><a href="https://www.paypal.com/xclick/business=brian%40dozingcatsoftware.com&item_name=SaverLab+Donation&item_number=saverlab">Donating</a> via PayPal
-<li>Signing up for a pokerroom.com account using <a href="http://www.pokerroom.com/?ref=5340">this link</a>. Pokerroom.com is an excellent Mac-friendly poker site, where you can play Texas Hold'em and other games for real or play money.
+SaverLab is completely free, but if you find it useful you can support its development by
+<a href="https://www.paypal.com/xclick/business=brian%40dozingcatsoftware.com&item_name=SaverLab+Donation&item_number=saverlab">donating</a> via PayPal.
 <p>
 			<p>
 			<h3>
 				Version History
 			</h3>
 			<p>
+			<b>1.7.4, Jan 24 2007</b>:
+			<ul>
+                          <li>Fixed bugs with snapshots and recording movies when window width wasn't divisible by 8.
+                          <li>Fixed bugs when opening .saver modules that aren't installed in Screen Saver directories.
+                          <li>Incorporated Sparkle framework for automatic version checking and updating.
+                          <li>Added workarounds for incompatibilities with <a href="http://www.jwz.org/xscreensaver/download.html">XScreenSaver</a> modules.
+                          <li>Added preference to control whether system log output appears in window.
+                          <li>Removed calls to -poseAsClass:
+			</ul>
+			<p>
 			<b>1.7.3, Nov 25 2005</b>:
 			<ul>
-                          <li>Built as universal binary for PowerPC and Intel processors. (Intel version is completely untested; if you have access to OS X for x86 <a href="mailto:brian@dozingcatsoftware.com">let me know</a> how it runs).
+                          <li>Built as universal binary for PowerPC and Intel processors.
                           <li>Fixed display bugs when user interface scaling is active in Tiger.
 			</ul>
 			<p>
@@ -177,7 +186,8 @@ SaverLab is completely free, but if you find it useful you can support its devel
 			<ul>
 				<li>Mike Trent, for valuable advice and feedback.
 				<li>Eric Peyton, whose screensaver resources at <a href="http://www.epicware.com/">epicware.com</a> are very useful.
-				<li>Paul Sahner of <a href="http://www.dv-graphics.com">DV Graphics</a>, for the excellent icon.
+				<li>Paul Sahner of <a href="http://www.dv-graphics.com">DV Graphics</a>, for the pretty icon.
+        <li>Andy Matuschak, for the excellent <a href="http://andymatuschak.org/pages/sparkle">Sparkle</a> framework for automatic version checking and updating.
 			</ul>
 			<p>
 			<h3>
@@ -195,6 +205,5 @@ SaverLab is completely free, but if you find it useful you can support its devel
 			The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 			<p>
 			THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-			<p>
 	</body>
 </html>

@@ -1,4 +1,4 @@
-/* Copyright 2001 by Brian Nenninger
+/* Copyright 2001-2007 by Brian Nenninger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -30,14 +30,6 @@ static NSRect defaultContentRect() {
 // keep track of the last directory a background image was opened from
 static NSString *gLastImageDirectory = nil;
 
-// status messages, should be localized
-static NSString *PAUSED_STRING = @": Paused"; 
-static NSString *RECORDING_STRING = @": RECORDING";
-static NSString *RECORDING_ERROR_TITLE = @"Cannot Record";
-static NSString *RECORDING_ERROR_MSG = @"Unable to write to the directory '%@'. Specify a writeable directory in the Recording tab of the Preferences window.";
-static NSString *RECORDING_ERROR_BUTTON1 = @"OK";
-static NSString *RECORDING_ERROR_BUTTON2 = @"Go To Preferences";
-
 static float gTransparentWindowAlpha = 0.3;
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -46,54 +38,68 @@ static float gTransparentWindowAlpha = 0.3;
 
 @class ScreenSaverView;
 
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)contentRect {
-  if (!aClass) return nil;
+-(id)initWithModulePath:(NSString *)path title:(NSString *)t contentRect:(NSRect)contentRect fullscreen:(NSScreen *)screen {
   self = [super init];
-  if (!self) return nil;
-  screenSaverClass = aClass;
-  title = [t retain];
-
-  window = [self createWindowWithContentRect:contentRect];
-  if (!window) return nil;
-  
-  [self finishInit];
-  return self;
-}
-
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t {
-  NSRect contentRect = defaultContentRect();
-  return [self initWithSaverClass:aClass title:t contentRect:contentRect];
-}
-
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentSize:(NSSize)contentSize {
-  NSRect contentRect = defaultContentRect();
-  if (contentSize.width>0 && contentSize.height>0) {
-    contentRect.size = contentSize;
+  screenSaverClass = [[SaverLabModuleList sharedInstance] classForModulePath:path];
+  if (!screenSaverClass) {
+    [self release];
+    return nil;
   }
-  return [self initWithSaverClass:aClass title:t contentRect:contentRect];
-}
-
--(id)initFullScreen:(NSScreen *)screen withSaverClass:(Class)aClass title:(NSString *)t {
-  if (!aClass) return nil;
-  self = [super init];
-  if (!self) return nil;
-  screenSaverClass = aClass;
+  screenSaverPath = [path retain];
   title = [t retain];
   
-  window = [self createFullScreenWindowOnScreen:screen];
-  if (!window) return nil;
-
+  if (screen) {
+    window = [self createFullScreenWindowOnScreen:screen];
+  }
+  else {
+    window = [self createWindowWithContentRect:contentRect];
+  }
+  if (!window) {
+    [self release];
+    return nil;
+  }
+  
   [self finishInit];
   return self;
+}
+
+-(id)initWithModulePath:(NSString *)path contentRect:(NSRect)contentRect {
+  return [self initWithModulePath:path title:[[path lastPathComponent] stringByDeletingPathExtension] contentRect:contentRect fullscreen:nil];
+}
+
+-(id)initWithModuleName:(NSString *)name contentRect:(NSRect)contentRect {
+  NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:name];
+  return [self initWithModulePath:path title:name contentRect:contentRect fullscreen:nil];
+}
+
+-(id)initWithModulePath:(NSString *)path {
+  return [self initWithModulePath:path title:[[path lastPathComponent] stringByDeletingPathExtension] contentRect:defaultContentRect() fullscreen:nil];
+}
+
+-(id)initWithModuleName:(NSString *)name {
+  NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:name];
+  return [self initWithModulePath:path title:name contentRect:defaultContentRect() fullscreen:nil];
+}
+
+-(id)initFullScreen:(NSScreen *)screen withModulePath:(NSString *)path {
+  if (!screen) screen = [NSScreen mainScreen];
+  return [self initWithModulePath:path title:[[path lastPathComponent] stringByDeletingPathExtension] contentRect:defaultContentRect() fullscreen:screen];
+}
+
+-(id)initFullScreen:(NSScreen *)screen withModuleName:(NSString *)name {
+  if (!screen) screen = [NSScreen mainScreen];
+  NSString *path = [[SaverLabModuleList sharedInstance] pathForModuleName:name];
+  return [self initWithModulePath:path title:name contentRect:defaultContentRect() fullscreen:screen];
 }
 
 -(NSWindow *)createWindowWithContentRect:(NSRect)rect {
   window = [[NSWindow alloc] initWithContentRect:rect
-                styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask)
+                styleMask:(NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask | NSMiniaturizableWindowMask)
                   backing:[screenSaverClass backingStoreType]
                     defer:YES];
   [window setMinSize:NSMakeSize(120,90)];
   [window setDelegate:self];
+  [window setOneShot:NO];
   return window;
 }
 
@@ -156,6 +162,7 @@ static float gTransparentWindowAlpha = 0.3;
 }
 
 -(void)dealloc {
+  [screenSaverPath release];
   [title release];
   [backgroundImageRep release];
   [checkedMenuItems release];
@@ -230,7 +237,7 @@ static float gTransparentWindowAlpha = 0.3;
   [self updateWindowTitle];
   // the ScreenSaverView subclass in the is the content view of the window
 	
-	screenSaverView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForName:title frame:contentViewRect isPreview:[self isInPreviewMode]] autorelease];
+	screenSaverView = [[[SaverLabModuleList sharedInstance] createScreenSaverViewForModulePath:screenSaverPath frame:contentViewRect isPreview:[self isInPreviewMode]] autorelease];
       
   [window setContentView:screenSaverView];
   [window makeKeyAndOrderFront:nil];
@@ -278,8 +285,8 @@ static float gTransparentWindowAlpha = 0.3;
 */
 -(void)updateWindowTitle {
   NSString *windowTitle = title;
-  if (isPaused) windowTitle = [windowTitle stringByAppendingString:PAUSED_STRING];
-  if (isRecordingFrames) windowTitle = [windowTitle stringByAppendingString:RECORDING_STRING];
+  if (isPaused) windowTitle = [windowTitle stringByAppendingString:NSLocalizedString(@"PAUSED_WINDOW_SUFFIX",nil)];
+  if (isRecordingFrames) windowTitle = [windowTitle stringByAppendingString:NSLocalizedString(@"RECORDING_WINDOW_SUFFIX",nil)];
   [window setTitle:windowTitle];
 }
 
@@ -360,7 +367,6 @@ copy the necessary state. The same applies for making a full screen window not f
 */
 -(void)makeFullScreen:(id)sender {
   if (![self isFullScreen]) {
-    //id newController;
     int level = [window level];
     NSScreen *screen = [window screen];
     isResizingWindow = YES; // prevents release when screen saver window closes
@@ -953,8 +959,11 @@ and the window size items.
     if (![self temporaryDirectoryForQuicktimeImages]) {
       int result;
       NSBeep();
-      result = NSRunAlertPanel(RECORDING_ERROR_TITLE, RECORDING_ERROR_MSG, 
-                               RECORDING_ERROR_BUTTON1, RECORDING_ERROR_BUTTON2, nil,
+      result = NSRunAlertPanel(NSLocalizedString(@"RECORDING_ERROR_TITLE",nil), 
+                               NSLocalizedString(@"RECORDING_ERROR_MSG",nil), 
+                               NSLocalizedString(@"RECORDING_ERROR_OK",nil), 
+                               NSLocalizedString(@"RECORDING_ERROR_PREFERENCES",nil), 
+                               nil,
                                [[SaverLabPreferences sharedInstance] recordedImagesDirectory]);
       if (result==NSAlertAlternateReturn) {
         [NSApp sendAction:@selector(openPreferencesWindow:) to:nil from:self];

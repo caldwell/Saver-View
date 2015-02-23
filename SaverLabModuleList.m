@@ -1,4 +1,4 @@
-/* Copyright 2001 by Brian Nenninger
+/* Copyright 2001-2007 by Brian Nenninger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -133,9 +133,8 @@ static NSArray *modulesIgnoringHiddenPrefix() {
   return [modulePathDictionary objectForKey:name];
 }
 
--(NSBundle *)bundleForModuleName:(NSString *)name {
-  // special case for "slideSaver" modules
-  NSString *path = [self pathForModuleName:name];
+-(NSBundle *)bundleForModulePath:(NSString *)path {
+  // special case for slideshow and Quartz Composer modules
   if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION]) {
     path = [[self class] slideShowModulePath];
   }
@@ -145,21 +144,32 @@ static NSArray *modulesIgnoringHiddenPrefix() {
   return [NSBundle bundleWithPath:path];
 }
 
+-(NSBundle *)bundleForModuleName:(NSString *)name {
+  NSString *path = [self pathForModuleName:name];
+  return [self bundleForModulePath:path];
+}
+
+-(Class)classForModulePath:(NSString *)path {
+  return [[self bundleForModulePath:path] principalClass];
+}
+
 -(Class)classForModuleName:(NSString *)name {
   return [[self bundleForModuleName:name] principalClass];
 }
 
--(id)createScreenSaverViewForName:(NSString *)name frame:(NSRect)frame isPreview:(BOOL)preview {
-	NSString *path = [self pathForModuleName:name];
-	Class screenSaverClass = [self classForModuleName:name];
+-(id)createScreenSaverViewForModulePath:(NSString *)path frame:(NSRect)frame isPreview:(BOOL)preview {
+  Class screenSaverClass = [self classForModulePath:path];
 	id screenSaverView = nil;
 	// Quartz Composer support
 	if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
 		screenSaverView = [[screenSaverClass alloc] _initWithComposition:path frame:frame isPreview:preview];
 		[NSClassFromString(@"SaverLabQCPlayerViewWrapper") swizzleMethodForClass:screenSaverClass];
 		return screenSaverView;
-	}
+	}  
 	else {
+    // XScreenSaver support
+    [NSClassFromString(@"SaverLabXScreenSaverWrapper") swizzle];
+
 		screenSaverView = [[screenSaverClass alloc] initWithFrame:frame isPreview:preview];
 		// slideshow support                                                 
 		if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION] && [screenSaverView respondsToSelector:@selector(setImageDirectory:)]) {
@@ -168,6 +178,10 @@ static NSArray *modulesIgnoringHiddenPrefix() {
 		}
 	}
 	return screenSaverView;
+}
+
+-(id)createScreenSaverViewForName:(NSString *)name frame:(NSRect)frame isPreview:(BOOL)preview {
+  return [self createScreenSaverViewForModulePath:[self pathForModuleName:name] frame:frame isPreview:preview];
 }
 
 @end

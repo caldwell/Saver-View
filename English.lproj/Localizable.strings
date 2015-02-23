@@ -1,0 +1,6 @@
+PAUSED_WINDOW_SUFFIX = ": Paused"; 
+RECORDING_WINDOW_SUFFIX = ": RECORDING";
+RECORDING_ERROR_TITLE = "Cannot Record";
+RECORDING_ERROR_MSG = "Unable to write to the directory '%@'. Specify a writeable directory in the Recording tab of the Preferences window.";
+RECORDING_ERROR_OK = "OK";
+RECORDING_ERROR_PREFERENCES = "Go To Preferences";

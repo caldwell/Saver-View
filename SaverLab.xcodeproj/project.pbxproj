@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D31EBA1A0A282EAA00E099FD /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31EBA190A282EAA00E099FD /* AGL.framework */; };
+		D35D21ED0B6717710060BF50 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D35D21EC0B6717700060BF50 /* Sparkle.framework */; };
+		D35D222B0B6718160060BF50 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D35D21EC0B6717700060BF50 /* Sparkle.framework */; };
+		D35D22470B672D7C0060BF50 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35D22460B672D7C0060BF50 /* Localizable.strings */; };
+		D38070400B642B3C00EE5B49 /* SaverLabMethodSwizzler.h in Headers */ = {isa = PBXBuildFile; fileRef = D380703E0B642B3C00EE5B49 /* SaverLabMethodSwizzler.h */; };
+		D38070410B642B3C00EE5B49 /* SaverLabMethodSwizzler.m in Sources */ = {isa = PBXBuildFile; fileRef = D380703F0B642B3C00EE5B49 /* SaverLabMethodSwizzler.m */; };
 		D3FB5D120935973500D0B2C4 /* SaverLabController.h in Headers */ = {isa = PBXBuildFile; fileRef = 017AF4DB006ED87EC0A80002 /* SaverLabController.h */; };
 		D3FB5D130935973500D0B2C4 /* SaverLabModuleController.h in Headers */ = {isa = PBXBuildFile; fileRef = 017AF4DF006EF750C0A80002 /* SaverLabModuleController.h */; };
 		D3FB5D140935973500D0B2C4 /* SaverLabFullScreenWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0214AE0E007AEDA27F000001 /* SaverLabFullScreenWindow.h */; };
@@ -57,31 +63,18 @@
 		D3FB5D440935973500D0B2C4 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39CBD8A082DC17A00D1B8D4 /* QTKit.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		4A9504CCFFE6A4B311CA0CBA /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
-				ZERO_LINK = YES;
-			};
-			name = Development;
+/* Begin PBXCopyFilesBuildPhase section */
+		D35D22200B67179B0060BF50 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D35D222B0B6718160060BF50 /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4A9504CDFFE6A4B311CA0CBA /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		017AF4D9006EBDA3C0A80002 /* ScreenSaver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenSaver.framework; path = /System/Library/Frameworks/ScreenSaver.framework; sourceTree = "<absolute>"; };
@@ -99,13 +92,18 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		459FBB2C0075ACF27F000001 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		701D263B0076C93C7F000001 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.html; name = English; path = English.lproj/readme.html; sourceTree = "<group>"; };
+		D31EBA190A282EAA00E099FD /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		D3549E970823594E0012243F /* SaverLabQCPlayerViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaverLabQCPlayerViewWrapper.h; sourceTree = "<group>"; };
 		D3549E980823594E0012243F /* SaverLabQCPlayerViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaverLabQCPlayerViewWrapper.m; sourceTree = "<group>"; };
+		D35D21EC0B6717700060BF50 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		D35D22440B672D760060BF50 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D380703E0B642B3C00EE5B49 /* SaverLabMethodSwizzler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaverLabMethodSwizzler.h; sourceTree = "<group>"; };
+		D380703F0B642B3C00EE5B49 /* SaverLabMethodSwizzler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaverLabMethodSwizzler.m; sourceTree = "<group>"; };
 		D39CBD8A082DC17A00D1B8D4 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		D3B72F6505F5AB3100349CDF /* SaverLabSSViewPoser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabSSViewPoser.h; sourceTree = "<group>"; };
 		D3B72F6605F5AB3100349CDF /* SaverLabSSViewPoser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabSSViewPoser.m; sourceTree = "<group>"; };
 		D3FB5D4A0935973500D0B2C4 /* Info-SaverLab.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-SaverLab.plist"; sourceTree = "<group>"; };
-		D3FB5D4B0935973500D0B2C4 /* SaverLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaverLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3FB5D4B0935973500D0B2C4 /* SaverLab.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SaverLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F515406E018C99CF01A80002 /* StdoutWindow.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = StdoutWindow.nib; path = English.lproj/StdoutWindow.nib; sourceTree = "<group>"; };
 		F5154070018C9B3A01A80002 /* SaverLabStdoutWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SaverLabStdoutWindowController.h; sourceTree = "<group>"; };
 		F5154071018C9B3A01A80002 /* SaverLabStdoutWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SaverLabStdoutWindowController.m; sourceTree = "<group>"; };
@@ -149,6 +147,8 @@
 				D3FB5D420935973500D0B2C4 /* QuickTime.framework in Frameworks */,
 				D3FB5D430935973500D0B2C4 /* Carbon.framework in Frameworks */,
 				D3FB5D440935973500D0B2C4 /* QTKit.framework in Frameworks */,
+				D31EBA1A0A282EAA00E099FD /* AGL.framework in Frameworks */,
+				D35D21ED0B6717710060BF50 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,11 +158,13 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D31EBA190A282EAA00E099FD /* AGL.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				017AF4D9006EBDA3C0A80002 /* ScreenSaver.framework */,
 				0CB90036008A792A7F000001 /* OpenGL.framework */,
 				F577A35A0143638801000001 /* QuickTime.framework */,
 				F565BC2903A9A7CA01A80032 /* Carbon.framework */,
+				D35D21EC0B6717700060BF50 /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -220,6 +222,7 @@
 				F55D506300CF36EB01A80002 /* ModuleInfoWindow.nib */,
 				F58DF794030CAE2201A80032 /* QuicktimeProgressWindow.nib */,
 				F58DF796030CAE2401A80032 /* StdoutWindow.nib */,
+				D35D22460B672D7C0060BF50 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -282,6 +285,8 @@
 				F581E08D0141EA4C01000001 /* SaverLabScreenSaverViewAdditions.m */,
 				D3549E970823594E0012243F /* SaverLabQCPlayerViewWrapper.h */,
 				D3549E980823594E0012243F /* SaverLabQCPlayerViewWrapper.m */,
+				D380703E0B642B3C00EE5B49 /* SaverLabMethodSwizzler.h */,
+				D380703F0B642B3C00EE5B49 /* SaverLabMethodSwizzler.m */,
 			);
 			name = "Cocoa Additions";
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 				D3FB5D200935973500D0B2C4 /* SaverLabStdoutWindowController.h in Headers */,
 				D3FB5D210935973500D0B2C4 /* SaverLabSSViewPoser.h in Headers */,
 				D3FB5D220935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.h in Headers */,
+				D38070400B642B3C00EE5B49 /* SaverLabMethodSwizzler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,25 +331,10 @@
 				D3FB5D2B0935973500D0B2C4 /* Sources */,
 				D3FB5D3E0935973500D0B2C4 /* Frameworks */,
 				D3FB5D450935973500D0B2C4 /* Rez */,
+				D35D22200B67179B0060BF50 /* CopyFiles */,
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DEBUGGING_SYMBOLS = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = SaverLab;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
 			dependencies = (
 			);
 			name = SaverLab;
@@ -357,12 +348,6 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = D3FB5CB8093590E600D0B2C4 /* Build configuration list for PBXProject "SaverLab" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				4A9504CCFFE6A4B311CA0CBA /* Development */,
-				4A9504CDFFE6A4B311CA0CBA /* Deployment */,
-			);
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ScreenSaverShell */;
 			projectDirPath = "";
@@ -384,6 +369,7 @@
 				D3FB5D280935973500D0B2C4 /* SaverLab.icns in Resources */,
 				D3FB5D290935973500D0B2C4 /* QuicktimeProgressWindow.nib in Resources */,
 				D3FB5D2A0935973500D0B2C4 /* StdoutWindow.nib in Resources */,
+				D35D22470B672D7C0060BF50 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +408,7 @@
 				D3FB5D3B0935973500D0B2C4 /* SaverLabStdoutWindowController.m in Sources */,
 				D3FB5D3C0935973500D0B2C4 /* SaverLabSSViewPoser.m in Sources */,
 				D3FB5D3D0935973500D0B2C4 /* SaverLabQCPlayerViewWrapper.m in Sources */,
+				D38070410B642B3C00EE5B49 /* SaverLabMethodSwizzler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +437,14 @@
 				701D263B0076C93C7F000001 /* English */,
 			);
 			name = readme.html;
+			sourceTree = "<group>";
+		};
+		D35D22460B672D7C0060BF50 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D35D22440B672D760060BF50 /* English */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		F55D506300CF36EB01A80002 /* ModuleInfoWindow.nib */ = {
@@ -482,10 +477,8 @@
 		D3FB5CB9093590E600D0B2C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				COPY_PHASE_STRIP = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -514,12 +507,15 @@
 		D3FB5D470935973500D0B2C4 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = ppc;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Info-SaverLab.plist";
@@ -534,7 +530,7 @@
 					"-Wno-unknown-pragmas",
 				);
 				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
+				ZERO_LINK = NO;
 			};
 			name = Development;
 		};
@@ -542,7 +538,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -566,7 +566,11 @@
 		D3FB5D490935973500D0B2C4 /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Info-SaverLab.plist";

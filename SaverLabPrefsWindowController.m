@@ -1,4 +1,4 @@
-/* Copyright 2001 by Brian Nenninger
+/* Copyright 2001-2007 by Brian Nenninger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -58,6 +58,7 @@ static int tagForSize(NSSize size) {
   [showListOnStartupCheckbox setIsChecked:[prefs showModuleListOnStartup]];
   [showListWhenNoWindowsOpenCheckbox setIsChecked:[prefs showModuleListWhenNoOpenWindows]];
   [autoUpdateModulesCheckbox setIsChecked:[prefs autoUpdateModuleList]];
+  [consoleWindowEnabledCheckbox setIsChecked:[prefs consoleWindowEnabled]];
   [showConsoleWindowCheckbox setIsChecked:[prefs showConsoleWindowOnOutput]];
   
   // recording settings
@@ -88,6 +89,7 @@ static int tagForSize(NSSize size) {
   [prefs setShowModuleListOnStartup:[showListOnStartupCheckbox isChecked]];
   [prefs setShowModuleListWhenNoOpenWindows:[showListWhenNoWindowsOpenCheckbox isChecked]];
   [prefs setAutoUpdateModuleList:[autoUpdateModulesCheckbox isChecked]];
+  [prefs setConsoleWindowEnabled:[consoleWindowEnabledCheckbox isChecked]];
   [prefs setShowConsoleWindowOnOutput:[showConsoleWindowCheckbox isChecked]];
   
   // recording settings
@@ -97,6 +99,8 @@ static int tagForSize(NSSize size) {
   [prefs setUseCustomFrameRate:[customRateRadioButton isChecked]];
   [prefs setCustomFrameRate:[customRateTextField intValue]];
   [prefs setRecordedImagesDirectory:[imagesDirectoryTextField stringValue]];
+  
+  [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // images directory support

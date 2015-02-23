@@ -1,4 +1,4 @@
-/* Copyright 2001 by Brian Nenninger
+/* Copyright 2001-2007 by Brian Nenninger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     NSWindow *window;
     Class screenSaverClass;
+    NSString *screenSaverPath;
     ScreenSaverView *screenSaverView;
     NSImageRep *backgroundImageRep;
     NSString *title;
@@ -48,10 +49,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString *temporaryQuicktimeDirectory;
 }
 
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentRect:(NSRect)rect;
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t contentSize:(NSSize)contentSize;
--(id)initWithSaverClass:(Class)aClass title:(NSString *)t;
--(id)initFullScreen:(NSScreen *)screen withSaverClass:(Class)aClass title:(NSString *)t;
+// "master" initializer, not called directly
+-(id)initWithModulePath:(NSString *)path title:(NSString *)t contentRect:(NSRect)contentRect fullscreen:(NSScreen *)screen;
+
+// initializers to be called from clients
+-(id)initWithModulePath:(NSString *)path;
+-(id)initWithModuleName:(NSString *)name;
+-(id)initWithModulePath:(NSString *)path contentRect:(NSRect)contentRect;
+-(id)initWithModuleName:(NSString *)name contentRect:(NSRect)contentRect;
+-(id)initFullScreen:(NSScreen *)screen withModulePath:(NSString *)path;
+-(id)initFullScreen:(NSScreen *)screen withModuleName:(NSString *)name;
 
 -(NSWindow *)createWindowWithContentRect:(NSRect)rect;
 -(NSWindow *)createFullScreenWindowOnScreen:(NSScreen *)screen;
