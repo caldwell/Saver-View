@@ -116,6 +116,7 @@ static void CheckError(OSErr err, char *message )
     }
 }
 
+typedef void * Media;
 static int addImagesToMedia(NSImage *firstImage, NSEnumerator *imageEnum, Media theMedia, Rect *trackFrame, double frameLength, id delegate) {
 	GWorldPtr theGWorld = nil;
 	long maxCompressedSize;
@@ -128,7 +129,8 @@ static int addImagesToMedia(NSImage *firstImage, NSEnumerator *imageEnum, Media 
         NSImage *frameImage;
 	int i;
         int aborted=0;
-    
+
+#if 0
         // Create a graphics world
         err = NewGWorld (&theGWorld,	/* pointer to created gworld */	
                 32,		/* pixel depth */
@@ -233,10 +235,13 @@ static int addImagesToMedia(NSImage *firstImage, NSEnumerator *imageEnum, Media 
         {
                 DisposeGWorld (theGWorld);
         }
+#endif
 
   return 1;
 }
 
+typedef void * Movie;
+typedef void * Track;
 static int createVideoTrackFromImageEnumerator(Movie theMovie, NSEnumerator *imageEnum, double frameLength, id delegate) {
   Track theTrack;
   Media theMedia;
@@ -245,6 +250,7 @@ static int createVideoTrackFromImageEnumerator(Movie theMovie, NSEnumerator *ima
   Rect movieRect = {0,0,0,0};
   NSSize movieSize;
 
+#if 0
   // get the size from the first image
   firstImage = [imageEnum nextObject];                  
   if (!firstImage) return 0;
@@ -287,7 +293,8 @@ static int createVideoTrackFromImageEnumerator(Movie theMovie, NSEnumerator *ima
                           GetMediaDuration(theMedia), /* media duration */
                           fixed1);		/* media rate ((Fixed) 0x00010000L) */
   CheckError( err, "InsertMediaIntoTrack error" );
-  
+#endif
+
   return (theMovie!=nil && err==noErr);
 }
 
@@ -295,9 +302,10 @@ int createMovieFromImageEnumerator(NSString *moviePath, NSEnumerator *imageEnum,
     Movie theMovie = nil;
     FSSpec mySpec;
     short resRefNum = 0;
-    short resId = movieInDataForkResID;
+//    short resId = movieInDataForkResID;
     OSErr err = noErr;
 
+#if 0
     EnterMovies();    
 
     // create an empty file (needed to get an FSSpec)
@@ -322,6 +330,7 @@ int createMovieFromImageEnumerator(NSString *moviePath, NSEnumerator *imageEnum,
         CloseMovieFile (resRefNum);
     }
 
+#endif
     return (theMovie!=nil && err==noErr);
   
 }

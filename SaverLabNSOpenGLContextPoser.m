@@ -19,7 +19,7 @@ lockFocus/unlockFocus.
 @implementation SaverLabNSOpenGLContextPoser
 
 +(void)load {
-  [self poseAsClass:[NSOpenGLContext class]];
+//  [self poseAsClass:[NSOpenGLContext class]];
 }
 
 -(void)makeCurrentContext {

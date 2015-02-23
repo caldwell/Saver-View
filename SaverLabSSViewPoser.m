@@ -17,7 +17,7 @@ uses them to compute the number of frames per second the module is displaying.
 @implementation SaverLabSSViewPoser
 
 +(void)load {
-  [self poseAsClass:[ScreenSaverView class]];
+//  [self poseAsClass:[ScreenSaverView class]];
 }
 
 -(void)unlockFocus {
