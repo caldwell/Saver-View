@@ -101,7 +101,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self removePreviewSaver];
   }
   [[SaverLabPreferences sharedInstance] setIsPreviewVisible:[self isPreviewCheckboxChecked]];
+
   [window setFrame:rect display:YES animate:YES];
+  
+  if ([self isPreviewCheckboxChecked]) {
+    // show selected item in preview
+    if ([modulesBrowser selectedCell]) {
+      [self browserModuleSelected:nil];
+    }
+  }
 }
 
 -(NSRect)frameRectWithPreviewVisible:(BOOL)visible {

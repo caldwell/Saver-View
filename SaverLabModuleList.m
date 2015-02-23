@@ -10,11 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "SaverLabModuleList.h"
 
 static SaverLabModuleList *_sharedInstance = nil;
+static NSString *slideShowModulePath = nil;
+static NSArray *screenSaverSuffixes = nil;
 
 static NSString *SCREEN_SAVER_DIR = @"Screen Savers";
-static NSArray *screenSaverSuffixes = nil;
 static NSString *HIDE_PREFIX = @"."; // hide saver bundles starting with "."
-static NSString *SLIDE_SHOW_MODULE_NAME = @"Slide Show";
+static NSString *SS_FRAMEWORK_MODULE_PATH = @"/System/Library/Frameworks/ScreenSaver.framework/Resources";
+static NSString *MODULE_EXTENSION = @"saver";
+static NSString *SLIDESHOW_MODULE_EXTENSION = @"slideSaver";
 
 // returns all locations to search for .saver bundles
 static NSArray* screenSaverSearchPaths() {
@@ -22,7 +25,7 @@ static NSArray* screenSaverSearchPaths() {
   NSArray *libPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSAllDomainsMask, YES);
   NSString *path;
   NSEnumerator *pathenum = [libPaths objectEnumerator];
-  [array addObject:@"/System/Library/Frameworks/ScreenSaver.framework/Resources"];
+  [array addObject:SS_FRAMEWORK_MODULE_PATH];
   while (path=[pathenum nextObject]) {
     [array addObject:[path stringByAppendingPathComponent:SCREEN_SAVER_DIR]];
   }
@@ -35,10 +38,29 @@ static NSArray* screenSaverSearchPaths() {
 
 +(NSArray *)screenSaverSuffixes {
   if (!screenSaverSuffixes) {
-    screenSaverSuffixes = [[NSArray arrayWithObjects:@"saver",@"slideSaver",nil] retain];
+    screenSaverSuffixes = [[NSArray arrayWithObjects:MODULE_EXTENSION,SLIDESHOW_MODULE_EXTENSION,nil] retain];
   }
   return screenSaverSuffixes;
 }
+
+// Jaguar changes the slide show module to "Pictures Folder", it was "Slide Show" in 10.1.x.
+// check to see which of them exists inside the ScreenSaver framework
++(NSString *)slideShowModulePath {
+  if (!slideShowModulePath) {
+    NSArray *ssModuleNames = [NSArray arrayWithObjects:@"Pictures Folder", @"Slide Show", nil];
+    NSEnumerator *ne = [ssModuleNames objectEnumerator];
+    NSString *name;
+    while ((!slideShowModulePath) && (name=[ne nextObject])) {
+      NSString *path = [SS_FRAMEWORK_MODULE_PATH stringByAppendingPathComponent:[name stringByAppendingPathExtension:MODULE_EXTENSION]];
+      if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        slideShowModulePath = [path retain];
+      } 
+    }
+  }
+  return slideShowModulePath;
+}
+
+
 
 +(SaverLabModuleList *)sharedInstance {
   if (!_sharedInstance) {
@@ -100,8 +122,8 @@ static NSArray* screenSaverSearchPaths() {
 -(NSBundle *)bundleForModuleName:(NSString *)name {
   // special case for "slideSaver" modules
   NSString *path = [self pathForModuleName:name];
-  if ([path hasSuffix:@"slideSaver"]) {
-    path = [self pathForModuleName:SLIDE_SHOW_MODULE_NAME];
+  if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION]) {
+    path = [[self class] slideShowModulePath];
   }
   return [NSBundle bundleWithPath:path];
 }

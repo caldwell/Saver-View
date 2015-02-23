@@ -8,7 +8,7 @@
 				SaverLab
                         </h2>
 			<p>
-				v1.6.1 Copyright 2001 by Brian Nenninger
+				v1.6.2 Copyright 2002 by Brian Nenninger
 		</center>
 		<h3>
 			Overview
@@ -63,13 +63,18 @@
 				<li>Pausing and restarting certain modules causes them to revert to their initial state.
 				<li>The minimize button is disabled in module windows because minimizing active windows produces erratic results.
 				<li>All modules run in a single thread, so on multiprocessor machines only one CPU will be used. If you need to have all your CPUs drawing 3d galaxies as fast as possible, you can run a copy of SaverLab for each processor. QuickTime movies are created in separate threads, so multiprocessor machines should see some benefit there.
-                                <li>In Mac OS X 10.1, the format of the slide show modules (Cosmos, Forest, etc.) has changed. As a result, if you try to run more than one different slide show module, after a short time all of them will show the images corresponding to the last module opened. A workaround is to run multiple copies of SaverLab with a different slide show module in each.
+                                <li>If you try to run more than one different slide show module (Cosmos, Forest, etc), after a short time all of them will show the images corresponding to the last module opened. A workaround is to run multiple copies of SaverLab with a different slide show module in each.
                                 <li>Recording QuickTime movies requires a large amount of disk space. Each frame is stored uncompressed while recording, and the movie is saved with no compression. Long recordings can require tens or hundreds of megabytes. 
 			</ul>
 			<p>
 			<h3>
 				Version History
 			</h3>
+			<p>
+			<b>1.6.2, Aug 15 2002</b>:
+			<ul>
+                                <li>Fixed slide show incompatibility with Mac OS X 10.2.
+			</ul>
 			<p>
 			<b>1.6.1, Nov 4 2001</b>:
 			<ul>
@@ -138,7 +143,7 @@
 				Feedback
 			</h3>
 			<p>
-			Contact me with any bug reports, comments, or suggestions at <a href="mailto:bnenninger@houston.rr.com">bnenninger@houston.rr.com</a>.
+			Contact me with any bug reports, comments, or suggestions at <a href="mailto:brian@dozingcat.com">brian@dozingcat.com</a>.
 			<p>
 			<h3>
 				License

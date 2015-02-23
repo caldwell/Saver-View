@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 34;
+	objectVersion = 38;
 	objects = {
 		017AF4D9006EBDA3C0A80002 = {
 			isa = PBXFrameworkReference;
@@ -108,7 +108,7 @@
 			files = (
 			);
 			isa = PBXRezBuildPhase;
-			name = "ResourceManager Resources";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 //040
 //041
@@ -298,8 +298,8 @@
 				089C165CFE840E0CC02AAC07,
 				459FBB2B0075ACF27F000001,
 				F55D506300CF36EB01A80002,
-				F574327D014C2C0701A80002,
-				F515406E018C99CF01A80002,
+				F58DF794030CAE2201A80032,
+				F58DF796030CAE2401A80032,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -341,7 +341,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "-O3";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SaverLab;
@@ -356,8 +355,8 @@
 			productName = ScreenSaverShell;
 			productReference = 17587328FF379C6511CA2CBB;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist SYSTEM \"file://localhost/System/Library/DTDs/PropertyList.dtd\">
-<plist version=\"0.9\">
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
@@ -377,7 +376,7 @@
 	<key>CFBundleExecutable</key>
 	<string>SaverLab</string>
 	<key>CFBundleGetInfoString</key>
-	<string>1.6.1, © 2001 Brian Nenninger</string>
+	<string>1.6.2, © 2001 Brian Nenninger</string>
 	<key>CFBundleIconFile</key>
 	<string>SaverLab.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -389,11 +388,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.1</string>
+	<string>1.6.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.6.1</string>
+	<string>1.6.2</string>
 	<key>NSHelpFile</key>
 	<string>readme.html</string>
 	<key>NSMainNibFile</key>
@@ -426,7 +425,7 @@
 				F5154072018C9B3A01A80002,
 			);
 			isa = PBXHeadersBuildPhase;
-			name = Headers;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		29B97328FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -436,11 +435,11 @@
 				701D263C0076C93C7F000001,
 				F55D506500CF36EB01A80002,
 				F524BA0B00E9A4AB01A80002,
-				F574327E014C2C0701A80002,
-				F515406F018C99CF01A80002,
+				F58DF795030CAE2201A80032,
+				F58DF797030CAE2401A80032,
 			);
 			isa = PBXResourcesBuildPhase;
-			name = "Bundle Resources";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		29B9732BFDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
@@ -464,7 +463,7 @@
 				F5154073018C9B3A01A80002,
 			);
 			isa = PBXSourcesBuildPhase;
-			name = Sources;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		29B9732CFDCFA39411CA2CEA = {
 			fileRef = 29B97316FDCFA39411CA2CEA;
@@ -483,7 +482,7 @@
 				F577A35B0143638801000001,
 			);
 			isa = PBXFrameworksBuildPhase;
-			name = "Frameworks & Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 //290
 //291
@@ -578,14 +577,9 @@
 //F54
 		F515406E018C99CF01A80002 = {
 			isa = PBXFileReference;
-			path = StdoutWindow.nib;
+			name = StdoutWindow.nib;
+			path = English.lproj/StdoutWindow.nib;
 			refType = 4;
-		};
-		F515406F018C99CF01A80002 = {
-			fileRef = F515406E018C99CF01A80002;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F5154070018C9B3A01A80002 = {
 			isa = PBXFileReference;
@@ -785,14 +779,9 @@
 		};
 		F574327D014C2C0701A80002 = {
 			isa = PBXFileReference;
-			path = QuicktimeProgressWindow.nib;
+			name = QuicktimeProgressWindow.nib;
+			path = English.lproj/QuicktimeProgressWindow.nib;
 			refType = 4;
-		};
-		F574327E014C2C0701A80002 = {
-			fileRef = F574327D014C2C0701A80002;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		F574327F014C45B701A80002 = {
 			isa = PBXFileReference;
@@ -890,6 +879,34 @@
 		};
 		F581E08F0141EA4C01000001 = {
 			fileRef = F581E08D0141EA4C01000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F58DF794030CAE2201A80032 = {
+			children = (
+				F574327D014C2C0701A80002,
+			);
+			isa = PBXVariantGroup;
+			name = QuicktimeProgressWindow.nib;
+			refType = 4;
+		};
+		F58DF795030CAE2201A80032 = {
+			fileRef = F58DF794030CAE2201A80032;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F58DF796030CAE2401A80032 = {
+			children = (
+				F515406E018C99CF01A80002,
+			);
+			isa = PBXVariantGroup;
+			name = StdoutWindow.nib;
+			refType = 4;
+		};
+		F58DF797030CAE2401A80032 = {
+			fileRef = F58DF796030CAE2401A80032;
 			isa = PBXBuildFile;
 			settings = {
 			};
