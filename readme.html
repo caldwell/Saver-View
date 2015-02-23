@@ -1,0 +1,52 @@
+<html>
+<title>SaverLab</title>
+<body bgcolor=#FFFFFF>
+<center>
+<h2>SaverLab</h2><p>
+v1.0 Copyright 2001 by Brian Nenninger
+</center>
+<h3>Overview</h3>
+<p>
+SaverLab runs Mac OS X screensaver modules in regular windows. It allows you to run multiple modules simultaneously and allows you to pause and single step through the animations.
+<p>
+When SaverLab launches, it locates all available screensaver modules and lists them in the "Modules" menu. Selecting a module from this menu opens a window in which the module runs. You can open any number of windows, including multiple copies of the same module, and they will all run simultaneously. You can resize the windows to any size you like; resizing will cause the screensaver to restart.
+<p>
+The "Control" menu allows you to control the screensaver module running in the frontmost window. The following commands are available:
+<ul>
+<li><b>Pause/Resume</b>: Stops the animation of the screensaver module, or restarts it if it was already stopped.
+<li><b>Single Step</b>: Executes one "tick" of the screensaver module, which will usually cause it to animate a single frame. If the screensaver was not paused, this command will pause it.
+<li><b>Restart</b>: Resets the module's internal state and restarts the animation.
+<li><b>Configure</b>: This command is only enabled if the screensaver module allows configuration. Selecting it opens the module's configuration sheet allowing you to customize its behavior.
+</ul>
+Single Step and Pause do not work perfectly for all modules, see Known Bugs/Issues.
+<p>
+SaverLab looks for screensaver modules in the same folders as does the Screen Saver Preferences panel (/System/Library/Screen Savers, /Library/Screen Savers, and Library/Screen Savers in your home directory). If you can see a screensaver in System Preferences, it should also be accessible in SaverLab. 
+<p>
+An excellent collection of screensaver modules is available at <a href="http://www.epicware.com/macosxsavers.html">http://www.epicware.com/macosxsavers.html</a>. Others can be found at <a href="http://www.versiontracker.com/vt_mac_osx.shtml">versiontracker</a> or other Mac OS X software sites.
+<p>
+<h3>Known Bugs/Issues</h3>
+<ul>
+<li>The Single Step function does not always work as expected. It does not work for some modules (in particular, the slide show modules that ship with Mac OS X) and it causes some other modules to reset to their initial state. This does not indicate a problem with those modules; it is due to the way SaverLab performs single steps.
+<li>Similarly, pausing and restarting certain modules causes them to revert to their initial state.
+<li>The minimize button is disabled in SaverLab windows because minimizing active windows produces erratic results. 
+<li>All modules run in a single thread, so on multiprocessor machines only one CPU will be used. If you need to have all your CPUs drawing 3d galaxies as fast as possible, you can run a copy of SaverLab for each processor.
+</ul>
+<p>
+<h3>Version History</h3>
+<p>
+<b>1.0, Mar 31 2001</b>: initial release
+<p>
+<h3>Feedback</h3>
+<p>
+Contact me with any bug reports, comments, or suggestions at <a href="mailto:bnenninger@houston.rr.com">bnenninger@houston.rr.com</a>.
+<p>
+<h3>License</h3>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+<p>
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+<p>
+</body>
+</html>

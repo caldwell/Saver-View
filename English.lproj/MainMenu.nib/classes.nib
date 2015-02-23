@@ -1,0 +1,23 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {updateModulesMenu = id; }; 
+            CLASS = Controller; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {modulesMenu = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                restart = id; 
+                showConfigurationSheet = id; 
+                singleStepAnimation = id; 
+                togglePause = id; 
+            }; 
+            CLASS = FirstResponder; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
