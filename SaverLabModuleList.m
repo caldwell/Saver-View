@@ -158,26 +158,26 @@ static NSArray *modulesIgnoringHiddenPrefix() {
 }
 
 -(id)createScreenSaverViewForModulePath:(NSString *)path frame:(NSRect)frame isPreview:(BOOL)preview {
-  Class screenSaverClass = [self classForModulePath:path];
-	id screenSaverView = nil;
-	// Quartz Composer support
-	if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
-		screenSaverView = [[screenSaverClass alloc] _initWithComposition:path frame:frame isPreview:preview];
-		[NSClassFromString(@"SaverLabQCPlayerViewWrapper") swizzleMethodForClass:screenSaverClass];
-		return screenSaverView;
-	}  
-	else {
-    // XScreenSaver support
-    [NSClassFromString(@"SaverLabXScreenSaverWrapper") swizzle];
+    Class screenSaverClass = [self classForModulePath:path];
+    id screenSaverView = nil;
+    // Quartz Composer support
+    if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
+        screenSaverView = [[screenSaverClass alloc] _initWithComposition:path frame:frame isPreview:preview];
+        [NSClassFromString(@"SaverLabQCPlayerViewWrapper") swizzleMethodForClass:screenSaverClass];
+        return screenSaverView;
+    }
+    else {
+        // XScreenSaver support
+        [NSClassFromString(@"SaverLabXScreenSaverWrapper") swizzle];
 
-		screenSaverView = [[screenSaverClass alloc] initWithFrame:frame isPreview:preview];
-		// slideshow support                                                 
-		if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION] && [screenSaverView respondsToSelector:@selector(setImageDirectory:)]) {
-			[screenSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
-                                                  stringByAppendingPathComponent:@"Resources"]];
-		}
-	}
-	return screenSaverView;
+        screenSaverView = [[screenSaverClass alloc] initWithFrame:frame isPreview:preview];
+        // slideshow support
+        if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION] && [screenSaverView respondsToSelector:@selector(setImageDirectory:)]) {
+            [screenSaverView setImageDirectory:[[path stringByAppendingPathComponent:@"Contents"]
+                                                      stringByAppendingPathComponent:@"Resources"]];
+        }
+    }
+    return screenSaverView;
 }
 
 -(id)createScreenSaverViewForName:(NSString *)name frame:(NSRect)frame isPreview:(BOOL)preview {
