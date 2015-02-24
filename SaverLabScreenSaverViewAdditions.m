@@ -36,7 +36,71 @@ static void fixVerticalMirroredBitmap(int *data, int w, int h) {
 }
 
 
+#import "objc/runtime.h"
 @implementation ScreenSaverView (SaverLabScreenSaverViewAdditions)
+
+// Override startAnimation and stopAnimation so that they don't rely on the
+// private ScreenSaverModule and ScreenSaverEngine classes.  Acording to
+// xscreensaver's SaverRunner.m:
+//
+// > On 10.8 and earlier, [ScreenSaverView startAnimation] causes the
+// > ScreenSaverView to run its own timer calling animateOneFrame.  On 10.9,
+// > that fails because the private class ScreenSaverModule is only
+// > initialized properly by ScreenSaverEngine, and in the context of
+// > SaverRunner, the null ScreenSaverEngine instance behaves as if
+// > [ScreenSaverEngine needsAnimationTimer] returned false.
+
+- (void)startAnimation {
+    [self slStart];
+}
+
+- (void)stopAnimation {
+    [self slStop];
+}
+
+- (BOOL)isAnimating {
+    return !![self slTimer];
+}
+
+static char sTimerKey;
+- (NSTimer *)slTimer {
+    return objc_getAssociatedObject(self, &sTimerKey);
+}
+
+- (NSTimer *)slSetTimer:(NSTimer *) t {
+    objc_setAssociatedObject(self, &sTimerKey, t, OBJC_ASSOCIATION_RETAIN);
+    return t;
+}
+
+- (void)slStart {
+    [self slStop];
+    [self slSetTimer:[NSTimer scheduledTimerWithTimeInterval:[self animationTimeInterval]
+                                                      target:self
+                                                    selector:@selector(slAnimateOneFrame)
+                                                    userInfo:nil
+                                                     repeats:YES]];
+}
+
+- (void)slStop {
+    NSTimer *timer = [self slTimer];
+    [timer invalidate];
+    [self slSetTimer:nil];
+}
+
+
+- (void)slAnimateOneFrame {
+    [self lockFocus];
+    [self animateOneFrame];
+    [self unlockFocus];
+    [self displayIfNeeded];
+}
+
+- (void)dealloc {
+    NSTimer *timer = [self slTimer];
+    [timer invalidate];
+    [timer release];
+    [super dealloc];
+}
 
 -(NSOpenGLView *)_openGLSubview {
   NSArray *subviews = [self subviews];
