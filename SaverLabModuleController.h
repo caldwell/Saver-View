@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Cocoa/Cocoa.h>
 #import <ScreenSaver/ScreenSaver.h>
 
-@interface SaverLabModuleController : NSObject
+@interface SaverLabModuleController : NSObject <NSWindowDelegate>
 {
     NSWindow *window;
     Class screenSaverClass;
