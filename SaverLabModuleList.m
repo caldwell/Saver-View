@@ -138,9 +138,9 @@ static NSArray *modulesIgnoringHiddenPrefix() {
   if ([path hasSuffix:SLIDESHOW_MODULE_EXTENSION]) {
     path = [[self class] slideShowModulePath];
   }
-	else if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
-		path = [[self class] quartzComposerModulePath];
-	}
+  else if ([path hasSuffix:QUARTZ_COMPOSER_MODULE_EXTENSION]) {
+    path = [[self class] quartzComposerModulePath];
+  }
   return [NSBundle bundleWithPath:path];
 }
 
