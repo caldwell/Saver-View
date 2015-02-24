@@ -154,11 +154,6 @@ static float gTransparentWindowAlpha = 0.3;
                                            selector:@selector(screenSaverDrewFrame:)
                                                name:@"ScreenSaverDrewFrame"
                                              object:nil];
-
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(screenSaverDrewOpenGLFrame:)
-                                               name:@"ScreenSaverDrewOpenGLFrame"
-                                             object:nil];
 }
 
 -(void)dealloc {
@@ -804,19 +799,12 @@ and the window size items.
 // notification when screen saver draws itself
 -(void)screenSaverDrewFrame:(NSNotification *)note {
   if ([note object]==screenSaverView) {
-    ++unlockFocusCount;
+    ++frameCount;
     // some OpenGL modules send this notification as well as the GL-specific one, so ignore this if GL
-    if (isRecordingFrames && !isFrameCaptureInProgress && ![screenSaverView isOpenGLModule]) {
+    if (isRecordingFrames && !isFrameCaptureInProgress) {
         [self saveQuicktimeFrame];
     }
     //if (framesDrawn%100==0) NSLog(@"%@ %d", [screenSaverView class], unlockFocusCount);
-  }
-}
-
--(void)screenSaverDrewOpenGLFrame:(NSNotification *)note {
-  if ([note object]==screenSaverView) {
-    ++openGLContextCount;
-    if (isRecordingFrames && !isFrameCaptureInProgress) [self saveQuicktimeFrame];
   }
 }
 
@@ -824,14 +812,13 @@ and the window size items.
   //NSLog(@"%@ %d fps", [screenSaverView class], unlockFocusCount);
   NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
   if (now>lastFPSUpdateTime) {
-    int frames = (unlockFocusCount > openGLContextCount) ? unlockFocusCount : openGLContextCount;
-    double fps = frames/(now-lastFPSUpdateTime);
+    double fps = frameCount/(now-lastFPSUpdateTime);
     // round up if needed
     if (fmod(fps,1.0)>=0.5) framesInLastSecond = ((int)fps)+1;
     else framesInLastSecond = (int)fps;
   }
   lastFPSUpdateTime = now;
-  unlockFocusCount = openGLContextCount = 0;
+  frameCount = 0;
   [self updateInfoPanelRefreshingCurrentFPS:YES];
 }
 

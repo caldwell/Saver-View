@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSTimer *fpsTimer;
     NSTimeInterval lastFPSUpdateTime;
     
-    int unlockFocusCount;
+    int frameCount;
     int openGLContextCount;
     
     // outlets for info panel

@@ -93,6 +93,7 @@ static char sTimerKey;
     [self animateOneFrame];
     [self unlockFocus];
     [self displayIfNeeded];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ScreenSaverDrewFrame" object:self];
 }
 
 - (void)dealloc {
